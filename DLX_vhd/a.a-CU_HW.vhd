@@ -57,7 +57,6 @@ architecture dlx_cu_hw of dlx_cu is
                                 "000000000000000", -- JAL to be filled
                                 "000000000000000", -- BEQZ to be filled
                                 "000000000000000", -- BNEZ
-                                "000000000000000", -- 
                                 "000000000000000",
                                 "000000000000000", -- ADD i (0X08): FILL IT!!!
                                 "000000000000000");-- to be completed (enlarged and filled)
@@ -151,15 +150,15 @@ begin  -- dlx_cu_rtl
    begin  -- process ALU_OP_CODE_P
 	case conv_integer(unsigned(IR_opcode)) is
 	        -- case of R type requires analysis of FUNC
-		when 0 =>
+		when conv_integer(unsigned(RTYPE)) =>
 			case conv_integer(unsigned(IR_func)) is
-				when 4 => aluOpcode_i <= LLS; -- sll according to instruction set coding
-				when 6 => aluOpcode_i <= LRS; -- srl
-				-- to be continued and filled with all the other instructions  
+				when conv_integer(unsigned(RTYPE_SLL)) => aluOpcode_i <= LLS; -- sll according to instruction set coding
+				when conv_integer(unsigned(RTYPE_SRL)) => aluOpcode_i <= LRS; -- srl
+				when conv_integer(unsigned(RTYPE_XOR)) => aluOpcode_i <= XOR_; -- xor
 				when others => aluOpcode_i <= NOP;
 			end case;
-		when 2 => aluOpcode_i <= NOP; -- j
-		when 3 => aluOpcode_i <= NOP; -- jal
+		when conv_integer(unsigned(ITYPE_J))    => aluOpcode_i <= NOP; -- j
+		when conv_integer(unsigned(ITYPE_JAL))  => aluOpcode_i <= NOP; -- jal
 		when 8 => aluOpcode_i <= ADDS; -- addi
 		-- to be continued and filled with other cases
 		when others => aluOpcode_i <= NOP;
