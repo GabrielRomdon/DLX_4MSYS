@@ -58,7 +58,43 @@ architecture dlx_cu_hw of dlx_cu is
                                 "000000000000000", -- BEQZ to be filled
                                 "000000000000000", -- BNEZ
                                 "000000000000000",
-                                "000000000000000", -- ADD i (0X08): FILL IT!!!
+                                "000000000000000",
+                                "000000000000000", -- ADDi (0X08): FILL IT!!!
+                                "000000000000000",
+                                "000000000000000", -- SUBi
+                                "000000000000000",
+                                "000000000000000", -- ANDi
+                                "000000000000000", -- ORi
+                                "000000000000000", -- XORi
+                                "000000000000000",
+                                "000000000000000", -- (0X10)
+                                "000000000000000",
+                                "000000000000000",
+                                "000000000000000",
+                                "000000000000000", -- SLLi
+                                "000000000000000", -- NOP
+                                "000000000000000", -- SRLi
+                                "000000000000000",
+                                "000000000000000",
+                                "000000000000000", -- SNEi
+                                "000000000000000",
+                                "000000000000000",
+                                "000000000000000", -- SLEi
+                                "000000000000000", -- SGEi
+                                "000000000000000",
+                                "000000000000000",
+                                "000000000000000", -- (0X20)
+                                "000000000000000",
+                                "000000000000000",
+                                "000000000000000", -- LW
+                                "000000000000000",
+                                "000000000000000",
+                                "000000000000000",
+                                "000000000000000",
+                                "000000000000000",
+                                "000000000000000",
+                                "000000000000000",
+                                "000000000000000", -- SW
                                 "000000000000000");-- to be completed (enlarged and filled)
                                 
                                 
@@ -152,14 +188,22 @@ begin  -- dlx_cu_rtl
 	        -- case of R type requires analysis of FUNC
 		when conv_integer(unsigned(RTYPE)) =>
 			case conv_integer(unsigned(IR_func)) is
+				when conv_integer(unsigned(RTYPE_SLE)) => aluOpcode_i <= SLE;
+				when conv_integer(unsigned(RTYPE_SGE)) => aluOpcode_i <= SGE;
 				when conv_integer(unsigned(RTYPE_SLL)) => aluOpcode_i <= LLS; -- sll according to instruction set coding
 				when conv_integer(unsigned(RTYPE_SRL)) => aluOpcode_i <= LRS; -- srl
+				when conv_integer(unsigned(RTYPE_SNE)) => aluOpcode_i <= SNE;
 				when conv_integer(unsigned(RTYPE_XOR)) => aluOpcode_i <= XOR_; -- xor
 				when others => aluOpcode_i <= NOP;
 			end case;
 		when conv_integer(unsigned(ITYPE_J))    => aluOpcode_i <= NOP; -- j
 		when conv_integer(unsigned(ITYPE_JAL))  => aluOpcode_i <= NOP; -- jal
-		when 8 => aluOpcode_i <= ADDS; -- addi
+		when conv_integer(unsigned(ITYPE_ADDI)  => aluOpcode_i <= ADDS; -- addi
+        when conv_integer(unsigned(ITYPE_LW))   => aluOpcode_i <= NOP;
+        when conv_integer(unsigned(ITYPE_SW))   => aluOpcode_i <= NOP;
+        when conv_integer(unsigned(ITYPE_SGEI)) => aluOpcode_i <= SGE;
+        when conv_integer(unsigned(ITYPE_SLEI)) => aluOpcode_i <= SLE;
+        when conv_integer(unsigned(ITYPE_SNEI)) => aluOpcode_i <= SNE;
 		-- to be continued and filled with other cases
 		when others => aluOpcode_i <= NOP;
 	 end case;
