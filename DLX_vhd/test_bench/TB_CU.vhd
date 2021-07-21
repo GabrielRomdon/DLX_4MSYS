@@ -1,5 +1,6 @@
 library IEEE;
 use IEEE.std_logic_1164.all;
+use work.myTypes.all;
 -- *********** include file of all possible IWs
 
 entity TB_CU is
@@ -7,13 +8,15 @@ end TB_CU;
 
 architecture TEST of TB_CU is
 
+	constant IR_SIZE : integer := 32;
+
 	signal CK: std_logic;
 	signal RST: std_logic;
 	--instruction word:
 	signal IW: std_logic_vector(IR_SIZE-1 downto 0);
 	--control word:
-	signal IR_LATCH_EN		: std_logic;
-	signal NPC_LATCH_EN		: std_logic;
+	signal IR_LATCH_EN		:  std_logic;
+	signal NPC_LATCH_EN		:  std_logic;
 	signal RegA_LATCH_EN	:  std_logic;
 	signal RegB_LATCH_EN	:  std_logic;
 	signal RegIMM_LATCH_EN	:  std_logic;
@@ -27,12 +30,12 @@ architecture TEST of TB_CU is
 	signal JUMP_EN			:  std_logic;
 	signal PC_LATCH_EN 		:  std_logic;
 	signal WB_MUX_SEL		:  std_logic;
-	signal RF_WE			:  std_logic);
+	signal RF_WE			:  std_logic;
 	
 	constant CLOCK_CYCLE: time := 2 ns;
 	constant INSTR_EXEC_TIME: time := 5*CLOCK_CYCLE; --remove the 5* if testing the pipeline *******
 
-	component CU
+	component dlx_cu
 			generic (
 				MICROCODE_MEM_SIZE :     integer := 10;  -- Microcode Memory Size
 				FUNC_SIZE          :     integer := 11;  -- Func Field Size for R-Type Ops
@@ -76,14 +79,13 @@ end component;
 
 begin
 
-	dut : CU
-	generic map(MICROCODE_MEM_SIZE = 10,  -- Microcode Memory Size
-				FUNC_SIZE = 11,  -- Func Field Size for R-Type Ops
-				OP_CODE_SIZE = 6,  -- Op Code Size
-				IR_SIZE = 32,  -- Instruction Register Size    
-				CW_SIZE = 15);
-	port map (Clk => CK, Rst => RST, IR_IN => IW, 
-				IR_LATCH_EN,
+	dut : dlx_cu
+	generic map(MICROCODE_MEM_SIZE => 10,  -- Microcode Memory Size
+				FUNC_SIZE => 11,  -- Func Field Size for R-Type Ops
+				OP_CODE_SIZE => 6,  -- Op Code Size
+				IR_SIZE => 32,  -- Instruction Register Size    
+				CW_SIZE => 15)
+	port map (CK, RST, IW, IR_LATCH_EN,
 				NPC_LATCH_EN,
 				RegA_LATCH_EN,
 				RegB_LATCH_EN,
@@ -102,12 +104,17 @@ begin
 	
 	process
 	begin
-		RST <= '1';
+		RST <= '0';
+		wait for 5 ns;
 		CK <= '1';
 		wait for CLOCK_CYCLE/2;
 		CK <= '0';
 		wait for CLOCK_CYCLE/2;
 	end process;
+
+
+	process
+	begin
 	
 	-- R-type OPCODE field
 	IW(IW_SIZE-1 downto IW_SIZE-OP_CODE_SIZE) <= RTYPE;
@@ -175,13 +182,8 @@ begin
 	
 	-- J-type
 	
+	end process;
 
 end TEST;
 
--------------------------------
-
-configuration CFG_TB of TB_CU is
-	for TEST
-	end for;
-end TB_CU;
 
