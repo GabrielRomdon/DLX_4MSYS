@@ -65,15 +65,15 @@ architecture dlx_cu_hw of dlx_cu is
                                 "000000000000000",
                                 "000000000000000", -- ANDi
                                 "000000000000000", -- ORi
-                                "000000000000000", -- XORi
+                                "111010110000111", -- XORi
                                 "000000000000000",
                                 "000000000000000", -- (0X10)
                                 "000000000000000",
                                 "000000000000000",
                                 "000000000000000",
-                                "000000000000000", -- SLLi
+                                "111010110000111", -- SLLi
                                 "000000000000000", -- NOP
-                                "000000000000000", -- SRLi
+                                "111010110000111", -- SRLi
                                 "000000000000000",
                                 "000000000000000",
                                 "111010110000111", -- SNEi
@@ -192,18 +192,21 @@ begin  -- dlx_cu_rtl
 				when conv_integer(unsigned(RTYPE_SGE)) => aluOpcode_i <= SGE;
 				when conv_integer(unsigned(RTYPE_SLL)) => aluOpcode_i <= LLS; -- sll according to instruction set coding
 				when conv_integer(unsigned(RTYPE_SRL)) => aluOpcode_i <= LRS; -- srl
-				when conv_integer(unsigned(RTYPE_SNE)) => aluOpcode_i <= SNE;
+				when conv_integer(unsigned(RTYPE_SNE)) => aluOpcode_i <= SNE; 
 				when conv_integer(unsigned(RTYPE_XOR)) => aluOpcode_i <= XOR_; -- xor
 				when others => aluOpcode_i <= NOP;
 			end case;
 		when conv_integer(unsigned(ITYPE_J))    => aluOpcode_i <= NOP; -- j
 		when conv_integer(unsigned(ITYPE_JAL))  => aluOpcode_i <= NOP; -- jal
-		when conv_integer(unsigned(ITYPE_ADDI)  => aluOpcode_i <= ADDS; -- addi
+		when conv_integer(unsigned(ITYPE_ADDI)  => aluOpcode_i <= ADD_; -- addi
         when conv_integer(unsigned(ITYPE_LW))   => aluOpcode_i <= NOP;
         when conv_integer(unsigned(ITYPE_SW))   => aluOpcode_i <= NOP;
         when conv_integer(unsigned(ITYPE_SGEI)) => aluOpcode_i <= SGE;
         when conv_integer(unsigned(ITYPE_SLEI)) => aluOpcode_i <= SLE;
         when conv_integer(unsigned(ITYPE_SNEI)) => aluOpcode_i <= SNE;
+        when conv_integer(unsigned(ITYPE_SRLI)) => aluOpcode_i <= SRL_; -- srli
+        when conv_integer(unsigned(ITYPE_SLLI)) => aluOpcode_i <= SLL_; -- slli
+        when conv_integer(unsigned(ITYPE_XORI)) => aluOpcode_i <= XOR_; -- xori
 		-- to be continued and filled with other cases
 		when others => aluOpcode_i <= NOP;
 	 end case;
