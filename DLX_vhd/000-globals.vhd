@@ -46,6 +46,9 @@ package myTypes is
 	type aluOp is (
         NOP, 
         ADD_, 
+        SUB_, 
+        AND_, 
+        OR_, 
         XOR_,
         LLS, 
         LRS,

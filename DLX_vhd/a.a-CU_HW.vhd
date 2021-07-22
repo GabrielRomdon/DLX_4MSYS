@@ -51,7 +51,7 @@ end dlx_cu;
 
 architecture dlx_cu_hw of dlx_cu is
   type mem_array is array (integer range 0 to MICROCODE_MEM_SIZE - 1) of std_logic_vector(CW_SIZE - 1 downto 0);
-  signal cw_mem : mem_array := ("111100010000111", -- R type: IS IT CORRECT?
+  signal cw_mem : mem_array := ("111100010000111", -- R type
                                 "000000000000000",
                                 "111011111001100", -- J (0X02) instruction encoding corresponds to the address to this ROM
                                 "000000000000000", -- JAL to be filled
@@ -59,12 +59,12 @@ architecture dlx_cu_hw of dlx_cu is
                                 "000000000000000", -- BNEZ
                                 "000000000000000",
                                 "000000000000000",
-                                "000000000000000", -- ADDi (0X08): FILL IT!!!
+                                "111010110000111", -- ADDi (0X08)
                                 "000000000000000",
-                                "000000000000000", -- SUBi
+                                "111010110000111", -- SUBi
                                 "000000000000000",
-                                "000000000000000", -- ANDi
-                                "000000000000000", -- ORi
+                                "111010110000111", -- ANDi
+                                "111010110000111", -- ORi
                                 "111010110000111", -- XORi
                                 "000000000000000",
                                 "000000000000000", -- (0X10)
@@ -188,17 +188,25 @@ begin  -- dlx_cu_rtl
 	        -- case of R type requires analysis of FUNC
 		when conv_integer(unsigned(RTYPE)) =>
 			case conv_integer(unsigned(IR_func)) is
+				when conv_integer(unsigned(RTYPE_ADD)) => aluOpcode_i <= ADD_; --ADD
+				when conv_integer(unsigned(RTYPE_SUB)) => aluOpcode_i <= SUB_; --SUB
+				when conv_integer(unsigned(RTYPE_AND)) => aluOpcode_i <= AND_; --AND
+				when conv_integer(unsigned(RTYPE_OR)) => aluOpcode_i <= OR_;   --OR
 				when conv_integer(unsigned(RTYPE_SLE)) => aluOpcode_i <= SLE;
 				when conv_integer(unsigned(RTYPE_SGE)) => aluOpcode_i <= SGE;
 				when conv_integer(unsigned(RTYPE_SLL)) => aluOpcode_i <= LLS; -- sll according to instruction set coding
 				when conv_integer(unsigned(RTYPE_SRL)) => aluOpcode_i <= LRS; -- srl
-				when conv_integer(unsigned(RTYPE_SNE)) => aluOpcode_i <= SNE; 
-				when conv_integer(unsigned(RTYPE_XOR)) => aluOpcode_i <= XOR_; -- xor
+				when conv_integer(unsigned(RTYPE_SNE)) => aluOpcode_i <= SNE;
+				when conv_integer(unsigned(RTYPE_XOR)) => aluOpcode_i <= XOR_; --XOR
 				when others => aluOpcode_i <= NOP;
 			end case;
+		when conv_integer(unsigned(ITYPE_ADDI)  => aluOpcode_i <= ADD_; -- ADDi
+		when conv_integer(unsigned(ITYPE_SUBI)  => aluOpcode_i <= SUB_; -- SUBi
+		when conv_integer(unsigned(ITYPE_ANDI)  => aluOpcode_i <= AND_; -- ANDi
+		when conv_integer(unsigned(ITYPE_ORI)  => aluOpcode_i <= OR_;   -- ORi
+        when conv_integer(unsigned(ITYPE_XORI)) => aluOpcode_i <= XOR_; -- XORi
 		when conv_integer(unsigned(ITYPE_J))    => aluOpcode_i <= NOP; -- j
 		when conv_integer(unsigned(ITYPE_JAL))  => aluOpcode_i <= NOP; -- jal
-		when conv_integer(unsigned(ITYPE_ADDI)  => aluOpcode_i <= ADD_; -- addi
         when conv_integer(unsigned(ITYPE_LW))   => aluOpcode_i <= NOP;
         when conv_integer(unsigned(ITYPE_SW))   => aluOpcode_i <= NOP;
         when conv_integer(unsigned(ITYPE_SGEI)) => aluOpcode_i <= SGE;
@@ -206,7 +214,6 @@ begin  -- dlx_cu_rtl
         when conv_integer(unsigned(ITYPE_SNEI)) => aluOpcode_i <= SNE;
         when conv_integer(unsigned(ITYPE_SRLI)) => aluOpcode_i <= SRL_; -- srli
         when conv_integer(unsigned(ITYPE_SLLI)) => aluOpcode_i <= SLL_; -- slli
-        when conv_integer(unsigned(ITYPE_XORI)) => aluOpcode_i <= XOR_; -- xori
 		-- to be continued and filled with other cases
 		when others => aluOpcode_i <= NOP;
 	 end case;
