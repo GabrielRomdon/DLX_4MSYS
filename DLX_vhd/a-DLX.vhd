@@ -68,7 +68,7 @@ architecture dlx_rtl of DLX is
     ALU_OUTREG_EN      : out std_logic;  -- ALU Output Register Enable
     EQ_COND            : out std_logic;  -- Branch if (not) Equal to Zero
     -- ALU Operation Code
-    ALU_OPCODE         : out aluOp; -- choose between implicit or exlicit coding, like std_logic_vector(ALU_OPC_SIZE -1 downto 0);
+    ALU_OPCODE         : out aluOpType; -- choose between implicit or exlicit coding, like std_logic_vector(ALU_OPC_SIZE -1 downto 0);
     -- MEM Control Signals
     DRAM_WE            : out std_logic;  -- Data RAM Write Enable
     LMD_LATCH_EN       : out std_logic;  -- LMD Register Latch Enable
@@ -103,7 +103,7 @@ architecture dlx_rtl of DLX is
   signal RegIMM_LATCH_EN_i : std_logic;
   signal EQ_COND_i : std_logic;
   signal JUMP_EN_i : std_logic;
-  signal ALU_OPCODE_i : aluOp;
+  signal ALU_OPCODE_i : aluOpType;
   signal MUXA_SEL_i : std_logic;
   signal MUXB_SEL_i : std_logic;
   signal ALU_OUTREG_EN_i : std_logic;

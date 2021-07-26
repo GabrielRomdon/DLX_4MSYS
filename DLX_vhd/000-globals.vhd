@@ -43,20 +43,18 @@ package myTypes is
     constant ITYPE_SRLI   : std_logic_vector(OP_CODE_SIZE - 1 downto 0) :=  "010110";    -- SRLI   RA,RB,INP1
     constant ITYPE_NOP    : std_logic_vector(OP_CODE_SIZE - 1 downto 0) :=  "010101";    -- NOP
 
-	type aluOp is (
+	type aluOpType is (
         NOP, 
-        ADD_, 
-        SUB_, 
-        AND_, 
-        OR_, 
-        XOR_,
-        LLS, 
-        LRS,
+        ADDS, 
+        SUBS, 
+        ANDS, 
+        ORS, 
+        XORS,
         SLE,
         SGE,
         SNE,
-        SRL_,
-        SLL_ -- to be completed
+        SRLS,
+        SLLS
 	);
 
 end myTypes;

@@ -24,7 +24,7 @@ architecture TEST of TB_CU is
 	signal MUXB_SEL			:  std_logic;
 	signal ALU_OUTREG_EN	:  std_logic;
 	signal EQ_COND			:  std_logic;
-	signal ALU_OPCODE		:  aluOp;
+	signal ALU_OPCODE		:  aluOpType;
 	signal DRAM_WE			:  std_logic;
 	signal D_LATCH_EN		:  std_logic;
 	signal JUMP_EN			:  std_logic;
@@ -64,7 +64,7 @@ architecture TEST of TB_CU is
 				ALU_OUTREG_EN      : out std_logic;  -- ALU Output Register Enable
 				EQ_COND            : out std_logic;  -- Branch if (not) Equal to Zero
 				-- ALU Operation Code
-				ALU_OPCODE         : out aluOp;
+				ALU_OPCODE         : out aluOpType;
 				
 				-- MEM Control Signals
 				DRAM_WE            : out std_logic;  -- Data RAM Write Enable

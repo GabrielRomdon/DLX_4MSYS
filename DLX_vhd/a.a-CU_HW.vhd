@@ -35,7 +35,7 @@ entity dlx_cu is
     ALU_OUTREG_EN      : out std_logic;  -- ALU Output Register Enable
     EQ_COND            : out std_logic;  -- Branch if (not) Equal to Zero
     -- ALU Operation Code
-    ALU_OPCODE         : out aluOp; -- choose between implicit or exlicit coding, like std_logic_vector(ALU_OPC_SIZE -1 downto 0);
+    ALU_OPCODE         : out aluOpType; -- choose between implicit or exlicit coding, like std_logic_vector(ALU_OPC_SIZE -1 downto 0);
     
     -- MEM Control Signals
     DRAM_WE            : out std_logic;  -- Data RAM Write Enable
@@ -110,10 +110,10 @@ architecture dlx_cu_hw of dlx_cu is
   signal cw4 : std_logic_vector(CW_SIZE - 1 - 9 downto 0); -- fourth stage
   signal cw5 : std_logic_vector(CW_SIZE -1 - 13 downto 0); -- fifth stage
 
-  signal aluOpcode_i: aluOp := NOP; -- ALUOP defined in package
-  signal aluOpcode1: aluOp := NOP;
-  signal aluOpcode2: aluOp := NOP;
-  signal aluOpcode3: aluOp := NOP;
+  signal aluOpcode_i: aluOpType := NOP; -- ALUOP defined in package
+  signal aluOpcode1: aluOpType := NOP;
+  signal aluOpcode2: aluOpType := NOP;
+  signal aluOpcode3: aluOpType := NOP;
 
 
  
@@ -188,32 +188,32 @@ begin  -- dlx_cu_rtl
 	        -- case of R type requires analysis of FUNC
 		when conv_integer(unsigned(RTYPE)) =>
 			case conv_integer(unsigned(IR_func)) is
-				when conv_integer(unsigned(RTYPE_ADD)) => aluOpcode_i <= ADD_; --ADD
-				when conv_integer(unsigned(RTYPE_SUB)) => aluOpcode_i <= SUB_; --SUB
-				when conv_integer(unsigned(RTYPE_AND)) => aluOpcode_i <= AND_; --AND
-				when conv_integer(unsigned(RTYPE_OR)) => aluOpcode_i <= OR_;   --OR
+				when conv_integer(unsigned(RTYPE_ADD)) => aluOpcode_i <= ADDS; --ADD
+				when conv_integer(unsigned(RTYPE_SUB)) => aluOpcode_i <= SUBS; --SUB
+				when conv_integer(unsigned(RTYPE_AND)) => aluOpcode_i <= ANDS; --AND
+				when conv_integer(unsigned(RTYPE_OR))  => aluOpcode_i <= ORS;  --OR
+				when conv_integer(unsigned(RTYPE_XOR)) => aluOpcode_i <= XORS; --XOR
 				when conv_integer(unsigned(RTYPE_SLE)) => aluOpcode_i <= SLE;
 				when conv_integer(unsigned(RTYPE_SGE)) => aluOpcode_i <= SGE;
-				when conv_integer(unsigned(RTYPE_SLL)) => aluOpcode_i <= LLS; -- sll according to instruction set coding
-				when conv_integer(unsigned(RTYPE_SRL)) => aluOpcode_i <= LRS; -- srl
 				when conv_integer(unsigned(RTYPE_SNE)) => aluOpcode_i <= SNE;
-				when conv_integer(unsigned(RTYPE_XOR)) => aluOpcode_i <= XOR_; --XOR
+				when conv_integer(unsigned(RTYPE_SRL)) => aluOpcode_i <= SRLS; -- srl
+				when conv_integer(unsigned(RTYPE_SLL)) => aluOpcode_i <= SLLS; -- sll according to instruction set coding
 				when others => aluOpcode_i <= NOP;
 			end case;
-		when conv_integer(unsigned(ITYPE_ADDI)  => aluOpcode_i <= ADD_; -- ADDi
-		when conv_integer(unsigned(ITYPE_SUBI)  => aluOpcode_i <= SUB_; -- SUBi
-		when conv_integer(unsigned(ITYPE_ANDI)  => aluOpcode_i <= AND_; -- ANDi
-		when conv_integer(unsigned(ITYPE_ORI)  => aluOpcode_i <= OR_;   -- ORi
-        when conv_integer(unsigned(ITYPE_XORI)) => aluOpcode_i <= XOR_; -- XORi
+		when conv_integer(unsigned(ITYPE_ADDI)  => aluOpcode_i <= ADDS; -- ADDi
+		when conv_integer(unsigned(ITYPE_SUBI)  => aluOpcode_i <= SUBS; -- SUBi
+		when conv_integer(unsigned(ITYPE_ANDI)  => aluOpcode_i <= ANDS; -- ANDi
+		when conv_integer(unsigned(ITYPE_ORI)  => aluOpcode_i <= ORS;   -- ORi
+        when conv_integer(unsigned(ITYPE_XORI)) => aluOpcode_i <= XORS; -- XORi
 		when conv_integer(unsigned(ITYPE_J))    => aluOpcode_i <= NOP; -- j
 		when conv_integer(unsigned(ITYPE_JAL))  => aluOpcode_i <= NOP; -- jal
         when conv_integer(unsigned(ITYPE_LW))   => aluOpcode_i <= NOP;
         when conv_integer(unsigned(ITYPE_SW))   => aluOpcode_i <= NOP;
-        when conv_integer(unsigned(ITYPE_SGEI)) => aluOpcode_i <= SGE;
         when conv_integer(unsigned(ITYPE_SLEI)) => aluOpcode_i <= SLE;
+        when conv_integer(unsigned(ITYPE_SGEI)) => aluOpcode_i <= SGE;
         when conv_integer(unsigned(ITYPE_SNEI)) => aluOpcode_i <= SNE;
-        when conv_integer(unsigned(ITYPE_SRLI)) => aluOpcode_i <= SRL_; -- srli
-        when conv_integer(unsigned(ITYPE_SLLI)) => aluOpcode_i <= SLL_; -- slli
+        when conv_integer(unsigned(ITYPE_SRLI)) => aluOpcode_i <= SRLS; -- srli
+        when conv_integer(unsigned(ITYPE_SLLI)) => aluOpcode_i <= SLLS; -- slli
 		-- to be continued and filled with other cases
 		when others => aluOpcode_i <= NOP;
 	 end case;
