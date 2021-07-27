@@ -13,7 +13,7 @@ architecture TEST of TB_CU is
 	signal CK: std_logic;
 	signal RST: std_logic;
 	--instruction word:
-	signal IW: std_logic_vector(IR_SIZE-1 downto 0);
+	signal IW: std_logic_vector(IR_SIZE-1 downto 0) := (others => '0');
 	--control word:
 	signal IR_LATCH_EN		:  std_logic;
 	signal NPC_LATCH_EN		:  std_logic;
@@ -33,16 +33,9 @@ architecture TEST of TB_CU is
 	signal RF_WE			:  std_logic;
 	
 	constant CLOCK_CYCLE: time := 2 ns;
-	constant INSTR_EXEC_TIME: time := 5*CLOCK_CYCLE; --remove the 5* if testing the pipeline *******
+	constant INSTR_EXEC_TIME: time := CLOCK_CYCLE; --remove the 5* if testing the pipeline *******
 
 	component dlx_cu
-			generic (
-				MICROCODE_MEM_SIZE :     integer := 10;  -- Microcode Memory Size
-				FUNC_SIZE          :     integer := 11;  -- Func Field Size for R-Type Ops
-				OP_CODE_SIZE       :     integer := 6;  -- Op Code Size
-				-- ALU_OPC_SIZE       :     integer := 6;  -- ALU Op Code Word Size
-				IR_SIZE            :     integer := 32;  -- Instruction Register Size    
-				CW_SIZE            :     integer := 15);  -- Control Word Size
 			port (
 				Clk                : in  std_logic;  -- Clock
 				Rst                : in  std_logic;  -- Reset:Active-Low
@@ -80,11 +73,6 @@ end component;
 begin
 
 	dut : dlx_cu
-	generic map(MICROCODE_MEM_SIZE => 10,  -- Microcode Memory Size
-				FUNC_SIZE => 11,  -- Func Field Size for R-Type Ops
-				OP_CODE_SIZE => 6,  -- Op Code Size
-				IR_SIZE => 32,  -- Instruction Register Size    
-				CW_SIZE => 15)
 	port map (CK, RST, IW, IR_LATCH_EN,
 				NPC_LATCH_EN,
 				RegA_LATCH_EN,
@@ -117,8 +105,8 @@ begin
 	begin
 	
 	-- R-type OPCODE field
-	IW(IW_SIZE-1 downto IW_SIZE-OP_CODE_SIZE) <= RTYPE;
-	--IW(IW_SIZE-1 downto IW_SIZE-OPCODE_SIZE) <= FTYPE; -- for FP instructions
+	IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= RTYPE;
+	--IW(IR_SIZE-1 downto IR_SIZE-OPCODE_SIZE) <= FTYPE; -- for FP instructions
 	
 	-- R_type FUNC field
 	IW(FUNC_SIZE-1 downto 0) <= RTYPE_ADD;
@@ -144,39 +132,39 @@ begin
 	
 	
 	-- I-type OPCODE field
-	IW(IW_SIZE-1 downto IW_SIZE-OP_CODE_SIZE) <= ITYPE_ADDI;
+	IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_ADDI;
 	wait for INSTR_EXEC_TIME;
-	IW(IW_SIZE-1 downto IW_SIZE-OP_CODE_SIZE) <= ITYPE_SUBI;
+	IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_SUBI;
 	wait for INSTR_EXEC_TIME;
-	IW(IW_SIZE-1 downto IW_SIZE-OP_CODE_SIZE) <= ITYPE_ANDI;
+	IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_ANDI;
 	wait for INSTR_EXEC_TIME;
-	IW(IW_SIZE-1 downto IW_SIZE-OP_CODE_SIZE) <= ITYPE_ORI;
+	IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_ORI;
 	wait for INSTR_EXEC_TIME;
-	IW(IW_SIZE-1 downto IW_SIZE-OP_CODE_SIZE) <= ITYPE_XORI;
+	IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_XORI;
 	wait for INSTR_EXEC_TIME;
-	IW(IW_SIZE-1 downto IW_SIZE-OP_CODE_SIZE) <= ITYPE_BEQZ;
+	IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_BEQZ;
 	wait for INSTR_EXEC_TIME;
-	IW(IW_SIZE-1 downto IW_SIZE-OP_CODE_SIZE) <= ITYPE_BNEZ;
+	IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_BNEZ;
 	wait for INSTR_EXEC_TIME;
-	IW(IW_SIZE-1 downto IW_SIZE-OP_CODE_SIZE) <= ITYPE_J;
+	IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_J;
 	wait for INSTR_EXEC_TIME;
-	IW(IW_SIZE-1 downto IW_SIZE-OP_CODE_SIZE) <= ITYPE_JAL;
+	IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_JAL;
 	wait for INSTR_EXEC_TIME;
-	IW(IW_SIZE-1 downto IW_SIZE-OP_CODE_SIZE) <= ITYPE_LW;
+	IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_LW;
 	wait for INSTR_EXEC_TIME;
-	IW(IW_SIZE-1 downto IW_SIZE-OP_CODE_SIZE) <= ITYPE_SW;
+	IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_SW;
 	wait for INSTR_EXEC_TIME;
-	IW(IW_SIZE-1 downto IW_SIZE-OP_CODE_SIZE) <= ITYPE_SLEI;
+	IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_SLEI;
 	wait for INSTR_EXEC_TIME;
-	IW(IW_SIZE-1 downto IW_SIZE-OP_CODE_SIZE) <= ITYPE_SGEI;
+	IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_SGEI;
 	wait for INSTR_EXEC_TIME;
-	IW(IW_SIZE-1 downto IW_SIZE-OP_CODE_SIZE) <= ITYPE_SLLI;
+	IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_SLLI;
 	wait for INSTR_EXEC_TIME;
-	IW(IW_SIZE-1 downto IW_SIZE-OP_CODE_SIZE) <= ITYPE_SNEI;
+	IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_SNEI;
 	wait for INSTR_EXEC_TIME;
-	IW(IW_SIZE-1 downto IW_SIZE-OP_CODE_SIZE) <= ITYPE_SRLI;
+	IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_SRLI;
 	wait for INSTR_EXEC_TIME;
-	IW(IW_SIZE-1 downto IW_SIZE-OP_CODE_SIZE) <= ITYPE_NOP;
+	IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_NOP;
 	wait for INSTR_EXEC_TIME;
 	
 	

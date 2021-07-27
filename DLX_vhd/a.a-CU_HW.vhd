@@ -8,7 +8,7 @@ use work.myTypes.all;
 
 entity dlx_cu is
   generic (
-    MICROCODE_MEM_SIZE :     integer := 10;  -- Microcode Memory Size
+    MICROCODE_MEM_SIZE :     integer := 45;  -- Microcode Memory Size
     FUNC_SIZE          :     integer := 11;  -- Func Field Size for R-Type Ops
     OP_CODE_SIZE       :     integer := 6;  -- Op Code Size
     -- ALU_OPC_SIZE       :     integer := 6;  -- ALU Op Code Word Size
@@ -50,7 +50,7 @@ entity dlx_cu is
 end dlx_cu;
 
 architecture dlx_cu_hw of dlx_cu is
-  type mem_array is array (integer range 0 to MICROCODE_MEM_SIZE - 1) of std_logic_vector(CW_SIZE - 1 downto 0);
+  type mem_array is array (integer range 0 to MICROCODE_MEM_SIZE-1) of std_logic_vector(CW_SIZE - 1 downto 0);
   signal cw_mem : mem_array := ("111100010000111", -- R type
                                 "000000000000000",
                                 "111011111001100", -- J (0X02) instruction encoding corresponds to the address to this ROM
@@ -98,17 +98,17 @@ architecture dlx_cu_hw of dlx_cu is
                                 "000000000000000");-- to be completed (enlarged and filled)
                                 
                                 
-  signal IR_opcode : std_logic_vector(OP_CODE_SIZE -1 downto 0);  -- OpCode part of IR
-  signal IR_func : std_logic_vector(FUNC_SIZE downto 0);   -- Func part of IR when Rtype
+  signal IR_opcode : std_logic_vector(OP_CODE_SIZE - 1 downto 0);  -- OpCode part of IR
+  signal IR_func : std_logic_vector(FUNC_SIZE - 1 downto 0);   -- Func part of IR when Rtype
   signal cw   : std_logic_vector(CW_SIZE - 1 downto 0); -- full control word read from cw_mem
 
 
   -- control word is shifted to the correct stage
-  signal cw1 : std_logic_vector(CW_SIZE -1 downto 0); -- first stage
+  signal cw1 : std_logic_vector(CW_SIZE - 1 downto 0); -- first stage
   signal cw2 : std_logic_vector(CW_SIZE - 1 - 2 downto 0); -- second stage
   signal cw3 : std_logic_vector(CW_SIZE - 1 - 5 downto 0); -- third stage
   signal cw4 : std_logic_vector(CW_SIZE - 1 - 9 downto 0); -- fourth stage
-  signal cw5 : std_logic_vector(CW_SIZE -1 - 13 downto 0); -- fifth stage
+  signal cw5 : std_logic_vector(CW_SIZE - 1 - 13 downto 0); -- fifth stage
 
   signal aluOpcode_i: aluOpType := NOP; -- ALUOP defined in package
   signal aluOpcode1: aluOpType := NOP;
@@ -119,8 +119,8 @@ architecture dlx_cu_hw of dlx_cu is
  
 begin  -- dlx_cu_rtl
 
-  IR_opcode(5 downto 0) <= IR_IN(31 downto 26);
-  IR_func(10 downto 0)  <= IR_IN(FUNC_SIZE - 1 downto 0);
+  IR_opcode <= IR_IN(31 downto 32 - OP_CODE_SIZE);
+  IR_func  <= IR_IN(FUNC_SIZE - 1 downto 0);
 
   cw <= cw_mem(conv_integer(IR_opcode));
 
@@ -200,10 +200,10 @@ begin  -- dlx_cu_rtl
 				when conv_integer(unsigned(RTYPE_SLL)) => aluOpcode_i <= SLLS; -- sll according to instruction set coding
 				when others => aluOpcode_i <= NOP;
 			end case;
-		when conv_integer(unsigned(ITYPE_ADDI)  => aluOpcode_i <= ADDS; -- ADDi
-		when conv_integer(unsigned(ITYPE_SUBI)  => aluOpcode_i <= SUBS; -- SUBi
-		when conv_integer(unsigned(ITYPE_ANDI)  => aluOpcode_i <= ANDS; -- ANDi
-		when conv_integer(unsigned(ITYPE_ORI)  => aluOpcode_i <= ORS;   -- ORi
+		when conv_integer(unsigned(ITYPE_ADDI))  => aluOpcode_i <= ADDS; -- ADDi
+		when conv_integer(unsigned(ITYPE_SUBI))  => aluOpcode_i <= SUBS; -- SUBi
+		when conv_integer(unsigned(ITYPE_ANDI))  => aluOpcode_i <= ANDS; -- ANDi
+		when conv_integer(unsigned(ITYPE_ORI))  => aluOpcode_i <= ORS;   -- ORi
         when conv_integer(unsigned(ITYPE_XORI)) => aluOpcode_i <= XORS; -- XORi
 		when conv_integer(unsigned(ITYPE_J))    => aluOpcode_i <= NOP; -- j
 		when conv_integer(unsigned(ITYPE_JAL))  => aluOpcode_i <= NOP; -- jal
