@@ -1,8 +1,8 @@
 -- ALU
 -- ----------------------------------------------------------
 -- Editor(s)    : Coralie Allioux, Gabriel Romero, Simone Valente
--- Last updated : 11/May/2021
--- Features     : R-Type and I-Type instructions
+-- Last updated : 29/Jul/2021
+-- Features     : Basic version. Using shift_left and shift_right functions from numeric_std
 
 library IEEE;
 use IEEE.std_logic_1164.all;
@@ -30,9 +30,9 @@ P_ALU: process (FUNC, DATA1, DATA2)
     when ANDS       => OUTALU <= DATA1 AND DATA2; -- bitwise AND operation
     when ORS        => OUTALU <= DATA1 OR DATA2; -- bitwise OR operation
     when XORS       => OUTALU <= DATA1 XOR DATA2; -- bitwise XOR operation
-    when SLE        => OUTALU <= DATA1 <= DATA2; -- less or equal
-    when SGE        => OUTALU <= DATA1 >= DATA2; -- greater or equal
-    when SNE        => OUTALU <= DATA1 /= DATA2; -- not equal
+    when SLE        => if (DATA1 <= DATA2) then OUTALU <= std_logic_vector(to_unsigned(1, N)); else OUTALU <= std_logic_vector(to_unsigned(0, N)); end if; -- less or equal
+    when SGE        => if (DATA1 >= DATA2) then OUTALU <= std_logic_vector(to_unsigned(1, N)); else OUTALU <= std_logic_vector(to_unsigned(0, N)); end if; -- greater or equal
+    when SNE        => if (DATA1 /= DATA2) then OUTALU <= std_logic_vector(to_unsigned(1, N)); else OUTALU <= std_logic_vector(to_unsigned(0, N)); end if; -- not equal
     when SRLS       => OUTALU <= std_logic_vector(shift_right(unsigned(DATA1), to_integer(unsigned(DATA2)))); -- logical shift right 
     when SLLS       => OUTALU <= std_logic_vector(shift_left(unsigned(DATA1), to_integer(unsigned(DATA2))));  -- logical shift left
     when NOP        => null;
