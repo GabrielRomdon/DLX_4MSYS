@@ -214,7 +214,7 @@ PC_ADDER : ADDER
 -- current_IW(16-1 downto 11) -> addr3
 RF : REGISTER_FILE
 	generic map(32, RFsize) -- second num is number of regs
-    port map(CLK => CLK, RST => RST, EN => '1', RD1 => current_IW(26-1 downto 21), RD2 => current_IW(21-1 downto 16), WR => RF_WE, ADD_WR => WB2_OUT, ADD_RD1 => current_IW(26-1 downto 21), ADD_RD2 => current_IW(21-1 downto 16), DATAIN => WB_DATA, OUT1 => A_IN, OUT2 => B_IN);
+    port map(CLK => CLK, RST => RST, EN => '1', RD1 => '1', RD2 => '1', WR => RF_WE, ADD_WR => WB2_OUT, ADD_RD1 => current_IW(26-1 downto 21), ADD_RD2 => current_IW(21-1 downto 16), DATAIN => WB_DATA, OUT1 => A_IN, OUT2 => B_IN);
 	
 -- immediate sign extension
 EXT : EXTENDER
@@ -222,19 +222,19 @@ EXT : EXTENDER
 	port map(NOT_EXT_IMM => current_IW(16-1 downto 0), EXT_IMM => IMM_IN);
 
 -- ALU:
-ALU : ALU is
-  generic (32)
-  port   (FUNC => ALU_OPCODE, DATA1 => ALU_OP1, DATA2 => ALU_OP2, OUTALU => next_ALU_OUT);
+ALU_i : ALU 
+  generic map(32)
+  port map(FUNC => ALU_OPCODE, DATA1 => ALU_OP1, DATA2 => ALU_OP2, OUTALU => next_ALU_OUT);
 	
 --data memory:
 RAM : MEMORY
     generic map (32, RAMsize)
-    port (CLK => CLK, RST => RST, EN => '1', RD => '1', WR => DRAM_WE, ADDR => B_OUT, DATA_IN => current_ALU_OUT, DATA_OUT => next_RAM_OUT);
+    port map(CLK => CLK, RST => RST, EN => '1', RD => '1', WR => DRAM_WE, ADDR => B_OUT, DATA_IN => current_ALU_OUT, DATA_OUT => next_RAM_OUT);
 
 --instruction memory:
-IRAM : IRAM
+IRAM_i : IRAM
     generic map (RAM_DEPTH => IRAMsize, I_SIZE => 32)
-    port (Rst => RST, Addr => current_PC, Dout => next_IW);
+    port map(Rst => RST, Addr => current_PC, Dout => next_IW);
 
 
 
