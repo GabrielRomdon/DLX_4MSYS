@@ -7,7 +7,7 @@ use work.myTypes.all;
 
 entity REGISTER_FILE is
     generic (NBIT: integer := numBit;
-    		 NREG: integer := numReg);
+    		 NREG: integer := RFsize);
     port (CLK: 		IN  std_logic;
 	      RST: 	IN  std_logic;
 	      EN: 	IN  std_logic;

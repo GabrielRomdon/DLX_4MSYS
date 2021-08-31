@@ -3,12 +3,13 @@ use IEEE.std_logic_1164.all;
 use IEEE.std_logic_unsigned.all;
 use ieee.numeric_std.all;
 use WORK.Log2.all; -- for using the log2 algo, in order to compute the number of bits needed to address the cells
+use work.myTypes.all;
 
 -- I suppose description of DRAM(data memory) can be the same as that of the RF. This code is the same written for the RF during lab3 but with one read port less.
 
 entity MEMORY is
     generic (NBIT: integer := numBit;
-    		 SIZE: integer := memSize);
+    		 SIZE: integer := RAMsize);
     port (CLK: 		IN  std_logic;
 	      RST: 		IN  std_logic;
 	      EN: 		IN  std_logic;

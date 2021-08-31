@@ -8,7 +8,7 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.std_logic_unsigned.all;
 use IEEE.numeric_std.all;
-use WORK.myTypes.all;
+use work.myTypes.all;
 
 entity EXTENDER is
   generic (	N : integer := 32;
@@ -24,7 +24,7 @@ begin
 -- process that extends the sign of every input data
 EXTENSION: process (NOT_EXT_IMM)
   begin
-	EXT_IMM <= std_logic_vector(resize(signed(NOT_EXT_IMM), N'length));;
+	EXT_IMM <= std_logic_vector(resize(signed(NOT_EXT_IMM), N));
   end process EXTENSION;
 
 end BEHAVIOR;

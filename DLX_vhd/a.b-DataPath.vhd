@@ -1,9 +1,10 @@
 library IEEE;
 use IEEE.std_logic_1164.all;
+use work.Log2.all;
 use work.myTypes.all;
 
 entity DataPath_BASIC is
-	generic(NBIT : integer := numBit);
+	generic(N : integer := numBit);
 	port(	CLK: IN std_logic;
 			RST: IN std_logic;
 			
@@ -56,7 +57,7 @@ end component;
 
 component REGISTER_FILE is
 	generic (NBIT: integer := numBit;
-    		 NREG: integer := numReg);
+    		 NREG: integer := RFsize);
     port (CLK: 		IN  std_logic;
 	      RST: 	IN  std_logic;
 	      EN: 	IN  std_logic;
@@ -73,7 +74,7 @@ end component;
 
 component MEMORY is
     generic (NBIT: integer := numBit;
-    		 SIZE: integer := memSize);
+    		 SIZE: integer := RAMsize);
     port (CLK: 		IN  std_logic;
 	      RST: 		IN  std_logic;
 	      EN: 		IN  std_logic;
@@ -85,20 +86,20 @@ component MEMORY is
 end component;
 
 component ALU is
-  generic (N : integer := 32);
+  generic (N : integer := numBit);
   port   ( FUNC: IN aluOpType; -- Input for selecting the operation to be performed
            DATA1, DATA2: IN std_logic_vector(N-1 downto 0); -- Data inputs
            OUTALU: OUT std_logic_vector(N-1 downto 0)); -- Data outputs
 end component;
 
 component ADDER is -- specific adder to add 4 to the input
-  generic (N : integer := 32);
+  generic (N : integer := numBit);
   port   ( CURR_ADDR: IN std_logic_vector(N-1 downto 0); -- input address
            NEXT_ADDR: OUT std_logic_vector(N-1 downto 0)); -- output address(i.e. input address + 4)
 end component;
 
 component EXTENDER is
-  generic (	N : integer := 32;
+  generic (	N : integer := numBit;
 			IMM_field_lenght : integer := 16);
   port   ( NOT_EXT_IMM: IN std_logic_vector(IMM_field_lenght-1 downto 0); -- input data
            EXT_IMM: OUT std_logic_vector(N-1 downto 0)); -- output data(i.e. input data with sign extension)
@@ -106,8 +107,8 @@ end component;
 
 component IRAM is
   generic (
-    RAM_DEPTH : integer := 48;
-    I_SIZE : integer := 32);
+    RAM_DEPTH : integer := IRAMsize;
+    I_SIZE : integer := IR_SIZE);
   port (
     Rst  : in  std_logic;
     Addr : in  std_logic_vector(I_SIZE - 1 downto 0);
@@ -143,68 +144,68 @@ begin
 -- registers:
 PC_REG : REG_GENERIC
 	generic map(32)
-	port(CLK => CLK, RST => RST, EN => PC_LATCH_EN, DATA_IN => next_PC, DATA_OUT => current_PC);
+	port map(CLK => CLK, RST => RST, EN => PC_LATCH_EN, DATA_IN => next_PC, DATA_OUT => current_PC);
 
 NPC_REG : REG_GENERIC
 	generic map(32)
-	port(CLK => CLK, RST => RST, EN => NPC_LATCH_EN, DATA_IN => next_NPC, DATA_OUT => current_NPC);
+	port map(CLK => CLK, RST => RST, EN => NPC_LATCH_EN, DATA_IN => next_NPC, DATA_OUT => current_NPC);
 	
 IR_REG : REG_GENERIC
 	generic map(32)
-	port(CLK => CLK, RST => RST, EN => IR_LATCH_EN, DATA_IN => next_IW, DATA_OUT => current_IW);
+	port map(CLK => CLK, RST => RST, EN => IR_LATCH_EN, DATA_IN => next_IW, DATA_OUT => current_IW);
 	
 A_REG : REG_GENERIC
 	generic map(32)
-	port(CLK => CLK, RST => RST, EN => RegA_LATCH_EN, DATA_IN => A_IN, DATA_OUT => A_OUT);
+	port map(CLK => CLK, RST => RST, EN => RegA_LATCH_EN, DATA_IN => A_IN, DATA_OUT => A_OUT);
 
 B_REG : REG_GENERIC
 	generic map(32)
-	port(CLK => CLK, RST => RST, EN => RegB_LATCH_EN, DATA_IN => B_IN, DATA_OUT => B_OUT);
+	port map(CLK => CLK, RST => RST, EN => RegB_LATCH_EN, DATA_IN => B_IN, DATA_OUT => B_OUT);
 
 IMM_REG : REG_GENERIC
 	generic map(32)
-	port(CLK => CLK, RST => RST, EN => RegIMM_LATCH_EN, DATA_IN => IMM_IN, DATA_OUT => IMM_OUT);
+	port map(CLK => CLK, RST => RST, EN => RegIMM_LATCH_EN, DATA_IN => IMM_IN, DATA_OUT => IMM_OUT);
 
 WB1_REG : REG_GENERIC
 	generic map(32)
-	port(CLK => CLK, RST => RST, EN => WB_MUX_SEL, DATA_IN => WB1_IN, DATA_OUT => WB1_OUT);
+	port map(CLK => CLK, RST => RST, EN => WB_MUX_SEL, DATA_IN => WB1_IN, DATA_OUT => WB1_OUT);
 
 WB2_REG : REG_GENERIC
 	generic map(32)
-	port(CLK => CLK, RST => RST, EN => WB_MUX_SEL, DATA_IN => WB1_OUT, DATA_OUT => WB2_OUT);
+	port map(CLK => CLK, RST => RST, EN => WB_MUX_SEL, DATA_IN => WB1_OUT, DATA_OUT => WB2_OUT);
 
 ALU_OUT_REG : REG_GENERIC
 	generic map(32)
-	port(CLK => CLK, RST => RST, EN => ALU_OUTREG_EN, DATA_IN => next_ALU_OUT, DATA_OUT => current_ALU_OUT);
+	port map(CLK => CLK, RST => RST, EN => ALU_OUTREG_EN, DATA_IN => next_ALU_OUT, DATA_OUT => current_ALU_OUT);
 
 LMD_REG : REG_GENERIC
 	generic map(32)
-	port(CLK => CLK, RST => RST, EN => LMD_LATCH_EN, DATA_IN => next_RAM_OUT, DATA_OUT => current_RAM_OUT);
+	port map(CLK => CLK, RST => RST, EN => LMD_LATCH_EN, DATA_IN => next_RAM_OUT, DATA_OUT => current_RAM_OUT);
 	
 -- multiplexers:
 PC_MUX : MUX21_GENERIC
-	generic map(32);
+	generic map(32)
 	port map(A => current_ALU_OUT, B => current_NPC, SEL => JUMP_EN, Y => next_PC);
 
 RD_MUX : MUX21_GENERIC
-	generic map(32);
+	generic map(32)
 	port map(A => current_IW(21-1 downto 16), B => current_IW(16-1 downto 11), SEL => ??, Y => WB1_IN);
 
 OP1_MUX : MUX21_GENERIC
-	generic map(32);
+	generic map(32)
 	port map(A => A_OUT, B => B_OUT, SEL => MUXA_SEL, Y => ALU_OP1);
 	
 OP2_MUX : MUX21_GENERIC
-	generic map(32);
+	generic map(32)
 	port map(A => B_OUT, B => IMM_OUT, SEL => MUXB_SEL, Y => ALU_OP2);
 	
 OUT_MUX : MUX21_GENERIC
-	generic map(32);
+	generic map(32)
 	port map(A => current_RAM_OUT, B => current_ALU_OUT, SEL => WB_MUX_SEL, Y => WB_DATA);
 
 -- adder for next PC computation:
 PC_ADDER : ADDER
-	generic map (32);
+	generic map (32)
 	port map ( CURR_ADDR => current_PC, NEXT_ADDR => next_NPC);
 
 -- register file:
@@ -212,7 +213,7 @@ PC_ADDER : ADDER
 -- current_IW(21-1 downto 16) -> addr2
 -- current_IW(16-1 downto 11) -> addr3
 RF : REGISTER_FILE
-	generic map(32, RFsize); -- second num is number of regs
+	generic map(32, RFsize) -- second num is number of regs
     port map(CLK => CLK, RST => RST, EN => '1', RD1 => current_IW(26-1 downto 21), RD2 => current_IW(21-1 downto 16), WR => RF_WE, ADD_WR => WB2_OUT, ADD_RD1 => current_IW(26-1 downto 21), ADD_RD2 => current_IW(21-1 downto 16), DATAIN => WB_DATA, OUT1 => A_IN, OUT2 => B_IN);
 	
 -- immediate sign extension
@@ -227,12 +228,12 @@ ALU : ALU is
 	
 --data memory:
 RAM : MEMORY
-    generic map (32, RAMsize);
+    generic map (32, RAMsize)
     port (CLK => CLK, RST => RST, EN => '1', RD => '1', WR => DRAM_WE, ADDR => B_OUT, DATA_IN => current_ALU_OUT, DATA_OUT => next_RAM_OUT);
 
 --instruction memory:
 IRAM : IRAM
-    generic map (RAM_DEPTH => IRAMsize, I_SIZE => 32);
+    generic map (RAM_DEPTH => IRAMsize, I_SIZE => 32)
     port (Rst => RST, Addr => current_PC, Dout => next_IW);
 
 
