@@ -6,7 +6,7 @@ use WORK.Log2.all; -- for using the log2 algo, in order to compute the number of
 
 -- I suppose description of DRAM(data memory) can be the same as that of the RF. This code is the same written for the RF during lab3 but with one read port less.
 
-entity memory is
+entity MEMORY is
     generic (NBIT: integer := numBit;
     		 SIZE: integer := memSize);
     port (CLK: 		IN  std_logic;
@@ -17,9 +17,9 @@ entity memory is
 	      ADDR: 	IN  std_logic_vector(Log2(SIZE)-1 downto 0);
 	      DATA_IN: 	IN  std_logic_vector(NBIT-1 downto 0);
 	      DATA_OUT: OUT std_logic_vector(NBIT-1 downto 0));
-end memory;
+end MEMORY;
 
-architecture BEHAVIOR of memory is
+architecture BEHAVIOR of MEMORY is
 
 	subtype MEM_ADDR is natural range 0 to SIZE-1; -- MEM_ADDR is a subset of natural with values from 0 to 31. This will be the number of memory cells NBIT wide of the data memory and it will be used as row number in the cells array
 	type CELL_ARRAY is array(MEM_ADDR) of std_logic_vector(NBIT-1 downto 0); -- this is a type consisting in an array of as many elements of NBIT bits as many as the MEM_ADDR range

@@ -5,7 +5,7 @@ use ieee.numeric_std.all;
 use WORK.Log2.all; -- for using the log2 algo, in order to compute the number of bits needed to address the registers
 use work.myTypes.all;
 
-entity register_file is
+entity REGISTER_FILE is
     generic (NBIT: integer := numBit;
     		 NREG: integer := numReg);
     port (CLK: 		IN  std_logic;
@@ -20,9 +20,9 @@ entity register_file is
 	      DATAIN: 	IN  std_logic_vector(NBIT-1 downto 0);
 	      OUT1: 	OUT std_logic_vector(NBIT-1 downto 0);
 	      OUT2: 	OUT std_logic_vector(NBIT-1 downto 0));
-end register_file;
+end REGISTER_FILE;
 
-architecture BEHAVIOR of register_file is
+architecture BEHAVIOR of REGISTER_FILE is
 
 	subtype REG_ADDR is natural range 0 to NREG-1; -- REG_ADDR is a subset of natural with values from 0 to 31. This will be the number of registers of the register file and it will be used as row number in the Register array
 	type REG_ARRAY is array(REG_ADDR) of std_logic_vector(NBIT-1 downto 0); -- this is a type consisting in an array of many elements of NBIT bits as many as the REG_ADDR range
