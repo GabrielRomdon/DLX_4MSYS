@@ -35,8 +35,8 @@ P_ALU: process (FUNC, DATA1, DATA2)
     when SNE        => if (DATA1 /= DATA2) then OUTALU <= std_logic_vector(to_unsigned(1, N)); else OUTALU <= std_logic_vector(to_unsigned(0, N)); end if; -- not equal
     when SRLS       => OUTALU <= std_logic_vector(shift_right(unsigned(DATA1), to_integer(unsigned(DATA2)))); -- logical shift right 
     when SLLS       => OUTALU <= std_logic_vector(shift_left(unsigned(DATA1), to_integer(unsigned(DATA2))));  -- logical shift left
-    when NOP        => null;
-    when others     => null;
+    when NOP        => OUTALU <= (others => '0');
+    when others     => OUTALU <= (others => '0');
     end case;
   end process P_ALU;
 
