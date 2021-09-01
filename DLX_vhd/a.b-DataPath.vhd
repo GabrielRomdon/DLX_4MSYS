@@ -4,7 +4,8 @@ use work.Log2.all;
 use work.myTypes.all;
 
 entity DataPath_BASIC is
-	generic(N : integer := numBit);
+	generic(N : integer := numBit;
+			IR_SIZE : integer := 32);
 	port(	CLK: IN std_logic;
 			RST: IN std_logic;
 			
@@ -33,7 +34,9 @@ entity DataPath_BASIC is
 
 			-- WB Control signals
 			WB_MUX_SEL         : IN std_logic;  -- Write Back MUX Sel
-			RF_WE              : IN std_logic);
+			RF_WE              : IN std_logic;
+			
+			IR_OUT			   : OUT std_logic_vector(IR_SIZE-1 downto 0));
 end DataPath_BASIC;
 
 architecture STRUCTURE of DataPath_BASIC is
@@ -141,6 +144,8 @@ signal next_RAM_OUT : std_logic_vector(N-1 downto 0);
 signal current_RAM_OUT : std_logic_vector(N-1 downto 0);
 
 begin
+
+IR_OUT <= current_IW; -- to feed the CU
 
 -- registers:
 PC_REG : REG_GENERIC
