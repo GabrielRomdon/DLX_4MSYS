@@ -10,6 +10,7 @@ package myTypes is
     constant CW_SIZE      : integer :=  13;		-- Contorl Word size
 	constant IR_SIZE      : integer :=  32;  	-- Instruction Word/Register size
 	constant RFsize       : integer :=  32;  	-- RF size
+	constant NREG       : integer :=  32;  	-- RF size
 	constant IRAMsize     : integer :=  64;  	-- IRAM size
 	constant RAMsize      : integer :=  64;  	-- IRAM size
 

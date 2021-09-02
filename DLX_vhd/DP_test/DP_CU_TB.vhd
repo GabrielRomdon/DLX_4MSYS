@@ -26,7 +26,7 @@ signal RST_TB : std_logic := '1'; --active high reset
 signal IR_TB: std_logic_vector(IR_SIZE-1 downto 0);
 signal PC_TB: std_logic_vector(N-1 downto 0);
 
-constant CLOCK_CYCLE: time := 2 ns;
+constant CLOCK_CYCLE: time := 1 ns;
 constant INSTR_EXEC_TIME: time := 5*CLOCK_CYCLE; --remove the 5* if testing the pipeline *******
 
 begin
@@ -45,11 +45,16 @@ begin
 	CLK_CU_TB <= not(CLK_CU_TB) after 0.5 ns;	
 end process;
 
-RST_TB <= '0' after 0.6 ns;
+RST_TB <= '0' after 1.3 ns;
 
 -- IR test cases:
 process
 	begin
+
+	--operands for the R type instructions
+	IR_TB(IR_SIZE-OP_CODE_SIZE-1 downto IR_SIZE-OP_CODE_SIZE-5) <= "00001";
+	IR_TB(IR_SIZE-OP_CODE_SIZE-5-1 downto IR_SIZE-OP_CODE_SIZE-5-5) <= "00010";
+	IR_TB(IR_SIZE-OP_CODE_SIZE-5-5-1 downto IR_SIZE-OP_CODE_SIZE-5-5-5) <= "00011";
 	
 	-- R-type OPCODE field
 	IR_TB(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= RTYPE;

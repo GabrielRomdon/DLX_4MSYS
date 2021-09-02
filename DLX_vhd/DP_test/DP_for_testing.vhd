@@ -241,7 +241,7 @@ ALU_i : ALU
 --data memory:
 RAM : MEMORY
     generic map (32, RAMsize)
-    port map(CLK => CLK, RST => RST, EN => '1', RD => '1', WR => DRAM_WE, ADDR => B_OUT, DATA_IN => current_ALU_OUT, DATA_OUT => next_RAM_OUT);
+    port map(CLK => CLK, RST => RST, EN => '1', RD => '1', WR => DRAM_WE, ADDR => B_OUT(Log2(RAMsize)-1 downto 0), DATA_IN => current_ALU_OUT, DATA_OUT => next_RAM_OUT);
 
 --instruction memory: -- TESTING LINE (to be de-commented)
 --IRAM_i : IRAM
