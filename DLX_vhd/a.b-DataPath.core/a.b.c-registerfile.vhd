@@ -35,7 +35,7 @@ begin
     
         if (rising_edge(CLK)) then --and only when the clock is rising we allow anything to happen
 
-            if (RST = '0') then -- synch. RST is the highest priority event
+            if (RST = '1') then -- synch. RST is the highest priority event
             
                 for i in 0 to NREG - 1 loop
                     REGISTERS(i) <= (others=>'0');	-- all regs are set to 0

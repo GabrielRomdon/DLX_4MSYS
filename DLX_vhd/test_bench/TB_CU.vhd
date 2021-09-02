@@ -8,8 +8,6 @@ end TB_CU;
 
 architecture TEST of TB_CU is
 
-	constant IR_SIZE : integer := 32;
-
 	signal CK: std_logic;
 	signal RST: std_logic;
 	--instruction word:
