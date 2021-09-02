@@ -9,8 +9,8 @@ entity DP_CU is
 	port(	CLK_DP: IN std_logic;
 			CLK_CU: IN std_logic;
 			RST: IN std_logic;
-			IR: IN std_logic_vector(IR_SIZE-1 downto 0);
-			PC: OUT std_logic_vector(N-1 downto 0));
+			IR: IN std_logic_vector(IR_SIZE-1 downto 0); -- TESTING LINE
+			PC: OUT std_logic_vector(N-1 downto 0)); -- TESTING LINE
 end DP_CU;
 
 architecture STRUCTURE of DP_CU is
@@ -49,8 +49,8 @@ component DataPath_BASIC is
 			RF_WE              : IN std_logic;
 			
 			IR_OUT			   : OUT std_logic_vector(IR_SIZE-1 downto 0);
-			IR				   : IN std_logic_vector(IR_SIZE-1 downto 0);
-			PC				   : OUT std_logic_vector(N-1 downto 0));
+			IR_IN			   : IN std_logic_vector(IR_SIZE-1 downto 0); -- TESTING LINE
+			PC				   : OUT std_logic_vector(N-1 downto 0)); -- TESTING LINE
 end component;
 
 component dlx_cu is
@@ -113,22 +113,23 @@ signal JUMP_EN            : std_logic;
 signal PC_LATCH_EN        : std_logic;
 signal WB_MUX_SEL         : std_logic;
 signal RF_WE              : std_logic;
-signal IR_o				  : std_logic_vector(IR_SIZE-1 downto 0);
-signal IR_i				  : std_logic_vector(IR_SIZE-1 downto 0);
-signal PC_o				  : std_logic_vector(N-1 downto 0);
+signal IR_intermediate	  : std_logic_vector(IR_SIZE-1 downto 0);
+
+signal IR_i				  : std_logic_vector(IR_SIZE-1 downto 0); -- TESTING LINE
+signal PC_o				  : std_logic_vector(N-1 downto 0); -- TESTING LINE
 
 begin
 
 -- datapath:
 DP : DataPath_BASIC
 	generic map(N)
-	port map(CLK => CLK_DP, RST => RST, IR_LATCH_EN => IR_LATCH_EN, NPC_LATCH_EN => NPC_LATCH_EN, RegA_LATCH_EN => RegA_LATCH_EN, RegB_LATCH_EN => RegB_LATCH_EN, RegIMM_LATCH_EN => RegIMM_LATCH_EN, MUXA_SEL => MUXA_SEL, MUXB_SEL => MUXB_SEL, ALU_OUTREG_EN => ALU_OUTREG_EN, EQ_COND => EQ_COND, ALU_OPCODE => ALU_OPCODE, DRAM_WE => DRAM_WE, LMD_LATCH_EN => LMD_LATCH_EN, JUMP_EN => JUMP_EN, PC_LATCH_EN => PC_LATCH_EN, WB_MUX_SEL => WB_MUX_SEL, RF_WE => RF_WE, IR_OUT => IR_o, IR => IR_i, PC => PC_o);
+	port map(CLK => CLK_DP, RST => RST, IR_LATCH_EN => IR_LATCH_EN, NPC_LATCH_EN => NPC_LATCH_EN, RegA_LATCH_EN => RegA_LATCH_EN, RegB_LATCH_EN => RegB_LATCH_EN, RegIMM_LATCH_EN => RegIMM_LATCH_EN, MUXA_SEL => MUXA_SEL, MUXB_SEL => MUXB_SEL, ALU_OUTREG_EN => ALU_OUTREG_EN, EQ_COND => EQ_COND, ALU_OPCODE => ALU_OPCODE, DRAM_WE => DRAM_WE, LMD_LATCH_EN => LMD_LATCH_EN, JUMP_EN => JUMP_EN, PC_LATCH_EN => PC_LATCH_EN, WB_MUX_SEL => WB_MUX_SEL, RF_WE => RF_WE, IR_OUT => IR_intermediate, IR_IN => IR_i, PC => PC_o); -- TESTING LINE(the IR_i and PC_o signals)
 
-IR_i <= IR;
-PC <= PC_o;
+IR_i <= IR; -- TESTING LINE
+PC <= PC_o; -- TESTING LINE
 
 CU : dlx_cu
 	generic map(45, 11, 6, 32, 15)
-	port map(Clk => CLK_CU, Rst => RST, IR_IN => IR, IR_LATCH_EN => IR_LATCH_EN, NPC_LATCH_EN => NPC_LATCH_EN, RegA_LATCH_EN => RegA_LATCH_EN, RegB_LATCH_EN => RegB_LATCH_EN, RegIMM_LATCH_EN => RegIMM_LATCH_EN, MUXA_SEL => MUXA_SEL, MUXB_SEL => MUXB_SEL, ALU_OUTREG_EN => ALU_OUTREG_EN, EQ_COND => EQ_COND, ALU_OPCODE => ALU_OPCODE, DRAM_WE => DRAM_WE, LMD_LATCH_EN => LMD_LATCH_EN, JUMP_EN => JUMP_EN, PC_LATCH_EN => PC_LATCH_EN, WB_MUX_SEL => WB_MUX_SEL, RF_WE => RF_WE);
+	port map(Clk => CLK_CU, Rst => RST, IR_IN => IR_intermediate, IR_LATCH_EN => IR_LATCH_EN, NPC_LATCH_EN => NPC_LATCH_EN, RegA_LATCH_EN => RegA_LATCH_EN, RegB_LATCH_EN => RegB_LATCH_EN, RegIMM_LATCH_EN => RegIMM_LATCH_EN, MUXA_SEL => MUXA_SEL, MUXB_SEL => MUXB_SEL, ALU_OUTREG_EN => ALU_OUTREG_EN, EQ_COND => EQ_COND, ALU_OPCODE => ALU_OPCODE, DRAM_WE => DRAM_WE, LMD_LATCH_EN => LMD_LATCH_EN, JUMP_EN => JUMP_EN, PC_LATCH_EN => PC_LATCH_EN, WB_MUX_SEL => WB_MUX_SEL, RF_WE => RF_WE);
 
 end STRUCTURE;
