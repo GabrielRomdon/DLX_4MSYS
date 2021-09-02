@@ -36,9 +36,7 @@ entity DataPath_BASIC is
 			WB_MUX_SEL         : IN std_logic;  -- Write Back MUX Sel
 			RF_WE              : IN std_logic;
 			
-			IR_OUT			   : OUT std_logic_vector(IR_SIZE-1 downto 0);
-			IR_IN			   : IN std_logic_vector(IR_SIZE-1 downto 0); -- TESTING LINE
-			PC				   : OUT std_logic_vector(N-1 downto 0)); -- TESTING LINE
+			IR_OUT			   : OUT std_logic_vector(IR_SIZE-1 downto 0));
 end DataPath_BASIC;
 
 architecture STRUCTURE of DataPath_BASIC is
@@ -243,12 +241,9 @@ RAM : MEMORY
     generic map (32, RAMsize)
     port map(CLK => CLK, RST => RST, EN => '1', RD => '1', WR => DRAM_WE, ADDR => B_OUT(Log2(RAMsize)-1 downto 0), DATA_IN => current_ALU_OUT, DATA_OUT => next_RAM_OUT);
 
---instruction memory: -- TESTING LINE (to be de-commented)
---IRAM_i : IRAM
---    generic map (RAM_DEPTH => IRAMsize, I_SIZE => 32)
---    port map(Rst => RST, Addr => current_PC, Dout => next_IW);
-
-next_IW <= IR_IN; -- TESTING LINE
-PC <= current_PC; -- TESTING LINE
+--instruction memory:
+IRAM_i : IRAM
+    generic map (RAM_DEPTH => IRAMsize, I_SIZE => 32)
+    port map(Rst => RST, Addr => current_PC, Dout => next_IW);
 
 end STRUCTURE;
