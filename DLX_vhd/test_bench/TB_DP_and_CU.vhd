@@ -3,15 +3,12 @@ use IEEE.std_logic_1164.all;
 use work.Log2.all;
 use work.myTypes.all;
 
-entity DP_CU is
-	generic(N : integer := numBit;
-			IR_SIZE : integer := 32);
-	port(	CLK_DP: IN std_logic;
-			CLK_CU: IN std_logic;
-			RST: IN std_logic);
-end DP_CU;
+entity DP_CU_TB is
+end DP_CU_TB;
 
-architecture STRUCTURE of DP_CU is
+architecture test of DP_CU_TB is
+
+constant N : integer := 32;
 
 component DataPath_BASIC is
 	generic(N : integer := numBit;
@@ -92,7 +89,8 @@ component dlx_cu is
 
 end component;
 
--- intermediate signals
+
+-- control(CU->DP) signals
 signal IR_LATCH_EN        : std_logic;
 signal NPC_LATCH_EN       : std_logic;
 signal RegA_LATCH_EN      : std_logic;
@@ -109,17 +107,40 @@ signal JUMP_EN            : std_logic;
 signal PC_LATCH_EN        : std_logic;
 signal WB_MUX_SEL         : std_logic;
 signal RF_WE              : std_logic;
+
+-- input to the CU
 signal IR_intermediate	  : std_logic_vector(IR_SIZE-1 downto 0);
 
-begin
+signal CLK_DP_TB : std_logic := '0';
+signal CLK_CU_TB : std_logic := '0';
+signal RST_TB : std_logic := '1'; --active high reset
 
+constant CLOCK_CYCLE: time := 1 ns;
+constant INSTR_EXEC_TIME: time := 5*CLOCK_CYCLE; --remove the 5* if testing the pipeline *******
+
+begin
+	
 -- datapath:
 DP : DataPath_BASIC
-	generic map(N)
-	port map(CLK => CLK_DP, RST => RST, IR_LATCH_EN => IR_LATCH_EN, NPC_LATCH_EN => NPC_LATCH_EN, RegA_LATCH_EN => RegA_LATCH_EN, RegB_LATCH_EN => RegB_LATCH_EN, RegIMM_LATCH_EN => RegIMM_LATCH_EN, MUXA_SEL => MUXA_SEL, MUXB_SEL => MUXB_SEL, ALU_OUTREG_EN => ALU_OUTREG_EN, EQ_COND => EQ_COND, ALU_OPCODE => ALU_OPCODE, DRAM_WE => DRAM_WE, LMD_LATCH_EN => LMD_LATCH_EN, JUMP_EN => JUMP_EN, PC_LATCH_EN => PC_LATCH_EN, WB_MUX_SEL => WB_MUX_SEL, RF_WE => RF_WE, IR_OUT => IR_intermediate);
-
+	generic map(N, 32)
+	port map(CLK => CLK_DP_TB, RST => RST_TB, IR_LATCH_EN => IR_LATCH_EN, NPC_LATCH_EN => NPC_LATCH_EN, RegA_LATCH_EN => RegA_LATCH_EN, RegB_LATCH_EN => RegB_LATCH_EN, RegIMM_LATCH_EN => RegIMM_LATCH_EN, MUXA_SEL => MUXA_SEL, MUXB_SEL => MUXB_SEL, ALU_OUTREG_EN => ALU_OUTREG_EN, EQ_COND => EQ_COND, ALU_OPCODE => ALU_OPCODE, DRAM_WE => DRAM_WE, LMD_LATCH_EN => LMD_LATCH_EN, JUMP_EN => JUMP_EN, PC_LATCH_EN => PC_LATCH_EN, WB_MUX_SEL => WB_MUX_SEL, RF_WE => RF_WE, IR_OUT => IR_intermediate);
+	
+-- control unit:
 CU : dlx_cu
 	generic map(45, 11, 6, 32, 15)
-	port map(Clk => CLK_CU, Rst => RST, IR_IN => IR_intermediate, IR_LATCH_EN => IR_LATCH_EN, NPC_LATCH_EN => NPC_LATCH_EN, RegA_LATCH_EN => RegA_LATCH_EN, RegB_LATCH_EN => RegB_LATCH_EN, RegIMM_LATCH_EN => RegIMM_LATCH_EN, MUXA_SEL => MUXA_SEL, MUXB_SEL => MUXB_SEL, ALU_OUTREG_EN => ALU_OUTREG_EN, EQ_COND => EQ_COND, ALU_OPCODE => ALU_OPCODE, DRAM_WE => DRAM_WE, LMD_LATCH_EN => LMD_LATCH_EN, JUMP_EN => JUMP_EN, PC_LATCH_EN => PC_LATCH_EN, WB_MUX_SEL => WB_MUX_SEL, RF_WE => RF_WE);
+	port map(Clk => CLK_CU_TB, Rst => RST_TB, IR_IN => IR_intermediate, IR_LATCH_EN => IR_LATCH_EN, NPC_LATCH_EN => NPC_LATCH_EN, RegA_LATCH_EN => RegA_LATCH_EN, RegB_LATCH_EN => RegB_LATCH_EN, RegIMM_LATCH_EN => RegIMM_LATCH_EN, MUXA_SEL => MUXA_SEL, MUXB_SEL => MUXB_SEL, ALU_OUTREG_EN => ALU_OUTREG_EN, EQ_COND => EQ_COND, ALU_OPCODE => ALU_OPCODE, DRAM_WE => DRAM_WE, LMD_LATCH_EN => LMD_LATCH_EN, JUMP_EN => JUMP_EN, PC_LATCH_EN => PC_LATCH_EN, WB_MUX_SEL => WB_MUX_SEL, RF_WE => RF_WE);
 
-end STRUCTURE;
+DP_PCLOCK : process(CLK_DP_TB)
+begin
+	CLK_DP_TB <= not(CLK_DP_TB) after CLOCK_CYCLE/2;	
+end process;
+
+CU_PCLOCK : process(CLK_CU_TB)
+begin
+	CLK_CU_TB <= not(CLK_CU_TB) after CLOCK_CYCLE/2;	
+end process;
+
+RST_TB <= '0' after 1.3 ns;
+
+
+end test;

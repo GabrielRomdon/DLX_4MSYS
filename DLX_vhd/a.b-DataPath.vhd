@@ -125,10 +125,10 @@ signal current_NPC : std_logic_vector(N-1 downto 0);
 signal next_NPC : std_logic_vector(N-1 downto 0);
 signal next_IW : std_logic_vector(N-1 downto 0);
 signal current_IW : std_logic_vector(N-1 downto 0);
-signal WB1_I_OUT : std_logic_vector(Log2(N)-1 downto 0);
-signal WB1_R_OUT : std_logic_vector(Log2(N)-1 downto 0);
-signal WB2_IN : std_logic_vector(Log2(N)-1 downto 0);
-signal WB2_OUT : std_logic_vector(Log2(N)-1 downto 0);
+signal WB1_I_OUT : std_logic_vector(Log2(NREG)-1 downto 0);
+signal WB1_R_OUT : std_logic_vector(Log2(NREG)-1 downto 0);
+signal WB2_IN : std_logic_vector(Log2(NREG)-1 downto 0);
+signal WB2_OUT : std_logic_vector(Log2(NREG)-1 downto 0);
 signal A_IN : std_logic_vector(N-1 downto 0);
 signal B_IN : std_logic_vector(N-1 downto 0);
 signal IMM_IN : std_logic_vector(N-1 downto 0);
@@ -173,15 +173,15 @@ IMM_REG : REG_GENERIC
 	port map(CLK => CLK, RST => RST, EN => RegIMM_LATCH_EN, DATA_IN => IMM_IN, DATA_OUT => IMM_OUT);
 
 WB1_I_REG : REG_GENERIC
-	generic map(32)
+	generic map(Log2(NREG))
 	port map(CLK => CLK, RST => RST, EN => WB_MUX_SEL, DATA_IN => current_IW(21-1 downto 16), DATA_OUT => WB1_I_OUT);
 
 WB1_R_REG : REG_GENERIC
-	generic map(32)
+	generic map(Log2(NREG))
 	port map(CLK => CLK, RST => RST, EN => WB_MUX_SEL, DATA_IN => current_IW(16-1 downto 11), DATA_OUT => WB1_R_OUT);
 
 WB2_REG : REG_GENERIC
-	generic map(32)
+	generic map(Log2(NREG))
 	port map(CLK => CLK, RST => RST, EN => WB_MUX_SEL, DATA_IN => WB2_IN, DATA_OUT => WB2_OUT);
 
 ALU_OUT_REG : REG_GENERIC
@@ -198,7 +198,7 @@ PC_MUX : MUX21_GENERIC
 	port map(A => current_ALU_OUT, B => current_NPC, SEL => JUMP_EN, Y => next_PC);
 
 RD_MUX : MUX21_GENERIC
-	generic map(32)
+	generic map(Log2(NREG))
 	port map(A => WB1_R_OUT, B => WB1_I_OUT, SEL => RegIMM_LATCH_EN, Y => WB2_IN);
 
 OP1_MUX : MUX21_GENERIC
@@ -239,13 +239,11 @@ ALU_i : ALU
 --data memory:
 RAM : MEMORY
     generic map (32, RAMsize)
-    port map(CLK => CLK, RST => RST, EN => '1', RD => '1', WR => DRAM_WE, ADDR => B_OUT, DATA_IN => current_ALU_OUT, DATA_OUT => next_RAM_OUT);
+    port map(CLK => CLK, RST => RST, EN => '1', RD => '1', WR => DRAM_WE, ADDR => B_OUT(Log2(RAMsize)-1 downto 0), DATA_IN => current_ALU_OUT, DATA_OUT => next_RAM_OUT);
 
 --instruction memory:
 IRAM_i : IRAM
     generic map (RAM_DEPTH => IRAMsize, I_SIZE => 32)
     port map(Rst => RST, Addr => current_PC, Dout => next_IW);
-
-
 
 end STRUCTURE;
