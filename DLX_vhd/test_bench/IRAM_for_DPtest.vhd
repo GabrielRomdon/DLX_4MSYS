@@ -5,7 +5,6 @@ use ieee.numeric_std.all;
 use WORK.Log2.all; -- for using the log2 algo, in order to compute the number of bits needed to Address the registers
 use work.myTypes.all;
 
-
 entity IRAM is
   generic (
     RAM_DEPTH : integer := 48;
@@ -20,10 +19,11 @@ end IRAM;
 architecture BEHAVIOR of IRAM is
 
 	subtype MEM_ADDR is natural range 0 to RAM_DEPTH-1;
-	type MEM_ARRAY is array(MEM_ADDR) of std_logic_vector(RAM_DEPTH-1 downto 0);
+	type MEM_ARRAY is array(MEM_ADDR) of std_logic_vector(I_SIZE-1 downto 0);
 	signal INSTRUCTIONS : MEM_ARRAY;-- this is the signal that will represent the whole instruction memory
 begin 
-
+process
+begin
 	--operands for the R type instructions
 	for i in 0 to RAM_DEPTH-1 loop
 		INSTRUCTIONS(i)(IR_SIZE-OP_CODE_SIZE-1 downto IR_SIZE-OP_CODE_SIZE-5) <= "00001"; 
@@ -35,6 +35,8 @@ begin
 		-- R-type OPCODE field
 		INSTRUCTIONS(i)(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= RTYPE;
 	end loop;
+
+end process;
 	
 	-- R_type FUNC field
 	INSTRUCTIONS(0)(FUNC_SIZE-1 downto 0) <= RTYPE_ADD;
@@ -68,11 +70,9 @@ begin
 	INSTRUCTIONS(25)(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_SRLI;
 	INSTRUCTIONS(26)(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_NOP;
 
-
-    process (Addr) --this process is activated only when the clock changes
-    begin
-		Dout <= INSTRUCTIONS(to_integer(unsigned(Addr))); 	-- register Addressed by Addr (given as input from PC) is assigned to output
-		-- notice the cast to integer is needed since the Address given as input is binary, while we Address the mem cells with integers
-    end process;
+process (Addr)
+begin
+		Dout <= INSTRUCTIONS(to_integer(unsigned(Addr)));
+end process;
   
 end BEHAVIOR;
