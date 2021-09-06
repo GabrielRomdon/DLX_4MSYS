@@ -1,4 +1,4 @@
-/* This module containt the scoreboard for the test of the ALU 
+/* This module contains the scoreboard for the test of the ALU 
     Here we check that the value returned by the DUT corresponds 
     to the expected value */
 

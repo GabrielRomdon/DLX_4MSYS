@@ -2,10 +2,18 @@ onerror {resume}
 quietly WaveActivateNextPane {} 0
 add wave -noupdate /alu_tb/aw/ALU_DUT/FUNC
 add wave -noupdate -radix binary /alu_tb/aw/ALU_DUT/DATA1
+add wave -noupdate -radix binary /alu_tb/aw/ALU_DUT/DATA1_b
 add wave -noupdate -radix binary /alu_tb/aw/ALU_DUT/DATA2
+add wave -noupdate -radix binary /alu_tb/aw/ALU_DUT/DATA2_b
 add wave -noupdate -radix binary /alu_tb/aw/ALU_DUT/OUTALU
+add wave -noupdate -radix binary /alu_tb/aw/ALU_DUT/S
+add wave -noupdate -radix binary /alu_tb/aw/ALU_DUT/L0
+add wave -noupdate -radix binary /alu_tb/aw/ALU_DUT/L1
+add wave -noupdate -radix binary /alu_tb/aw/ALU_DUT/L2
+add wave -noupdate -radix binary /alu_tb/aw/ALU_DUT/L3
+add wave -noupdate -radix binary /alu_tb/aw/ALU_DUT/Y_LOGIC
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors
+WaveRestoreCursors {{Cursor 1} {0 ns} 0}
 quietly wave cursor active 0
 configure wave -namecolwidth 229
 configure wave -valuecolwidth 100
