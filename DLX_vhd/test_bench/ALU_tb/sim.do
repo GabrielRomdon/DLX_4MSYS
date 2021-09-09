@@ -1,4 +1,7 @@
-if [file exists "work"] {vdel -all}
+if [file exists "work"] {
+    vdel -all
+}
+
 vlib work
 
 vcom -mixedsvvh -f compile_vhdl.f

@@ -35,7 +35,15 @@ architecture BEHAVIOR of ALU is
               Y: OUT std_logic); -- Output
   end component;
 
+  component BARREL_SHIFTER
+    generic ( N : integer := 32);
+    port   ( CONF:         IN std_logic; -- Input for selecting either left (CONF=0) or right (CONF=1)
+             DATA1, DATA2: IN std_logic_vector(N-1 downto 0); -- Data inputs
+             OUTPUT:       OUT std_logic_vector(N-1 downto 0)); -- Data outputs
+  end component;
+
   -- Signal declaration
+  ---- Signals for the logic gates
   signal S  : std_logic_vector(3 downto 0);
   signal L0 : std_logic_vector(N-1 downto 0);
   signal L1 : std_logic_vector(N-1 downto 0);
@@ -44,25 +52,28 @@ architecture BEHAVIOR of ALU is
   signal DATA1_b : std_logic_vector(N-1 downto 0);
   signal DATA2_b : std_logic_vector(N-1 downto 0);
   signal Y_LOGIC : std_logic_vector(N-1 downto 0);
+  ---- Signals for the shifter
+  signal R_SHIFTER_IN : std_logic;
+  signal OUT_SHIFTER : std_logic_vector(N-1 downto 0);
 
 begin
 
 -- process for switching among the different functions of the ALU
-P_ALU: process (FUNC, DATA1, DATA2, Y_LOGIC)
+P_ALU: process (FUNC, DATA1, DATA2, Y_LOGIC, OUT_SHIFTER)
   begin
     case FUNC is
-    when ADDS       => OUTALU <= DATA1 + DATA2; -- addition
-    when SUBS       => OUTALU <= DATA1 - DATA2; -- subtraction
-    when ANDS       => OUTALU <= Y_LOGIC; -- bitwise AND operation
-    when ORS        => OUTALU <= Y_LOGIC; -- bitwise OR operation
-    when XORS       => OUTALU <= Y_LOGIC; -- bitwise XOR operation
-    when SLE        => if (DATA1 <= DATA2) then OUTALU <= std_logic_vector(to_unsigned(1, N)); else OUTALU <= std_logic_vector(to_unsigned(0, N)); end if; -- less or equal
-    when SGE        => if (DATA1 >= DATA2) then OUTALU <= std_logic_vector(to_unsigned(1, N)); else OUTALU <= std_logic_vector(to_unsigned(0, N)); end if; -- greater or equal
-    when SNE        => if (DATA1 /= DATA2) then OUTALU <= std_logic_vector(to_unsigned(1, N)); else OUTALU <= std_logic_vector(to_unsigned(0, N)); end if; -- not equal
-    when SRLS       => OUTALU <= std_logic_vector(shift_right(unsigned(DATA1), to_integer(unsigned(DATA2)))); -- logical shift right 
-    when SLLS       => OUTALU <= std_logic_vector(shift_left(unsigned(DATA1), to_integer(unsigned(DATA2))));  -- logical shift left
-    when NOP        => OUTALU <= (others => '0');
-    when others     => OUTALU <= (others => '0');
+      when ADDS       => OUTALU <= DATA1 + DATA2; -- addition
+      when SUBS       => OUTALU <= DATA1 - DATA2; -- subtraction
+      when ANDS       => OUTALU <= Y_LOGIC; -- bitwise AND operation
+      when ORS        => OUTALU <= Y_LOGIC; -- bitwise OR operation
+      when XORS       => OUTALU <= Y_LOGIC; -- bitwise XOR operation
+      when SLE        => if (DATA1 <= DATA2) then OUTALU <= std_logic_vector(to_unsigned(1, N)); else OUTALU <= std_logic_vector(to_unsigned(0, N)); end if; -- less or equal
+      when SGE        => if (DATA1 >= DATA2) then OUTALU <= std_logic_vector(to_unsigned(1, N)); else OUTALU <= std_logic_vector(to_unsigned(0, N)); end if; -- greater or equal
+      when SNE        => if (DATA1 /= DATA2) then OUTALU <= std_logic_vector(to_unsigned(1, N)); else OUTALU <= std_logic_vector(to_unsigned(0, N)); end if; -- not equal
+      when SRLS       => OUTALU <= OUT_SHIFTER; -- logical shift right 
+      when SLLS       => OUTALU <= OUT_SHIFTER;  -- logical shift left
+      when NOP        => OUTALU <= (others => '0');
+      when others     => OUTALU <= (others => '0');
     end case;
   end process P_ALU;
 
@@ -103,13 +114,27 @@ end generate;
 P_LOGIC: process (FUNC)
   begin
     case FUNC is
-    when ANDS    => S <= "1000";
-    when ORS     => S <= "1110";
-    when XORS    => S <= "0110";
-    when others  => S <= "0000";
+      when ANDS    => S <= "1000";
+      when ORS     => S <= "1110";
+      when XORS    => S <= "0110";
+      when others  => S <= "0000";
     end case;
 end process P_LOGIC;
+--------------------------------------------------
 -- End of Logic for the gates (ANDS, ORS, XORS) --
+--------------------------------------------------
+
+--------------------------------------------------
+-- Shifter --
+--------------------------------------------------
+R_SHIFTER_IN <= '1' when (FUNC = SRLS) else '0'; 
+
+SHIFTER: BARREL_SHIFTER
+  Generic Map ( N => N )
+  Port Map (R_SHIFTER_IN, DATA1, DATA2, OUT_SHIFTER);
+
+--------------------------------------------------
+-- End of shifter --
 --------------------------------------------------
 
 end BEHAVIOR;

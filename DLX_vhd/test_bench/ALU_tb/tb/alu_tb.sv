@@ -7,7 +7,7 @@ import myTypes::*;
 module alu_tb;
 
     // Define the number of bits
-    localparam NBITS    = 8;
+    localparam NBITS    = 32;
     localparam NUM_OPS  = 1000;
 
     // Instantiate the ALU interface
