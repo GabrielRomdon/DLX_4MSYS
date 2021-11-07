@@ -7,10 +7,10 @@ use ieee.std_logic_textio.all;
 
 -- Instruction memory for DLX
 -- Memory filled by a process which reads from a file
--- file name is "test.asm.mem"
+-- file name is "test_arithmetic.mem"
 entity IRAM is
   generic (
-    RAM_DEPTH : integer := 48;
+    RAM_DEPTH : integer := 62;
     I_SIZE : integer := 32);
   port (
     Rst  : in  std_logic;
@@ -41,7 +41,7 @@ begin  -- IRam_Bhe
     variable tmp_data_u : std_logic_vector(I_SIZE-1 downto 0);
   begin  -- process FILL_MEM_P
     if (Rst = '0') then
-      file_open(mem_fp,"test.asm.mem",READ_MODE);
+      file_open(mem_fp,"../asm_example/test_arithmetic.mem",READ_MODE);
       while (not endfile(mem_fp)) loop
         readline(mem_fp,file_line);
         hread(file_line,tmp_data_u);
