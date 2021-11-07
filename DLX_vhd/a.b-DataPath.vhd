@@ -7,7 +7,7 @@ entity DataPath_BASIC is
 	generic(N : integer := numBit;
 			IR_SIZE : integer := 32);
 	port(	CLK: IN std_logic;
-			RST: IN std_logic;
+			RST: IN std_logic;  -- Low Reset
 			
 			-- IF Control Signal
 			IR_LATCH_EN        : IN std_logic;  -- Instruction Register Latch Enable
@@ -113,9 +113,9 @@ component IRAM is
     RAM_DEPTH : integer := IRAMsize;
     I_SIZE : integer := IR_SIZE);
   port (
-    Rst  : in  std_logic;
-    Addr : in  std_logic_vector(I_SIZE - 1 downto 0);
-    Dout : out std_logic_vector(I_SIZE - 1 downto 0)
+    RST  : in  std_logic;
+    ADDR : in  std_logic_vector(I_SIZE - 1 downto 0);
+    DOUT : out std_logic_vector(I_SIZE - 1 downto 0)
     );
 end component;
 

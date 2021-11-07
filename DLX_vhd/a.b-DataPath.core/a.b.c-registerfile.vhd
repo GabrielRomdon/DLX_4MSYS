@@ -9,7 +9,7 @@ entity REGISTER_FILE is
     generic (NBIT: integer := numBit;
     		 NREG: integer := RFsize);
     port (CLK: 		IN  std_logic;
-	      RST: 	IN  std_logic;
+	      RST: 	IN  std_logic;  -- Low
 	      EN: 	IN  std_logic;
 	      RD1: 		IN  std_logic;
 	      RD2: 		IN  std_logic;
@@ -35,7 +35,7 @@ begin
     
         if (rising_edge(CLK)) then --and only when the clock is rising we allow anything to happen
 
-            if (RST = '1') then -- synch. RST is the highest priority event
+            if (RST = '0') then -- synch. RST is the highest priority event
             
                 for i in 0 to NREG - 1 loop
                     REGISTERS(i) <= (others=>'0');	-- all regs are set to 0
@@ -44,7 +44,7 @@ begin
                 OUT1 <= (others=>'0'); -- also outputs are set to 0, since the only possible output is zero
                 OUT2 <= (others=>'0'); -- even thought the outputs should not be connected to any register
                 
-            else --if (EN = '1') then  -- this part of code is accessed only if RST is low(inactive) but EN is high(active)
+            else --if (EN = '1') then  -- this part of code is accessed only if RST is high(inactive) but EN is high(active)
             
                 if (RD1 = '1') then
                     OUT1 <= REGISTERS(to_integer(unsigned(ADD_RD1))); -- register addressed by ADD_RD1 (given as input to RF) is assigned to output 1

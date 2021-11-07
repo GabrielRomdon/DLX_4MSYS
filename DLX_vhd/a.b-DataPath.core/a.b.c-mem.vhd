@@ -11,7 +11,7 @@ entity MEMORY is
     generic (NBIT: integer := numBit;
     		 SIZE: integer := RAMsize);
     port (CLK: 		IN  std_logic;
-	      RST: 		IN  std_logic;
+	      RST: 		IN  std_logic;  -- Low
 	      EN: 		IN  std_logic;
 	      RD: 		IN  std_logic;
 	      WR: 		IN  std_logic;
@@ -33,7 +33,7 @@ begin
     
         if (rising_edge(CLK)) then --and only when the clock is rising we allow anything to happen
 
-            if (RST = '1') then -- synch. RST is the highest priority event
+            if (RST = '0') then -- synch. RST is the highest priority event
             
                 for i in 0 to SIZE - 1 loop
                     DATAMEM(i) <= (others=>'0');	-- all cells are set to 0
@@ -41,7 +41,7 @@ begin
                 
                 DATA_OUT <= (others=>'0'); -- also outputs are set to 0, since the only possible output is zero
                 
-            elsif (EN = '1') then  -- this part of code is accessed only if RST is low(inactive) but EN is high(active)
+            elsif (EN = '1') then  -- this part of code is accessed only if RST is high(inactive) but EN is high(active)
             
                 if (RD = '1') then
                     DATA_OUT <= DATAMEM(to_integer(unsigned(ADDR))); -- register addressed by ADDR (given as input to RF) is assigned to output 1
