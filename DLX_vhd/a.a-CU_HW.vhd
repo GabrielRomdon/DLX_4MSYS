@@ -115,6 +115,11 @@ architecture dlx_cu_hw of dlx_cu is
   signal aluOpcode2: aluOpType := NOP;
   signal aluOpcode3: aluOpType := NOP;
 
+  -- signals used for the post-reset sequence
+  signal Rst_q              : std_logic;
+  signal Rst_q_b            : std_logic;
+  signal Rst_r_edge         : std_logic;
+  signal IR_LATCH_EN_inner  : std_logic;
 
  
 begin  -- dlx_cu_rtl
@@ -124,9 +129,9 @@ begin  -- dlx_cu_rtl
 
   cw <= cw_mem(conv_integer(IR_opcode));
 
-
+  --- Control signals of the pipe stages
   -- stage one control signals
-  IR_LATCH_EN  <= cw1(CW_SIZE - 1);
+  IR_LATCH_EN_inner  <= cw1(CW_SIZE - 1);
   NPC_LATCH_EN <= cw1(CW_SIZE - 2);
   
   -- stage two control signals
@@ -150,12 +155,39 @@ begin  -- dlx_cu_rtl
   WB_MUX_SEL <= cw5(CW_SIZE - 14);
   RF_WE      <= cw5(CW_SIZE - 15);
 
+  --- Modification for post-reset sequence
+  -- The objective here is to detect the rising edge of the RST
+  -- and then create a pulse which will enable the Instr. Reg.
+  -- This pulse also avoids the propagation of possible wrong instructions.
+  EDGE_DET: process (Clk)
+  begin
+    if Clk'event and Clk = '1' then
+      Rst_q <= Rst;
+    end if;
+  end process EDGE_DET;
+
+  Rst_q_b <= NOT(Rst_q);
+  Rst_r_edge <= Rst_q_b AND Rst;
+
+  IR_LATCH_EN <= IR_LATCH_EN_inner OR Rst_r_edge;
+
+  -- Register for CW1 is separated to avoid the propagation of a wrong control word
+  CW_PIPE_CW1: process (Clk, Rst)
+  begin
+    if Rst = '0' then                   -- asynchronous reset (active low)
+      cw1 <= (others => '0');
+    elsif Clk'event and Clk = '1' then  -- rising clock edge
+      if Rst_r_edge = '0' then 
+        cw1 <= cw;
+      end if;
+    end if;
+  end process CW_PIPE_CW1;
+  --- End Of: Modification for post-reset sequence
 
   -- process to pipeline control words
   CW_PIPE: process (Clk, Rst)
   begin  -- process Clk
     if Rst = '0' then                   -- asynchronous reset (active low)
-      cw1 <= (others => '0');
       cw2 <= (others => '0');
       cw3 <= (others => '0');
       cw4 <= (others => '0');
@@ -164,7 +196,6 @@ begin  -- dlx_cu_rtl
       aluOpcode2 <= NOP;
       aluOpcode3 <= NOP;
     elsif Clk'event and Clk = '1' then  -- rising clock edge
-      cw1 <= cw;
       cw2 <= cw1(CW_SIZE - 1 - 2 downto 0);
       cw3 <= cw2(CW_SIZE - 1 - 5 downto 0);
       cw4 <= cw3(CW_SIZE - 1 - 9 downto 0);
