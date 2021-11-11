@@ -195,7 +195,7 @@ LMD_REG : REG_GENERIC
 -- multiplexers:
 PC_MUX : MUX21_GENERIC
 	generic map(32)
-	port map(A => current_ALU_OUT, B => current_NPC, SEL => JUMP_EN, Y => next_PC);
+	port map(A => current_NPC, B => current_ALU_OUT, SEL => JUMP_EN, Y => next_PC);
 
 RD_MUX : MUX21_GENERIC
 	generic map(Log2(NREG))
