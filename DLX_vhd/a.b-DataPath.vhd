@@ -101,6 +101,13 @@ component ADDER is -- specific adder to add 4 to the input
            NEXT_ADDR: OUT std_logic_vector(N-1 downto 0)); -- output address(i.e. input address + 4)
 end component;
 
+component BRANCHING_UNIT is
+  generic (	N : integer := 32);
+  port   (	Reg_A: IN std_logic_vector(N-1 downto 0); -- from pipeline register A
+			EQ_cond: IN std_logic; -- 1 if BEQZ, 0 if BNEZ
+			branch_taken: OUT std_logic); -- 1 if branch is taken. 0 otherwise
+end component;
+
 component EXTENDER is
   generic (	N : integer := numBit;
 			IMM_field_lenght : integer := 16);
@@ -142,6 +149,8 @@ signal next_ALU_OUT : std_logic_vector(N-1 downto 0);
 signal current_ALU_OUT : std_logic_vector(N-1 downto 0);
 signal next_RAM_OUT : std_logic_vector(N-1 downto 0);
 signal current_RAM_OUT : std_logic_vector(N-1 downto 0);
+signal PC_MUX_SEL : std_logic;
+signal branch_taken : std_logic;
 
 begin
 
@@ -192,10 +201,19 @@ LMD_REG : REG_GENERIC
 	generic map(32)
 	port map(CLK => CLK, RST => RST, EN => LMD_LATCH_EN, DATA_IN => next_RAM_OUT, DATA_OUT => current_RAM_OUT);
 	
+-- branching unit
+BU: BRANCHING_UNIT
+  generic map(32)
+  port map(Reg_A => A_OUT, EQ_cond => EQ_COND, branch_taken => branch_taken);
+	
 -- multiplexers:
 PC_MUX : MUX21_GENERIC
 	generic map(32)
-	port map(A => current_NPC, B => current_ALU_OUT, SEL => JUMP_EN, Y => next_PC);
+	port map(A => current_NPC, B => current_ALU_OUT, SEL => PC_MUX_SEL, Y => next_PC);
+	
+J_MUX : MUX21_GENERIC
+	generic map(1)
+	port map(A => '0', B => branch_taken, SEL => JUMP_EN, Y => PC_MUX_SEL);
 
 RD_MUX : MUX21_GENERIC
 	generic map(Log2(NREG))
