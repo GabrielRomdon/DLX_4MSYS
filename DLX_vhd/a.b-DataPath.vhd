@@ -174,15 +174,15 @@ IMM_REG : REG_GENERIC
 
 WB1_I_REG : REG_GENERIC
 	generic map(Log2(NREG))
-	port map(CLK => CLK, RST => RST, EN => WB_MUX_SEL, DATA_IN => current_IW(21-1 downto 16), DATA_OUT => WB1_I_OUT);
+	port map(CLK => CLK, RST => RST, EN => '1', DATA_IN => current_IW(21-1 downto 16), DATA_OUT => WB1_I_OUT);
 
 WB1_R_REG : REG_GENERIC
 	generic map(Log2(NREG))
-	port map(CLK => CLK, RST => RST, EN => WB_MUX_SEL, DATA_IN => current_IW(16-1 downto 11), DATA_OUT => WB1_R_OUT);
+	port map(CLK => CLK, RST => RST, EN => '1', DATA_IN => current_IW(16-1 downto 11), DATA_OUT => WB1_R_OUT);
 
 WB2_REG : REG_GENERIC
 	generic map(Log2(NREG))
-	port map(CLK => CLK, RST => RST, EN => WB_MUX_SEL, DATA_IN => WB2_IN, DATA_OUT => WB2_OUT);
+	port map(CLK => CLK, RST => RST, EN => '1', DATA_IN => WB2_IN, DATA_OUT => WB2_OUT);
 
 ALU_OUT_REG : REG_GENERIC
 	generic map(32)
