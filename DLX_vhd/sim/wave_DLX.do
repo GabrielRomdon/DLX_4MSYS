@@ -2,23 +2,24 @@ onerror {resume}
 quietly WaveActivateNextPane {} 0
 add wave -noupdate -color Gold /tb_dlx/U1/CLK
 add wave -noupdate -color Gold /tb_dlx/U1/RST
-add wave -noupdate /tb_dlx/U1/IR_LATCH_EN
-add wave -noupdate /tb_dlx/U1/NPC_LATCH_EN
-add wave -noupdate /tb_dlx/U1/RegA_LATCH_EN
-add wave -noupdate /tb_dlx/U1/RegB_LATCH_EN
-add wave -noupdate /tb_dlx/U1/RegIMM_LATCH_EN
-add wave -noupdate /tb_dlx/U1/MUXA_SEL
-add wave -noupdate /tb_dlx/U1/MUXB_SEL
-add wave -noupdate /tb_dlx/U1/ALU_OUTREG_EN
-add wave -noupdate /tb_dlx/U1/EQ_COND
-add wave -noupdate /tb_dlx/U1/ALU_OPCODE
-add wave -noupdate /tb_dlx/U1/DRAM_WE
-add wave -noupdate /tb_dlx/U1/LMD_LATCH_EN
-add wave -noupdate /tb_dlx/U1/JUMP_EN
-add wave -noupdate /tb_dlx/U1/PC_LATCH_EN
-add wave -noupdate /tb_dlx/U1/WB_MUX_SEL
-add wave -noupdate /tb_dlx/U1/RF_WE
+add wave -noupdate -expand -group {CONTROL SIGNALS} /tb_dlx/U1/IR_LATCH_EN
+add wave -noupdate -expand -group {CONTROL SIGNALS} /tb_dlx/U1/NPC_LATCH_EN
+add wave -noupdate -expand -group {CONTROL SIGNALS} /tb_dlx/U1/RegA_LATCH_EN
+add wave -noupdate -expand -group {CONTROL SIGNALS} /tb_dlx/U1/RegB_LATCH_EN
+add wave -noupdate -expand -group {CONTROL SIGNALS} /tb_dlx/U1/RegIMM_LATCH_EN
+add wave -noupdate -expand -group {CONTROL SIGNALS} /tb_dlx/U1/MUXA_SEL
+add wave -noupdate -expand -group {CONTROL SIGNALS} /tb_dlx/U1/MUXB_SEL
+add wave -noupdate -expand -group {CONTROL SIGNALS} /tb_dlx/U1/ALU_OUTREG_EN
+add wave -noupdate -expand -group {CONTROL SIGNALS} /tb_dlx/U1/EQ_COND
+add wave -noupdate -expand -group {CONTROL SIGNALS} /tb_dlx/U1/ALU_OPCODE
+add wave -noupdate -expand -group {CONTROL SIGNALS} /tb_dlx/U1/DRAM_WE
+add wave -noupdate -expand -group {CONTROL SIGNALS} /tb_dlx/U1/LMD_LATCH_EN
+add wave -noupdate -expand -group {CONTROL SIGNALS} /tb_dlx/U1/JUMP_EN
+add wave -noupdate -expand -group {CONTROL SIGNALS} /tb_dlx/U1/PC_LATCH_EN
+add wave -noupdate -expand -group {CONTROL SIGNALS} /tb_dlx/U1/WB_MUX_SEL
+add wave -noupdate -expand -group {CONTROL SIGNALS} /tb_dlx/U1/RF_WE
 add wave -noupdate /tb_dlx/U1/IR_intermediate
+add wave -noupdate -expand -group DataPath /tb_dlx/U1/DP/RF/REGISTERS
 add wave -noupdate -expand -group DataPath /tb_dlx/U1/DP/IR_OUT
 add wave -noupdate -expand -group DataPath /tb_dlx/U1/DP/current_PC
 add wave -noupdate -expand -group DataPath /tb_dlx/U1/DP/next_PC
@@ -43,26 +44,29 @@ add wave -noupdate -expand -group DataPath /tb_dlx/U1/DP/next_ALU_OUT
 add wave -noupdate -expand -group DataPath /tb_dlx/U1/DP/current_ALU_OUT
 add wave -noupdate -expand -group DataPath /tb_dlx/U1/DP/next_RAM_OUT
 add wave -noupdate -expand -group DataPath /tb_dlx/U1/DP/current_RAM_OUT
-add wave -noupdate -expand -group ControlUnit /tb_dlx/U1/CU/IR_IN
-add wave -noupdate -expand -group ControlUnit -radix binary /tb_dlx/U1/CU/cw_mem
-add wave -noupdate -expand -group ControlUnit /tb_dlx/U1/CU/IR_opcode
-add wave -noupdate -expand -group ControlUnit /tb_dlx/U1/CU/IR_func
-add wave -noupdate -expand -group ControlUnit -radix binary /tb_dlx/U1/CU/cw
-add wave -noupdate -expand -group ControlUnit -radix binary /tb_dlx/U1/CU/cw1
-add wave -noupdate -expand -group ControlUnit -radix binary /tb_dlx/U1/CU/cw2
-add wave -noupdate -expand -group ControlUnit -radix binary /tb_dlx/U1/CU/cw3
-add wave -noupdate -expand -group ControlUnit -radix binary /tb_dlx/U1/CU/cw4
-add wave -noupdate -expand -group ControlUnit -radix binary /tb_dlx/U1/CU/cw5
-add wave -noupdate -expand -group ControlUnit /tb_dlx/U1/CU/aluOpcode_i
-add wave -noupdate -expand -group ControlUnit /tb_dlx/U1/CU/aluOpcode1
-add wave -noupdate -expand -group ControlUnit /tb_dlx/U1/CU/aluOpcode2
-add wave -noupdate -expand -group ControlUnit /tb_dlx/U1/CU/aluOpcode3
-add wave -noupdate -expand -group DRAM /tb_dlx/U1/DP/RAM/ADDR
-add wave -noupdate -expand -group DRAM /tb_dlx/U1/DP/RAM/DATA_IN
-add wave -noupdate -expand -group DRAM /tb_dlx/U1/DP/RAM/DATA_OUT
-add wave -noupdate -expand -group DRAM /tb_dlx/U1/DP/RAM/DATAMEM
+add wave -noupdate -group ControlUnit /tb_dlx/U1/CU/IR_IN
+add wave -noupdate -group ControlUnit -radix binary /tb_dlx/U1/CU/cw_mem
+add wave -noupdate -group ControlUnit /tb_dlx/U1/CU/IR_opcode
+add wave -noupdate -group ControlUnit /tb_dlx/U1/CU/IR_func
+add wave -noupdate -group ControlUnit -radix binary /tb_dlx/U1/CU/cw
+add wave -noupdate -group ControlUnit -radix binary /tb_dlx/U1/CU/cw1
+add wave -noupdate -group ControlUnit -radix binary /tb_dlx/U1/CU/cw2
+add wave -noupdate -group ControlUnit -radix binary /tb_dlx/U1/CU/cw3
+add wave -noupdate -group ControlUnit -radix binary /tb_dlx/U1/CU/cw4
+add wave -noupdate -group ControlUnit -radix binary /tb_dlx/U1/CU/cw5
+add wave -noupdate -group ControlUnit /tb_dlx/U1/CU/aluOpcode_i
+add wave -noupdate -group ControlUnit /tb_dlx/U1/CU/aluOpcode1
+add wave -noupdate -group ControlUnit /tb_dlx/U1/CU/aluOpcode2
+add wave -noupdate -group ControlUnit /tb_dlx/U1/CU/aluOpcode3
+add wave -noupdate -group DRAM /tb_dlx/U1/DP/RAM/ADDR
+add wave -noupdate -group DRAM /tb_dlx/U1/DP/RAM/DATA_IN
+add wave -noupdate -group DRAM /tb_dlx/U1/DP/RAM/DATA_OUT
+add wave -noupdate -group DRAM /tb_dlx/U1/DP/RAM/DATAMEM
+add wave -noupdate -group IRAM /tb_dlx/U1/DP/IRAM_i/Addr
+add wave -noupdate -group IRAM /tb_dlx/U1/DP/IRAM_i/Dout
+add wave -noupdate -group IRAM /tb_dlx/U1/DP/IRAM_i/IRAM_mem
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {6520 ps} 0}
+WaveRestoreCursors {{Cursor 1} {13540 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 212
 configure wave -valuecolwidth 100
@@ -78,4 +82,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ps
 update
-WaveRestoreZoom {0 ps} {17640 ps}
+WaveRestoreZoom {0 ps} {37750 ps}
