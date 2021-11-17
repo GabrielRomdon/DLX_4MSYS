@@ -31,7 +31,7 @@ architecture TEST of TB_CU is
 	signal RF_WE			:  std_logic;
 	
 	constant CLOCK_CYCLE: time := 2 ns;
-	constant INSTR_EXEC_TIME: time := CLOCK_CYCLE; --remove the 5* if testing the pipeline *******
+	constant INSTR_EXEC_TIME: time := CLOCK_CYCLE*5; --remove the 5* if testing the pipeline *******
 
 	component dlx_cu
 			port (
@@ -107,63 +107,63 @@ begin
 	--IW(IR_SIZE-1 downto IR_SIZE-OPCODE_SIZE) <= FTYPE; -- for FP instructions
 	
 	-- R_type FUNC field
-	IW(FUNC_SIZE-1 downto 0) <= RTYPE_ADD;
-	wait for INSTR_EXEC_TIME;
-	IW(FUNC_SIZE-1 downto 0) <= RTYPE_SUB;
-	wait for INSTR_EXEC_TIME;
-	IW(FUNC_SIZE-1 downto 0) <= RTYPE_AND;
-	wait for INSTR_EXEC_TIME;
-	IW(FUNC_SIZE-1 downto 0) <= RTYPE_OR;
-	wait for INSTR_EXEC_TIME;
-	IW(FUNC_SIZE-1 downto 0) <= RTYPE_SLE;
-	wait for INSTR_EXEC_TIME;
-	IW(FUNC_SIZE-1 downto 0) <= RTYPE_SGE;
-	wait for INSTR_EXEC_TIME;
-	IW(FUNC_SIZE-1 downto 0) <= RTYPE_SLL;
-	wait for INSTR_EXEC_TIME;
-	IW(FUNC_SIZE-1 downto 0) <= RTYPE_SRL;
-	wait for INSTR_EXEC_TIME;
-	IW(FUNC_SIZE-1 downto 0) <= RTYPE_SNE;
-	wait for INSTR_EXEC_TIME;
-	IW(FUNC_SIZE-1 downto 0) <= RTYPE_XOR;
-	wait for INSTR_EXEC_TIME;
-	
-	
-	-- I-type OPCODE field
-	IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_ADDI;
-	wait for INSTR_EXEC_TIME;
-	IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_SUBI;
-	wait for INSTR_EXEC_TIME;
-	IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_ANDI;
-	wait for INSTR_EXEC_TIME;
-	IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_ORI;
-	wait for INSTR_EXEC_TIME;
-	IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_XORI;
-	wait for INSTR_EXEC_TIME;
-	IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_BEQZ;
-	wait for INSTR_EXEC_TIME;
-	IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_BNEZ;
-	wait for INSTR_EXEC_TIME;
-	IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_J;
-	wait for INSTR_EXEC_TIME;
-	IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_JAL;
-	wait for INSTR_EXEC_TIME;
-	IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_LW;
-	wait for INSTR_EXEC_TIME;
-	IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_SW;
-	wait for INSTR_EXEC_TIME;
-	IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_SLEI;
-	wait for INSTR_EXEC_TIME;
-	IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_SGEI;
-	wait for INSTR_EXEC_TIME;
-	IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_SLLI;
-	wait for INSTR_EXEC_TIME;
-	IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_SNEI;
-	wait for INSTR_EXEC_TIME;
-	IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_SRLI;
-	wait for INSTR_EXEC_TIME;
-	IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_NOP;
-	wait for INSTR_EXEC_TIME;
+--IW(FUNC_SIZE-1 downto 0) <= RTYPE_ADD;
+--wait for INSTR_EXEC_TIME;
+--IW(FUNC_SIZE-1 downto 0) <= RTYPE_SUB;
+--wait for INSTR_EXEC_TIME;
+--IW(FUNC_SIZE-1 downto 0) <= RTYPE_AND;
+--wait for INSTR_EXEC_TIME;
+--IW(FUNC_SIZE-1 downto 0) <= RTYPE_OR;
+--wait for INSTR_EXEC_TIME;
+--IW(FUNC_SIZE-1 downto 0) <= RTYPE_SLE;
+--wait for INSTR_EXEC_TIME;
+--IW(FUNC_SIZE-1 downto 0) <= RTYPE_SGE;
+--wait for INSTR_EXEC_TIME;
+--IW(FUNC_SIZE-1 downto 0) <= RTYPE_SLL;
+--wait for INSTR_EXEC_TIME;
+--IW(FUNC_SIZE-1 downto 0) <= RTYPE_SRL;
+--wait for INSTR_EXEC_TIME;
+--IW(FUNC_SIZE-1 downto 0) <= RTYPE_SNE;
+--wait for INSTR_EXEC_TIME;
+--IW(FUNC_SIZE-1 downto 0) <= RTYPE_XOR;
+--wait for INSTR_EXEC_TIME;
+--
+--
+---- I-type OPCODE field
+--IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_ADDI;
+--wait for INSTR_EXEC_TIME;
+--IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_SUBI;
+--wait for INSTR_EXEC_TIME;
+--IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_ANDI;
+--wait for INSTR_EXEC_TIME;
+--IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_ORI;
+--wait for INSTR_EXEC_TIME;
+--IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_XORI;
+--wait for INSTR_EXEC_TIME;
+--IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_BEQZ;
+--wait for INSTR_EXEC_TIME;
+--IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_BNEZ;
+--wait for INSTR_EXEC_TIME;
+--IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_J;
+--wait for INSTR_EXEC_TIME;
+--IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_JAL;
+--wait for INSTR_EXEC_TIME;
+--IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_LW;
+--wait for INSTR_EXEC_TIME;
+--IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_SW;
+--wait for INSTR_EXEC_TIME;
+--IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_SLEI;
+--wait for INSTR_EXEC_TIME;
+--IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_SGEI;
+--wait for INSTR_EXEC_TIME;
+--IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_SLLI;
+--wait for INSTR_EXEC_TIME;
+--IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_SNEI;
+--wait for INSTR_EXEC_TIME;
+--IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_SRLI;
+--wait for INSTR_EXEC_TIME;
+--IW(IR_SIZE-1 downto IR_SIZE-OP_CODE_SIZE) <= ITYPE_NOP;
+--wait for INSTR_EXEC_TIME;
 	
 	
 	-- J-type
