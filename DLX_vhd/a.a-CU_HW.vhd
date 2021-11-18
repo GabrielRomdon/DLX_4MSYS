@@ -203,11 +203,14 @@ begin  -- dlx_cu_rtl
 
       aluOpcode1 <= aluOpcode_i;
       aluOpcode2 <= aluOpcode1;
-      aluOpcode3 <= aluOpcode2;
+      -- ONLY 2 REGISTERS BECAUSE ALUOP IS DELAYED FOR SECOND INST
+      -- TO BE REMOVED IF FIXING PIPELINE OF FIRST INST
+      --aluOpcode3 <= aluOpcode2;
     end if;
   end process CW_PIPE;
 
-  ALU_OPCODE <= aluOpcode3;
+  --ALU_OPCODE <= aluOpcode3;
+  ALU_OPCODE <= aluOpcode2;
 
   -- purpose: Generation of ALU OpCode
   -- type   : combinational
