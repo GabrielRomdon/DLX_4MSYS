@@ -8,7 +8,7 @@ entity DataPath_BASIC is
 			IR_SIZE : integer := 32);
 	port(	CLK: IN std_logic;
 			RST: IN std_logic;  -- Low Reset
-      current_IW : IN std_logic_vector(N-1 downto 0);
+      next_IW : IN std_logic_vector(N-1 downto 0);
 			
 			-- IF Control Signal
 			IR_LATCH_EN        : IN std_logic;  -- Instruction Register Latch Enable
@@ -36,7 +36,8 @@ entity DataPath_BASIC is
 			-- WB Control signals
 			WB_MUX_SEL         : IN std_logic;  -- Write Back MUX Sel
 			RF_WE              : IN std_logic;
-			
+
+      curr_PC            : OUT std_logic_vector(N-1 downto 0);
 			IR_OUT			   : OUT std_logic_vector(IR_SIZE-1 downto 0));
 end DataPath_BASIC;
 
@@ -124,8 +125,8 @@ signal current_PC : std_logic_vector(N-1 downto 0);
 signal next_PC : std_logic_vector(N-1 downto 0);
 signal current_NPC : std_logic_vector(N-1 downto 0);
 signal next_NPC : std_logic_vector(N-1 downto 0);
-signal next_IW : std_logic_vector(N-1 downto 0);
---signal current_IW : std_logic_vector(N-1 downto 0);
+--signal next_IW : std_logic_vector(N-1 downto 0);
+signal current_IW : std_logic_vector(N-1 downto 0);
 signal WB1_I_OUT : std_logic_vector(Log2(NREG)-1 downto 0);
 signal WB1_R_OUT : std_logic_vector(Log2(NREG)-1 downto 0);
 signal WB2_IN : std_logic_vector(Log2(NREG)-1 downto 0);
@@ -147,6 +148,7 @@ signal current_RAM_OUT : std_logic_vector(N-1 downto 0);
 begin
 
 IR_OUT <= current_IW; -- to feed the CU
+curr_PC <= current_PC;
 
 -- registers:
 PC_REG : REG_GENERIC
@@ -157,9 +159,9 @@ NPC_REG : REG_GENERIC
 	generic map(32)
 	port map(CLK => CLK, RST => RST, EN => NPC_LATCH_EN, DATA_IN => next_NPC, DATA_OUT => current_NPC);
 	
---IR_REG : REG_GENERIC
---	generic map(32)
---	port map(CLK => CLK, RST => RST, EN => IR_LATCH_EN, DATA_IN => next_IW, DATA_OUT => current_IW);
+IR_REG : REG_GENERIC
+	generic map(32)
+	port map(CLK => CLK, RST => RST, EN => IR_LATCH_EN, DATA_IN => next_IW, DATA_OUT => current_IW);
 	
 A_REG : REG_GENERIC
 	generic map(32)
@@ -242,9 +244,9 @@ RAM : MEMORY
     generic map (32, RAMsize)
     port map(CLK => CLK, RST => RST, EN => '1', RD => '1', WR => DRAM_WE, ADDR => B_OUT(Log2(RAMsize)-1 downto 0), DATA_IN => current_ALU_OUT, DATA_OUT => next_RAM_OUT);
 
---instruction memory:
-IRAM_i : IRAM
-    generic map (RAM_DEPTH => IRAMsize, I_SIZE => 32)
-    port map(Rst => RST, Addr => current_PC, Dout => next_IW);
+----instruction memory:
+--IRAM_i : IRAM
+--    generic map (RAM_DEPTH => IRAMsize, I_SIZE => 32)
+--    port map(Rst => RST, Addr => current_PC, Dout => next_IW);
 
 end STRUCTURE;
