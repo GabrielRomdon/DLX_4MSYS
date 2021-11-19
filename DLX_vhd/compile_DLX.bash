@@ -1,6 +1,7 @@
 vcom 000-globals.vhd
 vcom a-Log2.vhd
 vcom a.a-CU_HW.vhd
+vcom test_bench/TB_CU.vhd
 vcom a.c-IRAM.vhd
 vcom a.b-DataPath.core/a.b.a-ALU.vhd
 vcom a.b-DataPath.core/a.b.c-adder.vhd

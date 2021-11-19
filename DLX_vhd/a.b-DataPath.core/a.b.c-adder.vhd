@@ -23,7 +23,7 @@ begin
 -- process that adds 4 to every input given
 ADDITION: process (CURR_ADDR)
   begin
-	NEXT_ADDR <= CURR_ADDR + 4;
+	NEXT_ADDR <= CURR_ADDR + 1;
   end process ADDITION;
 
 end BEHAVIOR;
