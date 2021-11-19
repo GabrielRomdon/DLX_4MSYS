@@ -8,6 +8,7 @@ entity DataPath_BASIC is
 			IR_SIZE : integer := 32);
 	port(	CLK: IN std_logic;
 			RST: IN std_logic;  -- Low Reset
+      current_IW : IN std_logic_vector(N-1 downto 0);
 			
 			-- IF Control Signal
 			IR_LATCH_EN        : IN std_logic;  -- Instruction Register Latch Enable
@@ -124,7 +125,7 @@ signal next_PC : std_logic_vector(N-1 downto 0);
 signal current_NPC : std_logic_vector(N-1 downto 0);
 signal next_NPC : std_logic_vector(N-1 downto 0);
 signal next_IW : std_logic_vector(N-1 downto 0);
-signal current_IW : std_logic_vector(N-1 downto 0);
+--signal current_IW : std_logic_vector(N-1 downto 0);
 signal WB1_I_OUT : std_logic_vector(Log2(NREG)-1 downto 0);
 signal WB1_R_OUT : std_logic_vector(Log2(NREG)-1 downto 0);
 signal WB2_IN : std_logic_vector(Log2(NREG)-1 downto 0);
@@ -156,9 +157,9 @@ NPC_REG : REG_GENERIC
 	generic map(32)
 	port map(CLK => CLK, RST => RST, EN => NPC_LATCH_EN, DATA_IN => next_NPC, DATA_OUT => current_NPC);
 	
-IR_REG : REG_GENERIC
-	generic map(32)
-	port map(CLK => CLK, RST => RST, EN => IR_LATCH_EN, DATA_IN => next_IW, DATA_OUT => current_IW);
+--IR_REG : REG_GENERIC
+--	generic map(32)
+--	port map(CLK => CLK, RST => RST, EN => IR_LATCH_EN, DATA_IN => next_IW, DATA_OUT => current_IW);
 	
 A_REG : REG_GENERIC
 	generic map(32)
