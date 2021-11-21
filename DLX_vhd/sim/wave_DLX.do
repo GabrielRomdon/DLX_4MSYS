@@ -49,22 +49,6 @@ add wave -noupdate -group DataPath /tb_dlx/U1/DP/next_ALU_OUT
 add wave -noupdate -group DataPath /tb_dlx/U1/DP/current_ALU_OUT
 add wave -noupdate -group DataPath /tb_dlx/U1/DP/current_ALU_OUT2
 add wave -noupdate -group DataPath /tb_dlx/U1/DP/current_RAM_OUT
-add wave -noupdate -group DataPath /tb_dlx/U1/DP/RF/REGISTERS
-add wave -noupdate -group DataPath /tb_dlx/U1/DP/next_PC
-add wave -noupdate -group DataPath /tb_dlx/U1/DP/next_NPC
-add wave -noupdate -group DataPath /tb_dlx/U1/DP/current_IW
-add wave -noupdate -group DataPath /tb_dlx/U1/DP/WB2_IN
-add wave -noupdate -group DataPath /tb_dlx/U1/DP/WB2_OUT
-add wave -noupdate -group DataPath /tb_dlx/U1/DP/IMM_IN
-add wave -noupdate -group DataPath /tb_dlx/U1/DP/A_OUT
-add wave -noupdate -group DataPath /tb_dlx/U1/DP/B_OUT
-add wave -noupdate -group DataPath /tb_dlx/U1/DP/IMM_OUT
-add wave -noupdate -group DataPath /tb_dlx/U1/DP/WB_DATA
-add wave -noupdate -group DataPath /tb_dlx/U1/DP/ALU_OP1
-add wave -noupdate -group DataPath /tb_dlx/U1/DP/ALU_OP2
-add wave -noupdate -group DataPath /tb_dlx/U1/DP/next_ALU_OUT
-add wave -noupdate -group DataPath /tb_dlx/U1/DP/current_ALU_OUT
-add wave -noupdate -group DataPath /tb_dlx/U1/DP/current_RAM_OUT
 add wave -noupdate -group ControlUnit /tb_dlx/U1/CU/IR_IN
 add wave -noupdate -group ControlUnit /tb_dlx/U1/CU/cw_mem
 add wave -noupdate -group ControlUnit /tb_dlx/U1/CU/IR_opcode
@@ -82,7 +66,7 @@ add wave -noupdate -group DRAM /tb_dlx/U1/DP/RAM/DATA_IN
 add wave -noupdate -group DRAM /tb_dlx/U1/DP/RAM/DATA_OUT
 add wave -noupdate -group DRAM /tb_dlx/U1/DP/RAM/DATAMEM
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {22480 ps} 0}
+WaveRestoreCursors {{Cursor 1} {14500 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 212
 configure wave -valuecolwidth 100
