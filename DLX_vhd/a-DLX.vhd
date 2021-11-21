@@ -142,8 +142,9 @@ begin
 PC_REG : REG_GENERIC
 	generic map(32)
 	port map(CLK => CLK, RST => RST, EN => PC_LATCH_EN, DATA_IN => PC_BUS, DATA_OUT => current_PC);
-	--port map(CLK => CLK, RST => RST, EN => NPC_LATCH_EN, DATA_IN => PC_BUS, DATA_OUT => current_PC);
 
+--instruction register
+-- VALUE RESET => address 80000000, not 0 which would be an ADD
 process(RST, CLK, IR_LATCH_EN)
 begin
   if CLK'event and CLK='1' then
