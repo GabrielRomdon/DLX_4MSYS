@@ -83,7 +83,7 @@ architecture dlx_cu_hw of dlx_cu is
                                 "111010110000111", -- SGEi
                                 "000000000000000",
                                 "000000000000000",
-                                "000000000000000", -- (0X20)
+                                "110000000000000", -- (0X20) RESET
                                 "000000000000000",
                                 "000000000000000",
                                 "111010110010101", -- LW
@@ -95,7 +95,7 @@ architecture dlx_cu_hw of dlx_cu is
                                 "000000000000000",
                                 "000000000000000",
                                 "111110110110100", -- SW
-                                "000000000000000");-- to be completed (enlarged and filled)
+                                "000000000000000");
                                 
                                 
   signal IR_opcode : std_logic_vector(OP_CODE_SIZE - 1 downto 0);  -- OpCode part of IR
@@ -115,13 +115,6 @@ architecture dlx_cu_hw of dlx_cu is
   signal aluOpcode2: aluOpType := NOP;
   signal aluOpcode3: aluOpType := NOP;
 
-  -- signals used for the post-reset sequence
-  signal Rst_q              : std_logic;
-  signal Rst_q_b            : std_logic;
-  signal Rst_r_edge         : std_logic;
-  signal IR_LATCH_EN_inner  : std_logic;
-
- 
 begin  -- dlx_cu_rtl
 
   IR_opcode <= IR_IN(31 downto 32 - OP_CODE_SIZE);
@@ -131,7 +124,7 @@ begin  -- dlx_cu_rtl
 
   --- Control signals of the pipe stages
   -- stage one control signals
-  IR_LATCH_EN_inner  <= cw1(CW_SIZE - 1);
+  IR_LATCH_EN  <= cw1(CW_SIZE - 1);
   NPC_LATCH_EN <= cw1(CW_SIZE - 2);
   
   -- stage two control signals
@@ -155,31 +148,15 @@ begin  -- dlx_cu_rtl
   WB_MUX_SEL <= cw5(CW_SIZE - 14);
   RF_WE      <= cw5(CW_SIZE - 15);
 
-  --- Modification for post-reset sequence
-  -- The objective here is to detect the rising edge of the RST
-  -- and then create a pulse which will enable the Instr. Reg.
-  -- This pulse also avoids the propagation of possible wrong instructions.
-  EDGE_DET: process (Clk)
-  begin
-    if Clk'event and Clk = '1' then
-      Rst_q <= Rst;
-    end if;
-  end process EDGE_DET;
-
-  Rst_q_b <= NOT(Rst_q);
-  Rst_r_edge <= Rst_q_b AND Rst;
-
-  IR_LATCH_EN <= IR_LATCH_EN_inner OR Rst_r_edge;
-
   -- Register for CW1 is separated to avoid the propagation of a wrong control word
   CW_PIPE_CW1: process (Clk, Rst)
   begin
     if Rst = '0' then                   -- asynchronous reset (active low)
       cw1 <= (others => '0');
+      cw2 <= (others => '0');
     elsif Clk'event and Clk = '1' then  -- rising clock edge
-      if Rst_r_edge = '0' then 
-        cw1 <= cw;
-      end if;
+      cw1 <= cw;
+      cw2 <= cw(CW_SIZE - 1 - 2 downto 0);
     end if;
   end process CW_PIPE_CW1;
   --- End Of: Modification for post-reset sequence
@@ -188,7 +165,6 @@ begin  -- dlx_cu_rtl
   CW_PIPE: process (Clk, Rst)
   begin  -- process Clk
     if Rst = '0' then                   -- asynchronous reset (active low)
-      cw2 <= (others => '0');
       cw3 <= (others => '0');
       cw4 <= (others => '0');
       cw5 <= (others => '0');
@@ -196,20 +172,15 @@ begin  -- dlx_cu_rtl
       aluOpcode2 <= NOP;
       aluOpcode3 <= NOP;
     elsif Clk'event and Clk = '1' then  -- rising clock edge
-      cw2 <= cw1(CW_SIZE - 1 - 2 downto 0);
       cw3 <= cw2(CW_SIZE - 1 - 5 downto 0);
       cw4 <= cw3(CW_SIZE - 1 - 9 downto 0);
       cw5 <= cw4(CW_SIZE -1 - 13 downto 0);
 
       aluOpcode1 <= aluOpcode_i;
       aluOpcode2 <= aluOpcode1;
-      -- ONLY 2 REGISTERS BECAUSE ALUOP IS DELAYED FOR SECOND INST
-      -- TO BE REMOVED IF FIXING PIPELINE OF FIRST INST
-      --aluOpcode3 <= aluOpcode2;
     end if;
   end process CW_PIPE;
 
-  --ALU_OPCODE <= aluOpcode3;
   ALU_OPCODE <= aluOpcode2;
 
   -- purpose: Generation of ALU OpCode
@@ -241,8 +212,8 @@ begin  -- dlx_cu_rtl
         when conv_integer(unsigned(ITYPE_XORI)) => aluOpcode_i <= XORS; -- XORi
 		when conv_integer(unsigned(ITYPE_J))    => aluOpcode_i <= NOP; -- j
 		when conv_integer(unsigned(ITYPE_JAL))  => aluOpcode_i <= NOP; -- jal
-        when conv_integer(unsigned(ITYPE_LW))   => aluOpcode_i <= NOP;
-        when conv_integer(unsigned(ITYPE_SW))   => aluOpcode_i <= NOP;
+        when conv_integer(unsigned(ITYPE_LW))   => aluOpcode_i <= ADDS;
+        when conv_integer(unsigned(ITYPE_SW))   => aluOpcode_i <= ADDS;
         when conv_integer(unsigned(ITYPE_SLEI)) => aluOpcode_i <= SLE;
         when conv_integer(unsigned(ITYPE_SGEI)) => aluOpcode_i <= SGE;
         when conv_integer(unsigned(ITYPE_SNEI)) => aluOpcode_i <= SNE;
