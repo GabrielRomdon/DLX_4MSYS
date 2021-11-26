@@ -12,11 +12,33 @@ end DLX;
 
 architecture DLX_RTL of DLX is
 
+component REG_GENERIC is -- generic register
+	generic(NBIT: integer:= numBit);
+	port( 	CLK:	IN std_logic;
+			RST:	IN std_logic;
+			EN:	IN std_logic;
+			DATA_IN: IN std_logic_vector(NBIT-1 downto 0);
+			DATA_OUT:	OUT std_logic_vector(NBIT-1 downto 0));
+end component;
+
+component IRAM is
+  generic (
+    RAM_DEPTH : integer := IRAMsize;
+    I_SIZE : integer := IR_SIZE);
+  port (
+    RST  : in  std_logic;
+    ADDR : in  std_logic_vector(I_SIZE - 1 downto 0);
+    DOUT : out std_logic_vector(I_SIZE - 1 downto 0)
+    );
+end component;
+
 component DataPath_BASIC is
 	generic(N : integer := numBit;
 			IR_SIZE : integer := 32);
 	port(	CLK: IN std_logic;
 			RST: IN std_logic;
+
+      IR_IN: IN std_logic_vector(IR_SIZE-1 downto 0);
 			
 			-- IF Control Signal
 			IR_LATCH_EN        : IN std_logic;  -- Instruction Register Latch Enable
@@ -45,7 +67,7 @@ component DataPath_BASIC is
 			WB_MUX_SEL         : IN std_logic;  -- Write Back MUX Sel
 			RF_WE              : IN std_logic;
 			
-			IR_OUT			   : OUT std_logic_vector(IR_SIZE-1 downto 0));
+			PC_BUS			   : OUT std_logic_vector(N-1 downto 0));
 end component;
 
 component dlx_cu is
@@ -91,6 +113,11 @@ component dlx_cu is
 
 end component;
 
+signal PC_BUS: std_logic_vector(PC_SIZE-1 downto 0);
+signal current_PC : std_logic_vector(PC_SIZE-1 downto 0);
+signal next_IW : std_logic_vector(IR_SIZE-1 downto 0);
+signal current_IW : std_logic_vector(IR_SIZE-1 downto 0);
+
 -- intermediate signals
 signal IR_LATCH_EN        : std_logic;
 signal NPC_LATCH_EN       : std_logic;
@@ -108,18 +135,40 @@ signal JUMP_EN            : std_logic;
 signal PC_LATCH_EN        : std_logic;
 signal WB_MUX_SEL         : std_logic;
 signal RF_WE              : std_logic;
-signal IR_intermediate	  : std_logic_vector(IR_SIZE-1 downto 0);
 
 begin
+
+-- registers:
+PC_REG : REG_GENERIC
+	generic map(32)
+	port map(CLK => CLK, RST => RST, EN => PC_LATCH_EN, DATA_IN => PC_BUS, DATA_OUT => current_PC);
+
+--instruction register
+-- VALUE RESET => address 80000000, not 0 which would be an ADD
+process(RST, CLK, IR_LATCH_EN)
+begin
+  if CLK'event and CLK='1' then
+     if RST='0' then
+       current_IW <= x"80000000";
+     elsif IR_LATCH_EN='1' then
+       current_IW <= next_IW;
+     end if;
+  end if;
+end process;
+
+--instruction memory:
+IRAM_i : IRAM
+    generic map (RAM_DEPTH => IRAMsize, I_SIZE => 32)
+    port map(Rst => RST, Addr => current_PC, Dout => next_IW);
 
 -- datapath:
 DP : DataPath_BASIC
 	generic map(PC_SIZE)
-	port map(CLK => CLK, RST => RST, IR_LATCH_EN => IR_LATCH_EN, NPC_LATCH_EN => NPC_LATCH_EN, RegA_LATCH_EN => RegA_LATCH_EN, RegB_LATCH_EN => RegB_LATCH_EN, RegIMM_LATCH_EN => RegIMM_LATCH_EN, MUXA_SEL => MUXA_SEL, MUXB_SEL => MUXB_SEL, ALU_OUTREG_EN => ALU_OUTREG_EN, EQ_COND => EQ_COND, ALU_OPCODE => ALU_OPCODE, DRAM_WE => DRAM_WE, LMD_LATCH_EN => LMD_LATCH_EN, JUMP_EN => JUMP_EN, PC_LATCH_EN => PC_LATCH_EN, WB_MUX_SEL => WB_MUX_SEL, RF_WE => RF_WE, IR_OUT => IR_intermediate);
+	port map(CLK => CLK, RST => RST, IR_IN => current_IW, IR_LATCH_EN => IR_LATCH_EN, NPC_LATCH_EN => NPC_LATCH_EN, RegA_LATCH_EN => RegA_LATCH_EN, RegB_LATCH_EN => RegB_LATCH_EN, RegIMM_LATCH_EN => RegIMM_LATCH_EN, MUXA_SEL => MUXA_SEL, MUXB_SEL => MUXB_SEL, ALU_OUTREG_EN => ALU_OUTREG_EN, EQ_COND => EQ_COND, ALU_OPCODE => ALU_OPCODE, DRAM_WE => DRAM_WE, LMD_LATCH_EN => LMD_LATCH_EN, JUMP_EN => JUMP_EN, PC_LATCH_EN => PC_LATCH_EN, WB_MUX_SEL => WB_MUX_SEL, RF_WE => RF_WE, PC_BUS => PC_BUS);
 
 -- control unit:
 CU : dlx_cu
 	generic map(45, 11, 6, 32, 15)
-	port map(Clk => CLK, Rst => RST, IR_IN => IR_intermediate, IR_LATCH_EN => IR_LATCH_EN, NPC_LATCH_EN => NPC_LATCH_EN, RegA_LATCH_EN => RegA_LATCH_EN, RegB_LATCH_EN => RegB_LATCH_EN, RegIMM_LATCH_EN => RegIMM_LATCH_EN, MUXA_SEL => MUXA_SEL, MUXB_SEL => MUXB_SEL, ALU_OUTREG_EN => ALU_OUTREG_EN, EQ_COND => EQ_COND, ALU_OPCODE => ALU_OPCODE, DRAM_WE => DRAM_WE, LMD_LATCH_EN => LMD_LATCH_EN, JUMP_EN => JUMP_EN, PC_LATCH_EN => PC_LATCH_EN, WB_MUX_SEL => WB_MUX_SEL, RF_WE => RF_WE);
+	port map(Clk => CLK, Rst => RST, IR_IN => current_IW, IR_LATCH_EN => IR_LATCH_EN, NPC_LATCH_EN => NPC_LATCH_EN, RegA_LATCH_EN => RegA_LATCH_EN, RegB_LATCH_EN => RegB_LATCH_EN, RegIMM_LATCH_EN => RegIMM_LATCH_EN, MUXA_SEL => MUXA_SEL, MUXB_SEL => MUXB_SEL, ALU_OUTREG_EN => ALU_OUTREG_EN, EQ_COND => EQ_COND, ALU_OPCODE => ALU_OPCODE, DRAM_WE => DRAM_WE, LMD_LATCH_EN => LMD_LATCH_EN, JUMP_EN => JUMP_EN, PC_LATCH_EN => PC_LATCH_EN, WB_MUX_SEL => WB_MUX_SEL, RF_WE => RF_WE);
 
 end DLX_RTL;
