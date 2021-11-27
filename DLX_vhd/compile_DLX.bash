@@ -1,12 +1,13 @@
 vcom 000-globals.vhd
+vcom 001-generic_shifter.vhd
 vcom 002-Log2.vhd
 vcom a.a-CU_HW.vhd
 vcom test_bench/TB_CU.vhd
 vcom a.c-IRAM.vhd
+vcom a.b-DataPath.core/a.b.a-ALU.vhd
 vcom a.b-DataPath.core/a.b.a-NAND3.vhd
 vcom a.b-DataPath.core/a.b.a-NAND4.vhd
 vcom a.b-DataPath.core/a.b.b-Shifter.vhd
-vcom a.b-DataPath.core/a.b.a-ALU.vhd
 vcom a.b-DataPath.core/a.b.c-adder.vhd
 vcom a.b-DataPath.core/a.b.c-extender.vhd
 vcom a.b-DataPath.core/a.b.c-mem.vhd
