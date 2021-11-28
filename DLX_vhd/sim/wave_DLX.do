@@ -31,10 +31,12 @@ add wave -noupdate -group RegisterFile /tb_dlx/U1/DP/RF/OUT2
 add wave -noupdate -group RegisterFile /tb_dlx/U1/DP/RF/REGISTERS
 add wave -noupdate -group DataPath /tb_dlx/U1/DP/IR_IN
 add wave -noupdate -group DataPath /tb_dlx/U1/DP/PC_BUS
+add wave -noupdate -group DataPath /tb_dlx/U1/DP/current_PC
 add wave -noupdate -group DataPath /tb_dlx/U1/DP/next_PC
 add wave -noupdate -group DataPath /tb_dlx/U1/DP/current_NPC
 add wave -noupdate -group DataPath /tb_dlx/U1/DP/next_NPC
 add wave -noupdate -group DataPath /tb_dlx/U1/DP/current_IW
+add wave -noupdate -group DataPath /tb_dlx/U1/DP/WB1_IN
 add wave -noupdate -group DataPath /tb_dlx/U1/DP/WB2_IN
 add wave -noupdate -group DataPath /tb_dlx/U1/DP/WB2_OUT
 add wave -noupdate -group DataPath /tb_dlx/U1/DP/WB3_OUT
@@ -42,6 +44,8 @@ add wave -noupdate -group DataPath /tb_dlx/U1/DP/IMM_IN
 add wave -noupdate -group DataPath /tb_dlx/U1/DP/A_OUT
 add wave -noupdate -group DataPath /tb_dlx/U1/DP/B_OUT
 add wave -noupdate -group DataPath /tb_dlx/U1/DP/IMM_OUT
+add wave -noupdate -group DataPath /tb_dlx/U1/DP/PC_MUX_SEL
+add wave -noupdate -group DataPath /tb_dlx/U1/DP/branch_taken
 add wave -noupdate -group DataPath /tb_dlx/U1/DP/WB_DATA
 add wave -noupdate -group DataPath /tb_dlx/U1/DP/ALU_OP1
 add wave -noupdate -group DataPath /tb_dlx/U1/DP/ALU_OP2
