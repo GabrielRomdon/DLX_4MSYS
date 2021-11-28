@@ -7,7 +7,7 @@ package myTypes is
 	constant numBit		  : integer :=  32;
     constant OP_CODE_SIZE : integer :=   6;		-- OPCODE field size
     constant FUNC_SIZE    : integer :=  11;		-- FUNC field size
-    constant CW_SIZE      : integer :=  13;		-- Contorl Word size
+    constant CW_SIZE      : integer :=  15;		-- Contorl Word size
 	constant IR_SIZE      : integer :=  32;  	-- Instruction Word/Register size
 	constant RFsize       : integer :=  32;  	-- RF size
 	constant NREG         : integer :=  32;  	-- RF size
