@@ -67,6 +67,7 @@ component DataPath_BASIC is
 			WB_MUX_SEL         : IN std_logic;  -- Write Back MUX Sel
 			RF_WE              : IN std_logic;
 			
+			PC_IN			   : IN std_logic_vector(N-1 downto 0);
 			PC_BUS			   : OUT std_logic_vector(N-1 downto 0));
 end component;
 
@@ -145,16 +146,7 @@ PC_REG : REG_GENERIC
 
 --instruction register
 -- VALUE RESET => address 80000000, not 0 which would be an ADD
-process(RST, CLK, IR_LATCH_EN)
-begin
-  if CLK'event and CLK='1' then
-     if RST='0' then
-       current_IW <= x"80000000";
-     elsif IR_LATCH_EN='1' then
-       current_IW <= next_IW;
-     end if;
-  end if;
-end process;
+current_IW <= next_IW;
 
 --instruction memory:
 IRAM_i : IRAM
@@ -164,7 +156,7 @@ IRAM_i : IRAM
 -- datapath:
 DP : DataPath_BASIC
 	generic map(PC_SIZE)
-	port map(CLK => CLK, RST => RST, IR_IN => current_IW, IR_LATCH_EN => IR_LATCH_EN, NPC_LATCH_EN => NPC_LATCH_EN, RegA_LATCH_EN => RegA_LATCH_EN, RegB_LATCH_EN => RegB_LATCH_EN, RegIMM_LATCH_EN => RegIMM_LATCH_EN, MUXA_SEL => MUXA_SEL, MUXB_SEL => MUXB_SEL, ALU_OUTREG_EN => ALU_OUTREG_EN, EQ_COND => EQ_COND, ALU_OPCODE => ALU_OPCODE, DRAM_WE => DRAM_WE, LMD_LATCH_EN => LMD_LATCH_EN, JUMP_EN => JUMP_EN, PC_LATCH_EN => PC_LATCH_EN, WB_MUX_SEL => WB_MUX_SEL, RF_WE => RF_WE, PC_BUS => PC_BUS);
+	port map(CLK => CLK, RST => RST, IR_IN => current_IW, IR_LATCH_EN => IR_LATCH_EN, NPC_LATCH_EN => NPC_LATCH_EN, RegA_LATCH_EN => RegA_LATCH_EN, RegB_LATCH_EN => RegB_LATCH_EN, RegIMM_LATCH_EN => RegIMM_LATCH_EN, MUXA_SEL => MUXA_SEL, MUXB_SEL => MUXB_SEL, ALU_OUTREG_EN => ALU_OUTREG_EN, EQ_COND => EQ_COND, ALU_OPCODE => ALU_OPCODE, DRAM_WE => DRAM_WE, LMD_LATCH_EN => LMD_LATCH_EN, JUMP_EN => JUMP_EN, PC_LATCH_EN => PC_LATCH_EN, WB_MUX_SEL => WB_MUX_SEL, RF_WE => RF_WE, PC_IN => current_PC, PC_BUS => PC_BUS);
 
 -- control unit:
 CU : dlx_cu
