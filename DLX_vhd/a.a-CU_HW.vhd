@@ -55,8 +55,8 @@ architecture dlx_cu_hw of dlx_cu is
                                 "000000000000000",
                                 "111011111001100", -- J (0X02) instruction encoding corresponds to the address to this ROM
                                 "000000000000000", -- JAL to be filled
-                                "000000000000000", -- BEQZ to be filled
-                                "000000000000000", -- BNEZ
+                                "111011111001100", -- BEQZ 
+                                "111011110001100", -- BNEZ 
                                 "000000000000000",
                                 "000000000000000",
                                 "111010110000111", -- ADDi (0X08)
@@ -72,7 +72,7 @@ architecture dlx_cu_hw of dlx_cu is
                                 "000000000000000",
                                 "000000000000000",
                                 "111010110000111", -- SLLi
-                                "000000000000000", -- NOP
+                                "110000000000100", -- NOP
                                 "111010110000111", -- SRLi
                                 "000000000000000",
                                 "000000000000000",
@@ -209,16 +209,18 @@ begin  -- dlx_cu_rtl
 		when conv_integer(unsigned(ITYPE_SUBI))  => aluOpcode_i <= SUBS; -- SUBi
 		when conv_integer(unsigned(ITYPE_ANDI))  => aluOpcode_i <= ANDS; -- ANDi
 		when conv_integer(unsigned(ITYPE_ORI))  => aluOpcode_i <= ORS;   -- ORi
-        when conv_integer(unsigned(ITYPE_XORI)) => aluOpcode_i <= XORS; -- XORi
-		when conv_integer(unsigned(ITYPE_J))    => aluOpcode_i <= NOP; -- j
-		when conv_integer(unsigned(ITYPE_JAL))  => aluOpcode_i <= NOP; -- jal
-        when conv_integer(unsigned(ITYPE_LW))   => aluOpcode_i <= ADDS;
-        when conv_integer(unsigned(ITYPE_SW))   => aluOpcode_i <= ADDS;
-        when conv_integer(unsigned(ITYPE_SLEI)) => aluOpcode_i <= SLE;
-        when conv_integer(unsigned(ITYPE_SGEI)) => aluOpcode_i <= SGE;
-        when conv_integer(unsigned(ITYPE_SNEI)) => aluOpcode_i <= SNE;
-        when conv_integer(unsigned(ITYPE_SRLI)) => aluOpcode_i <= SRLS; -- srli
-        when conv_integer(unsigned(ITYPE_SLLI)) => aluOpcode_i <= SLLS; -- slli
+    when conv_integer(unsigned(ITYPE_XORI)) => aluOpcode_i <= XORS; -- XORi
+		when conv_integer(unsigned(ITYPE_BEQZ)) => aluOpcode_i <= ADDS; -- BEQZ
+		when conv_integer(unsigned(ITYPE_BNEZ)) => aluOpcode_i <= ADDS; -- BNEZ
+		when conv_integer(unsigned(ITYPE_J))    => aluOpcode_i <= ADDS; -- j
+		when conv_integer(unsigned(ITYPE_JAL))  => aluOpcode_i <= ADDS; -- jal
+    when conv_integer(unsigned(ITYPE_LW))   => aluOpcode_i <= ADDS;
+    when conv_integer(unsigned(ITYPE_SW))   => aluOpcode_i <= ADDS;
+    when conv_integer(unsigned(ITYPE_SLEI)) => aluOpcode_i <= SLE;
+    when conv_integer(unsigned(ITYPE_SGEI)) => aluOpcode_i <= SGE;
+    when conv_integer(unsigned(ITYPE_SNEI)) => aluOpcode_i <= SNE;
+    when conv_integer(unsigned(ITYPE_SRLI)) => aluOpcode_i <= SRLS; -- srli
+    when conv_integer(unsigned(ITYPE_SLLI)) => aluOpcode_i <= SLLS; -- slli
 		-- to be continued and filled with other cases
 		when others => aluOpcode_i <= NOP;
 	 end case;
