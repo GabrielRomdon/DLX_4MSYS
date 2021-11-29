@@ -67,9 +67,9 @@ P_ALU: process (FUNC, DATA1, DATA2, Y_LOGIC, OUT_SHIFTER)
       when ANDS       => OUTALU <= Y_LOGIC; -- bitwise AND operation
       when ORS        => OUTALU <= Y_LOGIC; -- bitwise OR operation
       when XORS       => OUTALU <= Y_LOGIC; -- bitwise XOR operation
-      when SLE        => if (DATA1 <= DATA2) then OUTALU <= std_logic_vector(to_unsigned(1, N)); else OUTALU <= std_logic_vector(to_unsigned(0, N)); end if; -- less or equal
-      when SGE        => if (DATA1 >= DATA2) then OUTALU <= std_logic_vector(to_unsigned(1, N)); else OUTALU <= std_logic_vector(to_unsigned(0, N)); end if; -- greater or equal
-      when SNE        => if (DATA1 /= DATA2) then OUTALU <= std_logic_vector(to_unsigned(1, N)); else OUTALU <= std_logic_vector(to_unsigned(0, N)); end if; -- not equal
+      when SLE        => if (signed(DATA1) <= signed(DATA2)) then OUTALU <= std_logic_vector(to_unsigned(1, N)); else OUTALU <= std_logic_vector(to_unsigned(0, N)); end if; -- less or equal
+      when SGE        => if (signed(DATA1) >= signed(DATA2)) then OUTALU <= std_logic_vector(to_unsigned(1, N)); else OUTALU <= std_logic_vector(to_unsigned(0, N)); end if; -- greater or equal
+      when SNE        => if (signed(DATA1) /= signed(DATA2)) then OUTALU <= std_logic_vector(to_unsigned(1, N)); else OUTALU <= std_logic_vector(to_unsigned(0, N)); end if; -- not equal
       when SRLS       => OUTALU <= OUT_SHIFTER; -- logical shift right 
       when SLLS       => OUTALU <= OUT_SHIFTER;  -- logical shift left
       when NOP        => OUTALU <= (others => '0');
