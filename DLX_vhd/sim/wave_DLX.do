@@ -11,6 +11,7 @@ add wave -noupdate -group {Control signals} /tb_dlx/U1/NPC_LATCH_EN
 add wave -noupdate -group {Control signals} /tb_dlx/U1/RegA_LATCH_EN
 add wave -noupdate -group {Control signals} /tb_dlx/U1/RegB_LATCH_EN
 add wave -noupdate -group {Control signals} /tb_dlx/U1/RegIMM_LATCH_EN
+add wave -noupdate -group {Control signals} /tb_dlx/U1/SIGNED_IMM
 add wave -noupdate -group {Control signals} /tb_dlx/U1/MUXA_SEL
 add wave -noupdate -group {Control signals} /tb_dlx/U1/MUXB_SEL
 add wave -noupdate -group {Control signals} /tb_dlx/U1/ALU_OUTREG_EN
@@ -70,7 +71,7 @@ add wave -noupdate -group DRAM /tb_dlx/U1/DP/RAM/DATA_IN
 add wave -noupdate -group DRAM /tb_dlx/U1/DP/RAM/DATA_OUT
 add wave -noupdate -group DRAM /tb_dlx/U1/DP/RAM/DATAMEM
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {14500 ps} 0}
+WaveRestoreCursors {{Cursor 1} {14890 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 212
 configure wave -valuecolwidth 100
@@ -86,4 +87,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ps
 update
-WaveRestoreZoom {0 ps} {40160 ps}
+WaveRestoreZoom {0 ps} {16740 ps}

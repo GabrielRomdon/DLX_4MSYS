@@ -18,6 +18,7 @@ entity DataPath_BASIC is
 		      RegA_LATCH_EN  : IN std_logic;  -- Register A Latch Enable
 		      RegB_LATCH_EN  : IN std_logic;  -- Register B Latch Enable
 		      RegIMM_LATCH_EN: IN std_logic;  -- Immediate Register Latch Enable
+		      SIGNED_IMM     : IN std_logic;  -- Extender sel, signed or unsigned immediate
 
 		      -- EX Control Signals
 		      MUXA_SEL       : IN std_logic;  -- MUX-A Sel
@@ -120,10 +121,11 @@ component ADDER is -- specific adder to add 4 to the input
 end component;
 
 component EXTENDER is
-  generic (	N : integer := numBit;
-			IMM_field_lenght : integer := 16);
-  port   ( NOT_EXT_IMM: IN std_logic_vector(IMM_field_lenght-1 downto 0); -- input data
-           EXT_IMM: OUT std_logic_vector(N-1 downto 0)); -- output data(i.e. input data with sign extension)
+  generic (N : integer := 32;
+			     IMM_field_lenght : integer := 16);
+  port   ( NOT_EXT_IMM:     IN std_logic_vector(IMM_field_lenght-1 downto 0); -- input data
+           SIGNED_IMM:      IN std_logic;
+           EXT_IMM:         OUT std_logic_vector(N-1 downto 0)); -- output data(i.e. input data with sign extension)
 end component;
 
 signal current_PC : std_logic_vector(N-1 downto 0);
@@ -255,7 +257,7 @@ RF : REGISTER_FILE
 -- immediate sign extension
 EXT : EXTENDER
 	generic map(32, 16)
-	port map(NOT_EXT_IMM => current_IW(16-1 downto 0), EXT_IMM => IMM_IN);
+	port map(NOT_EXT_IMM => current_IW(16-1 downto 0), SIGNED_IMM => SIGNED_IMM, EXT_IMM => IMM_IN);
 
 -- ALU:
 ALU_i : ALU 
