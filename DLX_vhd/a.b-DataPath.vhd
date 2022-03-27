@@ -231,7 +231,7 @@ RD_MUX : MUX21_GENERIC
 
 OP1_MUX : MUX21_GENERIC
 	generic map(32)
-	port map(A => A_OUT, B => current_PC3, SEL => MUXA_SEL, Y => ALU_OP1);
+	port map(A => A_OUT, B => current_PC2, SEL => MUXA_SEL, Y => ALU_OP1);
 	
 OP2_MUX : MUX21_GENERIC
 	generic map(32)
