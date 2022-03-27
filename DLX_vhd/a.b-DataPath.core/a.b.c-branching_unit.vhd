@@ -30,7 +30,7 @@ process (Reg_A, EQ_cond)
 			else
 				branch_taken <= '0'; -- beqz and equal-to-zero condition NOT satisfied
 			end if;
-		elsif (EQ_cond = '1') then
+		else if (EQ_cond = '1') then
 			if (Reg_A = "00000000000000000000000000000000") then
 				branch_taken <= '0'; -- bNez and not-equal-to-zero condition satisfied
 			else
