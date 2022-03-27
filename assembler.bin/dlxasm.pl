@@ -509,8 +509,7 @@ sub forminstr {
       $src1 = 0;
       $dst = &getimm ($a[1]);
 	   }
-    # COMMENTED BY US => Iram is handling adresses in another way, no need
-    #$dst -= $addr{t} + 4;
+    $dst -= $addr{t} + 4;
     $out = ($op << 26) | ($src1 << 21) | ($dst & 0xffff);
   } elsif ($itype eq "j") {
     $dst = &getimm ($a[1]);
