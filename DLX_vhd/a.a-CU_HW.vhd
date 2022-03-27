@@ -55,8 +55,8 @@ architecture dlx_cu_hw of dlx_cu is
                                 "000000000000000",
                                 "111011111001100", -- J (0X02) instruction encoding corresponds to the address to this ROM
                                 "000000000000000", -- JAL to be filled
-                                "111011111001100", -- BEQZ
-                                "111011110001100", -- BNEZ
+                                "000000000000000", -- BEQZ to be filled
+                                "000000000000000", -- BNEZ
                                 "000000000000000",
                                 "000000000000000",
                                 "111010110000111", -- ADDi (0X08)

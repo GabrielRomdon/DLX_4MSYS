@@ -58,13 +58,6 @@ component MUX21_GENERIC is -- generic multiplexer
 			Y:	OUT std_logic_vector(NBIT-1 downto 0));
 end component;
 
-component MUX21_SINGLEBIT is
-	port( 	A: 	 IN std_logic;
-			B:	 IN std_logic;
-			SEL: IN std_logic;
-			Y:	 OUT std_logic);
-end component;
-
 component REGISTER_FILE is
 	generic (NBIT: integer := numBit;
     		 NREG: integer := RFsize);
@@ -156,7 +149,7 @@ signal next_ALU_OUT : std_logic_vector(N-1 downto 0);
 signal current_ALU_OUT : std_logic_vector(N-1 downto 0);
 signal next_RAM_OUT : std_logic_vector(N-1 downto 0);
 signal current_RAM_OUT : std_logic_vector(N-1 downto 0);
-signal PC_MUX_SEL : std_logic; -- notice this vector is a single bit signal
+signal PC_MUX_SEL : std_logic;
 signal branch_taken : std_logic;
 
 begin
@@ -218,7 +211,8 @@ PC_MUX : MUX21_GENERIC
 	generic map(32)
 	port map(A => current_NPC, B => current_ALU_OUT, SEL => PC_MUX_SEL, Y => next_PC);
 	
-J_MUX : MUX21_SINGLEBIT
+J_MUX : MUX21_GENERIC
+	generic map(1)
 	port map(A => '0', B => branch_taken, SEL => JUMP_EN, Y => PC_MUX_SEL);
 
 RD_MUX : MUX21_GENERIC
