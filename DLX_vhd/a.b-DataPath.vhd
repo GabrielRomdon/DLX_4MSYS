@@ -142,7 +142,7 @@ signal WB2_OUT : std_logic_vector(Log2(NREG)-1 downto 0);
 signal WB3_OUT : std_logic_vector(Log2(NREG)-1 downto 0);
 signal A_IN : std_logic_vector(N-1 downto 0);
 signal B_IN : std_logic_vector(N-1 downto 0);
-signal IMM_IN : std_logic_vector(N-1 downto 0);
+signal IMM_IN : std_logic_vector(N/2-1 downto 0);
 signal A_OUT : std_logic_vector(N-1 downto 0);
 signal B_OUT : std_logic_vector(N-1 downto 0);
 signal B_OUT2 : std_logic_vector(N-1 downto 0);
@@ -185,8 +185,8 @@ PC_REG3 : REG_GENERIC
 	port map(CLK => CLK, RST => RST, EN => '1', DATA_IN => current_PC2, DATA_OUT => current_PC3);
 
 IMM_REG : REG_GENERIC
-	generic map(32)
-	port map(CLK => CLK, RST => RST, EN => RegIMM_LATCH_EN, DATA_IN => IMM_IN, DATA_OUT => IMM_OUT);
+	generic map(16)
+	port map(CLK => CLK, RST => RST, EN => RegIMM_LATCH_EN, DATA_IN => current_IW(16-1 downto 0), DATA_OUT => IMM_IN);
 
 WB1_REG : REG_GENERIC
 	generic map(Log2(NREG))
@@ -231,7 +231,7 @@ RD_MUX : MUX21_GENERIC
 
 OP1_MUX : MUX21_GENERIC
 	generic map(32)
-	port map(A => A_OUT, B => current_PC2, SEL => MUXA_SEL, Y => ALU_OP1);
+	port map(A => A_OUT, B => current_PC1, SEL => MUXA_SEL, Y => ALU_OP1);
 	
 OP2_MUX : MUX21_GENERIC
 	generic map(32)
@@ -257,7 +257,7 @@ RF : REGISTER_FILE
 -- immediate sign extension
 EXT : EXTENDER
 	generic map(32, 16)
-	port map(NOT_EXT_IMM => current_IW(16-1 downto 0), SIGNED_IMM => SIGNED_IMM, EXT_IMM => IMM_IN);
+	port map(NOT_EXT_IMM => IMM_IN, SIGNED_IMM => SIGNED_IMM, EXT_IMM => IMM_OUT);
 
 -- ALU:
 ALU_i : ALU 
