@@ -5,7 +5,7 @@ use work.myTypes.all;
 
 entity DLX is
 	generic(PC_SIZE : integer := numBit;
-			IR_SIZE : integer := 32);
+			IR_SIZE : integer := IR_SIZE);
 	port(	CLK: IN std_logic;
 			RST: IN std_logic);
 end DLX;
@@ -22,9 +22,6 @@ component REG_GENERIC is -- generic register
 end component;
 
 component IRAM is
-  generic (
-    RAM_DEPTH : integer := IRAMsize;
-    I_SIZE : integer := IR_SIZE);
   port (
     RST  : in  std_logic;
     ADDR : in  std_logic_vector(I_SIZE - 1 downto 0);
@@ -33,8 +30,6 @@ component IRAM is
 end component;
 
 component DataPath_BASIC is
-	generic(N : integer := numBit;
-			IR_SIZE : integer := 32);
 	port(	CLK: IN std_logic;
 			RST: IN std_logic;
 
@@ -140,7 +135,7 @@ begin
 
 -- registers:
 PC_REG : REG_GENERIC
-	generic map(32)
+	generic map(PC_SIZE)
 	port map(CLK => CLK, RST => RST, EN => PC_LATCH_EN, DATA_IN => PC_BUS, DATA_OUT => current_PC);
 
 --instruction register
@@ -149,17 +144,14 @@ current_IW <= next_IW;
 
 --instruction memory:
 IRAM_i : IRAM
-    generic map (RAM_DEPTH => IRAMsize, I_SIZE => 32)
     port map(Rst => RST, Addr => current_PC, Dout => next_IW);
 
 -- datapath:
 DP : DataPath_BASIC
-	generic map(PC_SIZE)
 	port map(CLK => CLK, RST => RST, IR_IN => current_IW, IR_LATCH_EN => IR_LATCH_EN, NPC_LATCH_EN => NPC_LATCH_EN, RegA_LATCH_EN => RegA_LATCH_EN, RegB_LATCH_EN => RegB_LATCH_EN, RegIMM_LATCH_EN => RegIMM_LATCH_EN, SIGNED_IMM => SIGNED_IMM, MUXA_SEL => MUXA_SEL, MUXB_SEL => MUXB_SEL, ALU_OUTREG_EN => ALU_OUTREG_EN, EQ_COND => EQ_COND, IS_JUMP => IS_JUMP, ALU_OPCODE => ALU_OPCODE, DRAM_WE => DRAM_WE, LMD_LATCH_EN => LMD_LATCH_EN, JUMP_EN => JUMP_EN, PC_LATCH_EN => PC_LATCH_EN, WB_MUX_SEL => WB_MUX_SEL, RF_WE => RF_WE, PC_IN => current_PC, PC_BUS => PC_BUS);
 
 -- control unit:
 CU : dlx_cu
-	generic map(45, 11, 6, 32, 16)
 	port map(Clk => CLK, Rst => RST, IR_IN => current_IW, IR_LATCH_EN => IR_LATCH_EN, NPC_LATCH_EN => NPC_LATCH_EN, RegA_LATCH_EN => RegA_LATCH_EN, RegB_LATCH_EN => RegB_LATCH_EN, RegIMM_LATCH_EN => RegIMM_LATCH_EN, SIGNED_IMM => SIGNED_IMM, MUXA_SEL => MUXA_SEL, MUXB_SEL => MUXB_SEL, ALU_OUTREG_EN => ALU_OUTREG_EN, EQ_COND => EQ_COND, IS_JUMP => IS_JUMP, ALU_OPCODE => ALU_OPCODE, DRAM_WE => DRAM_WE, LMD_LATCH_EN => LMD_LATCH_EN, JUMP_EN => JUMP_EN, PC_LATCH_EN => PC_LATCH_EN, WB_MUX_SEL => WB_MUX_SEL, RF_WE => RF_WE);
 
 end DLX_RTL;
