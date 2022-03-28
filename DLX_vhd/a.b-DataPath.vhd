@@ -134,8 +134,6 @@ end component;
 
 signal current_PC       : std_logic_vector(N-1 downto 0);
 signal current_PC1      : std_logic_vector(N-1 downto 0);
-signal current_PC2      : std_logic_vector(N-1 downto 0);
-signal current_PC3      : std_logic_vector(N-1 downto 0);
 signal next_PC          : std_logic_vector(N-1 downto 0);
 signal current_NPC      : std_logic_vector(N-1 downto 0);
 signal next_NPC         : std_logic_vector(N-1 downto 0);
@@ -179,14 +177,6 @@ NPC_REG : REG_GENERIC
 IR_REG : REG_GENERIC
 	generic map(N)
 	port map(CLK => CLK, RST => RST, EN => IR_LATCH_EN, DATA_IN => IR_IN, DATA_OUT => current_IW);
-
-PC_REG2 : REG_GENERIC
-	generic map(N)
-	port map(CLK => CLK, RST => RST, EN => '1', DATA_IN => current_PC1, DATA_OUT => current_PC2);
-
-PC_REG3 : REG_GENERIC
-	generic map(N)
-	port map(CLK => CLK, RST => RST, EN => '1', DATA_IN => current_PC2, DATA_OUT => current_PC3);
 
 IMM_REG : REG_GENERIC
 	generic map(N/2)
