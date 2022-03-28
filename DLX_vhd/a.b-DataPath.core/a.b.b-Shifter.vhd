@@ -6,9 +6,10 @@
 
 library IEEE;
 use IEEE.std_logic_1164.all;
+use work.myTypes.all;
 
 entity BARREL_SHIFTER is
-  generic ( N : integer := 32);
+  generic ( N : integer := WORD);
   port   ( CONF:         IN std_logic; -- Input for selecting either left (CONF=0) or right (CONF=1) TODO: Later this will represent either arithmetic or logic also
            DATA1, DATA2: IN std_logic_vector(N-1 downto 0); -- Data inputs
            OUTPUT:       OUT std_logic_vector(N-1 downto 0)); -- Data outputs

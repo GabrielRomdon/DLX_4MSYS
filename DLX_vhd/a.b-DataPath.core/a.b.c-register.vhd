@@ -3,7 +3,7 @@ use IEEE.std_logic_1164.all;
 use work.myTypes.all;
 
 entity REG_GENERIC is
-	generic(NBIT: integer:= numBit);
+	generic(NBIT: integer:= WORD);
 	port( 	CLK:	IN std_logic;
 			RST:	IN std_logic;   -- Low
 			EN:	IN std_logic;

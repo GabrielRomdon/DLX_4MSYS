@@ -3,18 +3,41 @@ use ieee.std_logic_1164.all;
 
 package myTypes is
 
--- Control unit input sizes
-	constant numBit		  : integer :=  32;
-    constant OP_CODE_SIZE : integer :=   6;		-- OPCODE field size
-    constant FUNC_SIZE    : integer :=  11;		-- FUNC field size
-    constant CW_SIZE      : integer :=  17;		-- Contorl Word size
-	constant IR_SIZE      : integer :=  32;  	-- Instruction Word/Register size
-	constant RFsize       : integer :=  32;  	-- RF size
-	constant NREG         : integer :=  32;  	-- RF size
-	constant IRAMsize     : integer :=  64;  	-- IRAM size
-	constant RAMsize      : integer :=  64;  	-- IRAM size
+    constant WORD		: integer :=  32;
+    constant HALF_WORD		: integer :=  16;
 
--- R-Type instruction -> FUNC field
+    -- CONTROL UNIT --
+    constant MICROCODE_MEM_SIZE : integer :=  45;
+    constant OP_CODE_SIZE       : integer :=   6;	-- OPCODE field size
+    constant FUNC_SIZE          : integer :=  11;	-- FUNC field size
+    constant IR_SIZE            : integer :=  32;  	-- Instruction Word/Register size
+
+    -- Control word sizes -> Hardwired
+    constant CW_SIZE      : integer :=  17;		-- Control Word size
+    constant NB_SIG_S1    : integer :=  2;	-- Control Word size
+    constant NB_SIG_S2    : integer :=  4;	-- Control Word size
+    constant NB_SIG_S3    : integer :=  5;	-- Control Word size
+    constant NB_SIG_S4    : integer :=  4;	-- Control Word size
+    constant CW1_SIZE     : integer :=  CW_SIZE;		-- Control Word size
+    constant CW2_SIZE     : integer :=  CW1_SIZE - NB_SIG_S1;		-- Control Word size
+    constant CW3_SIZE     : integer :=  CW2_SIZE - NB_SIG_S2;		-- Control Word size
+    constant CW4_SIZE     : integer :=  CW3_SIZE - NB_SIG_S3;		-- Control Word size
+    constant CW5_SIZE     : integer :=  CW4_SIZE - NB_SIG_S4;		-- Control Word size
+
+    -- RAMs --
+    constant IRAM_SIZE    : integer :=  64;  	-- IRAM size
+    constant DRAM_SIZE    : integer :=  64;  	-- DRAM size
+
+    -- RF --
+    constant RF_SIZE            : integer :=  32;  	-- RF size
+    constant MSB_ADD_RD1        : integer :=  25;  	-- Most significant bit for RD1 address in IR
+    constant LSB_ADD_RD1        : integer :=  21;  	-- Least significant bit for RD1 address in IR
+    constant MSB_ADD_RD2        : integer :=  20;  	-- Most significant bit for RD2 address in IR
+    constant LSB_ADD_RD2        : integer :=  16;  	-- Least significant bit for RD2 address in IR
+    constant MSB_ADD_RD3        : integer :=  15;  	-- Most significant bit for RD3 address in IR
+    constant LSB_ADD_RD3        : integer :=  11;  	-- Least significant bit for RD3 address in IR
+
+    -- R-TYPE INSTRUCTION -- -> FUNC field
     constant RTYPE_ADD  : std_logic_vector(FUNC_SIZE - 1 downto 0) :=  "00000100000";    -- ADD RA,RB,RC
     constant RTYPE_SUB  : std_logic_vector(FUNC_SIZE - 1 downto 0) :=  "00000100010";    -- SUB RA,RB,RC
     constant RTYPE_AND  : std_logic_vector(FUNC_SIZE - 1 downto 0) :=  "00000100100";    -- AND RA,RB,RC
@@ -26,10 +49,10 @@ package myTypes is
     constant RTYPE_SNE  : std_logic_vector(FUNC_SIZE - 1 downto 0) :=  "00000101001";    -- SNE RA,RB,RC
     constant RTYPE_XOR  : std_logic_vector(FUNC_SIZE - 1 downto 0) :=  "00000100110";    -- XOR RA,RB,RC
 
--- R-Type instruction -> OPCODE field
+    -- R-TYPE INSTRUCTION -- -> OPCODE field
     constant RTYPE : std_logic_vector(OP_CODE_SIZE - 1 downto 0) :=  "000000";          -- for ADD, SUB, AND, OR register-to-register operation
 
--- I-Type instruction -> OPCODE field
+    -- I-TYPE INSTRUCTION -- -> OPCODE field
     constant ITYPE_ADDI   : std_logic_vector(OP_CODE_SIZE - 1 downto 0) :=  "001000";    -- ADDI   RA,RB,INP1
     constant ITYPE_SUBI   : std_logic_vector(OP_CODE_SIZE - 1 downto 0) :=  "001010";    -- SUBI   RA,RB,INP1
     constant ITYPE_ANDI   : std_logic_vector(OP_CODE_SIZE - 1 downto 0) :=  "001100";    -- ANDI   RA,RB,INP1
@@ -48,7 +71,7 @@ package myTypes is
     constant ITYPE_SRLI   : std_logic_vector(OP_CODE_SIZE - 1 downto 0) :=  "010110";    -- SRLI   RA,RB,INP1
     constant ITYPE_NOP    : std_logic_vector(OP_CODE_SIZE - 1 downto 0) :=  "010101";    -- NOP
 
-	type aluOpType is (
+    type aluOpType is (
         NOP, 
         ADDS, 
         SUBS, 
@@ -60,7 +83,7 @@ package myTypes is
         SNE,
         SRLS,
         SLLS
-	);
+    );
 
 end myTypes;
 

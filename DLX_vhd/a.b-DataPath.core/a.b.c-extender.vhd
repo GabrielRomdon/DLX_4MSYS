@@ -11,11 +11,11 @@ use IEEE.numeric_std.all;
 use work.myTypes.all;
 
 entity EXTENDER is
-  generic (N : integer := 32;
-			     IMM_field_lenght : integer := 16);
+  generic (NBIT : integer := WORD;
+			     IMM_field_lenght : integer := HALF_WORD);
   port   ( NOT_EXT_IMM:     IN std_logic_vector(IMM_field_lenght-1 downto 0); -- input data
            SIGNED_IMM:      IN std_logic;
-           EXT_IMM:         OUT std_logic_vector(N-1 downto 0)); -- output data(i.e. input data with sign extension)
+           EXT_IMM:         OUT std_logic_vector(NBIT-1 downto 0)); -- output data(i.e. input data with sign extension)
 end EXTENDER;
 
 architecture BEHAVIOR of EXTENDER is
@@ -26,9 +26,9 @@ begin
 EXTENSION: process (NOT_EXT_IMM)
   begin
   if SIGNED_IMM='1' then
-	  EXT_IMM <= std_logic_vector(resize(signed(NOT_EXT_IMM), N));
+	  EXT_IMM <= std_logic_vector(resize(signed(NOT_EXT_IMM), NBIT));
   else
-	  EXT_IMM <= std_logic_vector(resize(unsigned(NOT_EXT_IMM), N));
+	  EXT_IMM <= std_logic_vector(resize(unsigned(NOT_EXT_IMM), NBIT));
   end if;
   end process EXTENSION;
 

@@ -16,6 +16,7 @@ add wave -noupdate -group {Control signals} /tb_dlx/U1/MUXA_SEL
 add wave -noupdate -group {Control signals} /tb_dlx/U1/MUXB_SEL
 add wave -noupdate -group {Control signals} /tb_dlx/U1/ALU_OUTREG_EN
 add wave -noupdate -group {Control signals} /tb_dlx/U1/EQ_COND
+add wave -noupdate -group {Control signals} /tb_dlx/U1/IS_JUMP
 add wave -noupdate -group {Control signals} /tb_dlx/U1/ALU_OPCODE
 add wave -noupdate -group {Control signals} /tb_dlx/U1/DRAM_WE
 add wave -noupdate -group {Control signals} /tb_dlx/U1/LMD_LATCH_EN
@@ -29,7 +30,7 @@ add wave -noupdate -group RegisterFile /tb_dlx/U1/DP/RF/ADD_RD2
 add wave -noupdate -group RegisterFile /tb_dlx/U1/DP/RF/DATAIN
 add wave -noupdate -group RegisterFile /tb_dlx/U1/DP/RF/OUT1
 add wave -noupdate -group RegisterFile /tb_dlx/U1/DP/RF/OUT2
-add wave -noupdate -group RegisterFile /tb_dlx/U1/DP/RF/REGISTERS
+add wave -noupdate -group RegisterFile -expand /tb_dlx/U1/DP/RF/REGISTERS
 add wave -noupdate -group DataPath /tb_dlx/U1/DP/IR_IN
 add wave -noupdate -group DataPath /tb_dlx/U1/DP/PC_BUS
 add wave -noupdate -group DataPath /tb_dlx/U1/DP/current_PC
@@ -71,7 +72,7 @@ add wave -noupdate -group DRAM /tb_dlx/U1/DP/RAM/DATA_IN
 add wave -noupdate -group DRAM /tb_dlx/U1/DP/RAM/DATA_OUT
 add wave -noupdate -group DRAM /tb_dlx/U1/DP/RAM/DATAMEM
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {14890 ps} 0}
+WaveRestoreCursors {{Cursor 1} {116800 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 212
 configure wave -valuecolwidth 100
