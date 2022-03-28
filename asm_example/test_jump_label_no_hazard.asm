@@ -1,6 +1,7 @@
 init:
 	addi r1,r0,#1
-	addi r2,r0,#31
+	addi r2,r0,#10
+	subi r3,r0,#2
 	nop
 	nop
 	nop
@@ -15,10 +16,23 @@ loop:
 	nop
 	nop
 	nop
+	j next
+	nop
+	nop
+	nop
+
+try:
+	subi r3,r3,#-2
+	nop
+	nop
+	nop
 
 next:
-	beqz r0,#2
-	j end
+	beqz r3,end
+	nop
+	nop
+	nop
+	j try
 	nop
 	nop
 	nop
