@@ -8,12 +8,12 @@ use work.myTypes.all;
 
 entity dlx_cu is
   generic (
-    MICROCODE_MEM_SIZE :     integer := 45;  -- Microcode Memory Size
-    FUNC_SIZE          :     integer := 11;  -- Func Field Size for R-Type Ops
-    OP_CODE_SIZE       :     integer := 6;  -- Op Code Size
+    MICROCODE_MEM_SIZE :     integer := MICROCODE_MEM_SIZE;  -- Microcode Memory Size
+    FUNC_SIZE          :     integer := FUNC_SIZE;  -- Func Field Size for R-Type Ops
+    OP_CODE_SIZE       :     integer := OP_CODE_SIZE;  -- Op Code Size
     -- ALU_OPC_SIZE       :     integer := 6;  -- ALU Op Code Word Size
-    IR_SIZE            :     integer := 32;  -- Instruction Register Size    
-    CW_SIZE            :     integer := 17);  -- Control Word Size
+    IR_SIZE            :     integer := IR_SIZE;  -- Instruction Register Size    
+    CW_SIZE            :     integer := CW_SIZE);  -- Control Word Size
   port (
     Clk                : in  std_logic;  -- Clock
     Rst                : in  std_logic;  -- Reset:Active-Low
@@ -106,11 +106,11 @@ architecture dlx_cu_hw of dlx_cu is
 
 
   -- control word is shifted to the correct stage
-  signal cw1 : std_logic_vector(CW_SIZE - 1 downto 0); -- first stage
-  signal cw2 : std_logic_vector(CW_SIZE - 1 - 2 downto 0); -- second stage
-  signal cw3 : std_logic_vector(CW_SIZE - 1 - 5 downto 0); -- third stage
-  signal cw4 : std_logic_vector(CW_SIZE - 1 - 9 downto 0); -- fourth stage
-  signal cw5 : std_logic_vector(CW_SIZE - 1 - 13 downto 0); -- fifth stage
+  signal cw1 : std_logic_vector(CW1_SIZE-1 downto 0); -- first stage
+  signal cw2 : std_logic_vector(CW2_SIZE-1 downto 0); -- second stage
+  signal cw3 : std_logic_vector(CW3_SIZE-1 downto 0); -- third stage
+  signal cw4 : std_logic_vector(CW4_SIZE-1 downto 0); -- fourth stage
+  signal cw5 : std_logic_vector(CW5_SIZE-1 downto 0); -- fifth stage
 
   signal aluOpcode_i: aluOpType := NOP; -- ALUOP defined in package
   signal aluOpcode1: aluOpType := NOP;
@@ -126,31 +126,31 @@ begin  -- dlx_cu_rtl
 
   --- Control signals of the pipe stages
   -- stage one control signals
-  IR_LATCH_EN  <= cw1(CW_SIZE - 1);
-  NPC_LATCH_EN <= cw1(CW_SIZE - 2);
+  IR_LATCH_EN  <= cw1(CW1_SIZE - 1);
+  NPC_LATCH_EN <= cw1(CW1_SIZE - 2);
   
   -- stage two control signals
-  RegA_LATCH_EN   <= cw2(CW_SIZE - 3);
-  RegB_LATCH_EN   <= cw2(CW_SIZE - 4);
-  RegIMM_LATCH_EN <= cw2(CW_SIZE - 5);
-  SIGNED_IMM      <= cw2(CW_SIZE - 6);
+  RegA_LATCH_EN   <= cw2(CW2_SIZE - 1);
+  RegB_LATCH_EN   <= cw2(CW2_SIZE - 2);
+  RegIMM_LATCH_EN <= cw2(CW2_SIZE - 3);
+  SIGNED_IMM      <= cw2(CW2_SIZE - 4);
   
   -- stage three control signals
-  MUXA_SEL      <= cw3(CW_SIZE - 7);
-  MUXB_SEL      <= cw3(CW_SIZE - 8);
-  ALU_OUTREG_EN <= cw3(CW_SIZE - 9);
-  EQ_COND       <= cw3(CW_SIZE - 10);
-  IS_JUMP       <= cw3(CW_SIZE - 11);
+  MUXA_SEL      <= cw3(CW3_SIZE - 1);
+  MUXB_SEL      <= cw3(CW3_SIZE - 2);
+  ALU_OUTREG_EN <= cw3(CW3_SIZE - 3);
+  EQ_COND       <= cw3(CW3_SIZE - 4);
+  IS_JUMP       <= cw3(CW3_SIZE - 5);
   
   -- stage four control signals
-  DRAM_WE      <= cw4(CW_SIZE - 12);
-  LMD_LATCH_EN <= cw4(CW_SIZE - 13);
-  JUMP_EN      <= cw4(CW_SIZE - 14);
-  PC_LATCH_EN  <= cw4(CW_SIZE - 15);
+  DRAM_WE      <= cw4(CW4_SIZE - 1);
+  LMD_LATCH_EN <= cw4(CW4_SIZE - 2);
+  JUMP_EN      <= cw4(CW4_SIZE - 3);
+  PC_LATCH_EN  <= cw4(CW4_SIZE - 4);
   
   -- stage five control signals
-  WB_MUX_SEL <= cw5(CW_SIZE - 16);
-  RF_WE      <= cw5(CW_SIZE - 17);
+  WB_MUX_SEL <= cw5(CW5_SIZE - 1);
+  RF_WE      <= cw5(CW5_SIZE - 1);
 
   -- Register for CW1 is separated to avoid the propagation of a wrong control word
   CW_PIPE_CW1: process (Clk, Rst)
@@ -160,7 +160,7 @@ begin  -- dlx_cu_rtl
       cw2 <= (others => '0');
     elsif Clk'event and Clk = '1' then  -- rising clock edge
       cw1 <= cw;
-      cw2 <= cw(CW_SIZE - 1 - 2 downto 0);
+      cw2 <= cw(CW2_SIZE-1 downto 0);
     end if;
   end process CW_PIPE_CW1;
   --- End Of: Modification for post-reset sequence
@@ -176,9 +176,9 @@ begin  -- dlx_cu_rtl
       aluOpcode2 <= NOP;
       aluOpcode3 <= NOP;
     elsif Clk'event and Clk = '1' then  -- rising clock edge
-      cw3 <= cw2(CW_SIZE - 1 - 5 downto 0);
-      cw4 <= cw3(CW_SIZE - 1 - 9 downto 0);
-      cw5 <= cw4(CW_SIZE -1 - 13 downto 0);
+      cw3 <= cw2(CW3_SIZE-1 downto 0);
+      cw4 <= cw3(CW4_SIZE-1 downto 0);
+      cw5 <= cw4(CW5_SIZE-1 downto 0);
 
       aluOpcode1 <= aluOpcode_i;
       aluOpcode2 <= aluOpcode1;
