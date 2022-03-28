@@ -12,7 +12,7 @@ use ieee.std_logic_arith.all;
 use work.myTypes.all;
 
 entity BRANCHING_UNIT is
-  generic (	N : integer := 32);
+  generic (	N : integer := WORD);
 	port  ( CLK            : IN std_logic;
 		      RST            : IN std_logic;  -- Low Reset
           Reg_A: IN std_logic_vector(N-1 downto 0); -- from pipeline register A

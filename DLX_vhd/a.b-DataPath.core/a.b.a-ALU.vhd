@@ -11,7 +11,7 @@ use IEEE.numeric_std.all;
 use WORK.myTypes.all;
 
 entity ALU is
-  generic (N : integer := 32);
+  generic (N : integer := WORD);
   port   ( FUNC: IN aluOpType; -- Input for selecting the operation to be performed
            DATA1, DATA2: IN std_logic_vector(N-1 downto 0); -- Data inputs
            OUTALU: OUT std_logic_vector(N-1 downto 0)); -- Data outputs

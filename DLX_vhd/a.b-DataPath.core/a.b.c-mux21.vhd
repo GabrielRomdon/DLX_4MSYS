@@ -28,7 +28,7 @@ use IEEE.std_logic_1164.all;
 use work.myTypes.all;
 -- Multiple bit 2 to 1 mux
 entity MUX21_GENERIC is
-	generic(NBIT: integer:= numBit);
+	generic(NBIT: integer:= WORD);
 	port( 	A: IN std_logic_vector(NBIT-1 downto 0);
 			B:	IN std_logic_vector(NBIT-1 downto 0);
 			SEL:	IN std_logic;

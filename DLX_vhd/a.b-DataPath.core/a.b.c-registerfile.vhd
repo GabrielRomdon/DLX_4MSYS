@@ -6,8 +6,8 @@ use WORK.Log2.all; -- for using the log2 algo, in order to compute the number of
 use work.myTypes.all;
 
 entity REGISTER_FILE is
-    generic (NBIT: integer := numBit;
-    		 NREG: integer := RFsize);
+    generic (NBIT: integer := WORD;
+    		 NREG: integer := RF_SIZE);
     port (CLK: 		IN  std_logic;
 	      RST: 	IN  std_logic;  -- Low
 	      EN: 	IN  std_logic;

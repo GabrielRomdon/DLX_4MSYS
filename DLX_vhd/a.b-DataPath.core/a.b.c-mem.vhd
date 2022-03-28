@@ -8,8 +8,8 @@ use work.myTypes.all;
 -- I suppose description of DRAM(data memory) can be the same as that of the RF. This code is the same written for the RF during lab3 but with one read port less.
 
 entity MEMORY is
-    generic (NBIT: integer := numBit;
-    		 SIZE: integer := RAMsize);
+    generic (NBIT: integer := WORD;
+    		 SIZE: integer := DRAM_SIZE);
     port (CLK: 		IN  std_logic;
 	      RST: 		IN  std_logic;  -- Low
 	      EN: 		IN  std_logic;

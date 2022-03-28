@@ -11,7 +11,7 @@ use IEEE.numeric_std.all;
 use WORK.myTypes.all;
 
 entity ADDER is
-  generic (N : integer := 32);
+  generic (N : integer := WORD);
   port   ( CURR_ADDR: IN std_logic_vector(N-1 downto 0); -- input address
            NEXT_ADDR: OUT std_logic_vector(N-1 downto 0)); -- output address(i.e. input address + 4)
 end ADDER;
