@@ -25,6 +25,7 @@ entity DataPath_BASIC is
 		      MUXB_SEL       : IN std_logic;  -- MUX-B Sel
 		      ALU_OUTREG_EN  : IN std_logic;  -- ALU output Register Enable
 		      EQ_COND        : IN std_logic;  -- Branch if (not) Equal to Zero
+          IS_JUMP        : IN std_logic;  -- Take branch unconditionally
 		      -- ALU Operation Code
 		      ALU_OPCODE     : IN aluOpType; -- choose between implicit or exlicit coding, like std_logic_vector(ALU_OPC_SIZE -1 downto 0);
 		      
@@ -74,6 +75,7 @@ generic (	N : integer := 32);
 		      RST            : IN std_logic;  -- Low Reset
           Reg_A: IN std_logic_vector(N-1 downto 0); -- from pipeline register A
 			    EQ_cond: IN std_logic; -- 1 if BEQZ, 0 if BNEZ
+          IS_JUMP: IN std_logic; -- 1 if the instruction is J type, 0 otherwise
 			    branch_taken: OUT std_logic); -- 1 if branch is taken. 0 otherwise
 end component;
 
@@ -215,7 +217,7 @@ ALU_OUT_REG2 : REG_GENERIC
 -- branching unit
 BU: BRANCHING_UNIT
   generic map(32)
-    port map(CLK => CLK, RST => RST, Reg_A => A_OUT, EQ_cond => EQ_COND, branch_taken => branch_taken);
+    port map(CLK => CLK, RST => RST, Reg_A => A_OUT, EQ_cond => EQ_COND, IS_JUMP => IS_JUMP, branch_taken => branch_taken);
 
 -- multiplexers:
 PC_MUX : MUX21_GENERIC
