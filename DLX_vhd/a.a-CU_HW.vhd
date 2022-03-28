@@ -13,7 +13,7 @@ entity dlx_cu is
     OP_CODE_SIZE       :     integer := 6;  -- Op Code Size
     -- ALU_OPC_SIZE       :     integer := 6;  -- ALU Op Code Word Size
     IR_SIZE            :     integer := 32;  -- Instruction Register Size    
-    CW_SIZE            :     integer := 16);  -- Control Word Size
+    CW_SIZE            :     integer := 17);  -- Control Word Size
   port (
     Clk                : in  std_logic;  -- Clock
     Rst                : in  std_logic;  -- Reset:Active-Low
@@ -35,6 +35,7 @@ entity dlx_cu is
     MUXB_SEL           : out std_logic;  -- MUX-B Sel
     ALU_OUTREG_EN      : out std_logic;  -- ALU Output Register Enable
     EQ_COND            : out std_logic;  -- Branch if (not) Equal to Zero
+    IS_JUMP            : IN std_logic;  -- Is jump or branch instruction
     -- ALU Operation Code
     ALU_OPCODE         : out aluOpType; -- choose between implicit or exlicit coding, like std_logic_vector(ALU_OPC_SIZE -1 downto 0);
     
@@ -52,51 +53,51 @@ end dlx_cu;
 
 architecture dlx_cu_hw of dlx_cu is
   type mem_array is array (integer range 0 to MICROCODE_MEM_SIZE-1) of std_logic_vector(CW_SIZE - 1 downto 0);
-  signal cw_mem : mem_array := ("1111010010000111", -- R type
-                                "0000000000000000",
-                                "1110111111001100", -- J (0X02) instruction encoding corresponds to the address to this ROM
-                                "0000000000000000", -- JAL to be filled
-                                "1110111111001100", -- BEQZ 
-                                "1110111110001100", -- BNEZ 
-                                "0000000000000000",
-                                "0000000000000000",
-                                "1110110110000111", -- ADDi (0X08)
-                                "0000000000000000",
-                                "1110110110000111", -- SUBi
-                                "0000000000000000",
-                                "1110100110000111", -- ANDi
-                                "1110100110000111", -- ORi
-                                "1110100110000111", -- XORi
-                                "0000000000000000",
-                                "0000000000000000", -- (0X10)
-                                "0000000000000000",
-                                "0000000000000000",
-                                "0000000000000000",
-                                "1110100110000111", -- SLLi
-                                "1100000000000100", -- NOP
-                                "1110100110000111", -- SRLi
-                                "0000000000000000",
-                                "0000000000000000",
-                                "1110110110000111", -- SNEi
-                                "0000000000000000",
-                                "0000000000000000",
-                                "1110110110000111", -- SLEi
-                                "1110110110000111", -- SGEi
-                                "0000000000000000",
-                                "0000000000000000",
-                                "1100000000000000", -- (0X20) RESET
-                                "0000000000000000",
-                                "0000000000000000",
-                                "1110110110010101", -- LW
-                                "0000000000000000",
-                                "0000000000000000",
-                                "0000000000000000",
-                                "0000000000000000",
-                                "0000000000000000",
-                                "0000000000000000",
-                                "0000000000000000",
-                                "1111110110110100", -- SW
-                                "0000000000000000");
+  signal cw_mem : mem_array := ("11110100100000111", -- R type
+                                "00000000000000000",
+                                "11101111111001100", -- J (0X02) instruction encoding corresponds to the address to this ROM
+                                "00000000000000000", -- JAL to be filled
+                                "11101111110001100", -- BEQZ 
+                                "11101111100001100", -- BNEZ 
+                                "00000000000000000",
+                                "00000000000000000",
+                                "11101101100000111", -- ADDi (0X08)
+                                "00000000000000000",
+                                "11101101100000111", -- SUBi
+                                "00000000000000000",
+                                "11101001100000111", -- ANDi
+                                "11101001100000111", -- ORi
+                                "11101001100000111", -- XORi
+                                "00000000000000000",
+                                "00000000000000000", -- (0X10)
+                                "00000000000000000",
+                                "00000000000000000",
+                                "00000000000000000",
+                                "11101001100000111", -- SLLi
+                                "11000000000000100", -- NOP
+                                "11101001100000111", -- SRLi
+                                "00000000000000000",
+                                "00000000000000000",
+                                "11101101100000111", -- SNEi
+                                "00000000000000000",
+                                "00000000000000000",
+                                "11101101100000111", -- SLEi
+                                "11101101100000111", -- SGEi
+                                "00000000000000000",
+                                "00000000000000000",
+                                "11000000000000000", -- (0X20) RESET
+                                "00000000000000000",
+                                "00000000000000000",
+                                "11101101100010101", -- LW
+                                "00000000000000000",
+                                "00000000000000000",
+                                "00000000000000000",
+                                "00000000000000000",
+                                "00000000000000000",
+                                "00000000000000000",
+                                "00000000000000000",
+                                "11111101100110100", -- SW
+                                "00000000000000000");
                                 
                                 
   signal IR_opcode : std_logic_vector(OP_CODE_SIZE - 1 downto 0);  -- OpCode part of IR
@@ -107,9 +108,9 @@ architecture dlx_cu_hw of dlx_cu is
   -- control word is shifted to the correct stage
   signal cw1 : std_logic_vector(CW_SIZE - 1 downto 0); -- first stage
   signal cw2 : std_logic_vector(CW_SIZE - 1 - 2 downto 0); -- second stage
-  signal cw3 : std_logic_vector(CW_SIZE - 1 - 6 downto 0); -- third stage
-  signal cw4 : std_logic_vector(CW_SIZE - 1 - 10 downto 0); -- fourth stage
-  signal cw5 : std_logic_vector(CW_SIZE - 1 - 14 downto 0); -- fifth stage
+  signal cw3 : std_logic_vector(CW_SIZE - 1 - 7 downto 0); -- third stage
+  signal cw4 : std_logic_vector(CW_SIZE - 1 - 11 downto 0); -- fourth stage
+  signal cw5 : std_logic_vector(CW_SIZE - 1 - 15 downto 0); -- fifth stage
 
   signal aluOpcode_i: aluOpType := NOP; -- ALUOP defined in package
   signal aluOpcode1: aluOpType := NOP;
@@ -139,16 +140,17 @@ begin  -- dlx_cu_rtl
   MUXB_SEL      <= cw3(CW_SIZE - 8);
   ALU_OUTREG_EN <= cw3(CW_SIZE - 9);
   EQ_COND       <= cw3(CW_SIZE - 10);
+  IS_JUMP       <= cw3(CW_SIZE - 11);
   
   -- stage four control signals
-  DRAM_WE      <= cw4(CW_SIZE - 11);
-  LMD_LATCH_EN <= cw4(CW_SIZE - 12);
-  JUMP_EN      <= cw4(CW_SIZE - 13);
-  PC_LATCH_EN  <= cw4(CW_SIZE - 14);
+  DRAM_WE      <= cw4(CW_SIZE - 12);
+  LMD_LATCH_EN <= cw4(CW_SIZE - 13);
+  JUMP_EN      <= cw4(CW_SIZE - 14);
+  PC_LATCH_EN  <= cw4(CW_SIZE - 15);
   
   -- stage five control signals
-  WB_MUX_SEL <= cw5(CW_SIZE - 15);
-  RF_WE      <= cw5(CW_SIZE - 16);
+  WB_MUX_SEL <= cw5(CW_SIZE - 16);
+  RF_WE      <= cw5(CW_SIZE - 17);
 
   -- Register for CW1 is separated to avoid the propagation of a wrong control word
   CW_PIPE_CW1: process (Clk, Rst)
@@ -174,9 +176,9 @@ begin  -- dlx_cu_rtl
       aluOpcode2 <= NOP;
       aluOpcode3 <= NOP;
     elsif Clk'event and Clk = '1' then  -- rising clock edge
-      cw3 <= cw2(CW_SIZE - 1 - 6 downto 0);
-      cw4 <= cw3(CW_SIZE - 1 - 10 downto 0);
-      cw5 <= cw4(CW_SIZE -1 - 14 downto 0);
+      cw3 <= cw2(CW_SIZE - 1 - 7 downto 0);
+      cw4 <= cw3(CW_SIZE - 1 - 11 downto 0);
+      cw5 <= cw4(CW_SIZE -1 - 15 downto 0);
 
       aluOpcode1 <= aluOpcode_i;
       aluOpcode2 <= aluOpcode1;
