@@ -108,9 +108,9 @@ architecture dlx_cu_hw of dlx_cu is
   -- control word is shifted to the correct stage
   signal cw1 : std_logic_vector(CW_SIZE - 1 downto 0); -- first stage
   signal cw2 : std_logic_vector(CW_SIZE - 1 - 2 downto 0); -- second stage
-  signal cw3 : std_logic_vector(CW_SIZE - 1 - 7 downto 0); -- third stage
-  signal cw4 : std_logic_vector(CW_SIZE - 1 - 11 downto 0); -- fourth stage
-  signal cw5 : std_logic_vector(CW_SIZE - 1 - 15 downto 0); -- fifth stage
+  signal cw3 : std_logic_vector(CW_SIZE - 1 - 5 downto 0); -- third stage
+  signal cw4 : std_logic_vector(CW_SIZE - 1 - 9 downto 0); -- fourth stage
+  signal cw5 : std_logic_vector(CW_SIZE - 1 - 13 downto 0); -- fifth stage
 
   signal aluOpcode_i: aluOpType := NOP; -- ALUOP defined in package
   signal aluOpcode1: aluOpType := NOP;
@@ -176,9 +176,9 @@ begin  -- dlx_cu_rtl
       aluOpcode2 <= NOP;
       aluOpcode3 <= NOP;
     elsif Clk'event and Clk = '1' then  -- rising clock edge
-      cw3 <= cw2(CW_SIZE - 1 - 7 downto 0);
-      cw4 <= cw3(CW_SIZE - 1 - 11 downto 0);
-      cw5 <= cw4(CW_SIZE -1 - 15 downto 0);
+      cw3 <= cw2(CW_SIZE - 1 - 5 downto 0);
+      cw4 <= cw3(CW_SIZE - 1 - 9 downto 0);
+      cw5 <= cw4(CW_SIZE -1 - 13 downto 0);
 
       aluOpcode1 <= aluOpcode_i;
       aluOpcode2 <= aluOpcode1;
