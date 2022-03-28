@@ -35,7 +35,7 @@ entity dlx_cu is
     MUXB_SEL           : out std_logic;  -- MUX-B Sel
     ALU_OUTREG_EN      : out std_logic;  -- ALU Output Register Enable
     EQ_COND            : out std_logic;  -- Branch if (not) Equal to Zero
-    IS_JUMP            : IN std_logic;  -- Is jump or branch instruction
+    IS_JUMP            : out std_logic;  -- Is jump or branch instruction
     -- ALU Operation Code
     ALU_OPCODE         : out aluOpType; -- choose between implicit or exlicit coding, like std_logic_vector(ALU_OPC_SIZE -1 downto 0);
     
