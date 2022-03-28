@@ -74,13 +74,6 @@ component DataPath_BASIC is
 end component;
 
 component dlx_cu is
-  generic (
-    MICROCODE_MEM_SIZE :     integer := 45;  -- Microcode Memory Size
-    FUNC_SIZE          :     integer := 11;  -- Func Field Size for R-Type Ops
-    OP_CODE_SIZE       :     integer := 6;  -- Op Code Size
-    -- ALU_OPC_SIZE       :     integer := 6;  -- ALU Op Code Word Size
-    IR_SIZE            :     integer := 32;  -- Instruction Register Size    
-    CW_SIZE            :     integer := 16);  -- Control Word Size
   port (
     Clk                : in  std_logic;  -- Clock
     Rst                : in  std_logic;  -- Reset:Active-Low
