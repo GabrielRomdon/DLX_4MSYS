@@ -1,208 +1,170 @@
 library IEEE;
-	use IEEE.std_logic_1164.all;
-
-	use work.myTypes.all;
-
-	use work.ROCACHE_PKG.all;
-	use work.RWCACHE_PKG.all;
-
+use IEEE.std_logic_1164.all;
+use work.Log2.all;
+use work.myTypes.all;
 
 entity DLX is
-	generic (
-    	IR_SIZE      : integer := 32;       -- Instruction Register Size
-    	PC_SIZE      : integer := 32       -- Program Counter Size
-    );
-	port (
-		-- Inputs
-		CLK						: in std_logic;		-- Clock
-		RST						: in std_logic;		-- Reset:Active-High
+	generic(N : integer := WORD;
+		DRAM_SIZE : integer := DRAM_SIZE;
+		IR_SIZE : integer := IR_SIZE);
+	port(	CLK: IN std_logic;
+		RST: IN std_logic;
 
-		IRAM_ADDRESS			: out std_logic_vector(Instr_size - 1 downto 0);
-		IRAM_ISSUE				: out std_logic;
-		IRAM_READY				: in std_logic;
-		IRAM_DATA				: in std_logic_vector(2*Data_size-1 downto 0);
+		-- IRAM SIGNALS
+		I_ADDR: OUT std_logic_vector(IR_SIZE-1 downto 0);
+		I_DATA: IN std_logic_vector(IR_SIZE-1 downto 0);
 
-		DRAM_ADDRESS			: out std_logic_vector(Instr_size-1 downto 0);
-		DRAM_ISSUE				: out std_logic;
-		DRAM_READNOTWRITE		: out std_logic;
-		DRAM_READY				: in std_logic;
-		DRAM_DATA				: inout std_logic_vector(2*Data_size-1 downto 0)
-	);
+		-- DRAM SIGNALS
+		D_WR: OUT std_logic;
+		D_ADDR: OUT std_logic_vector(Log2(DRAM_SIZE)-1 downto 0);
+		D_DATA_IN: OUT std_logic_vector(N-1 downto 0);
+		D_DATA_OUT: IN std_logic_vector(N-1 downto 0));
 end DLX;
 
--- This architecture is currently not complete
--- it just includes:
--- instruction register (complete)
--- program counter (complete)
--- instruction ram memory (complete)
--- control unit (UNCOMPLETE)
---
-architecture dlx_rtl of DLX is
+architecture DLX_RTL of DLX is
 
- --------------------------------------------------------------------
- -- Components Declaration
- --------------------------------------------------------------------
-  
-  -- Instruction Ram And Data Ram are in the TestBench and you must connect it using
-  
---  		IRAM_ADDRESS			: out std_logic_vector(Instr_size - 1 downto 0);
---		IRAM_ISSUE				: out std_logic;
---		IRAM_READY				: in std_logic;
---		IRAM_DATA				: in std_logic_vector(2*Data_size-1 downto 0);
---
---		DRAM_ADDRESS			: out std_logic_vector(Instr_size-1 downto 0);
---		DRAM_ISSUE				: out std_logic;
---		DRAM_READNOTWRITE		: out std_logic;
---		DRAM_READY				: in std_logic;
---		DRAM_DATA				: inout std_logic_vector(2*Data_size-1 downto 0)
+component REG_GENERIC is -- generic register
+	generic(NBIT: integer:= N);
+	port( 	CLK:	IN std_logic;
+			RST:	IN std_logic;
+			EN:	IN std_logic;
+			DATA_IN: IN std_logic_vector(NBIT-1 downto 0);
+			DATA_OUT:	OUT std_logic_vector(NBIT-1 downto 0));
+end component;
 
-  -- Datapath (MISSING!You must include it in your final project!)
-  
-  -- Control Unit
-  component dlx_cu
-  generic (
-    MICROCODE_MEM_SIZE :     integer := 10;  -- Microcode Memory Size
-    FUNC_SIZE          :     integer := 11;  -- Func Field Size for R-Type Ops
-    OP_CODE_SIZE       :     integer := 6;  -- Op Code Size
-    --ALU_OPC_SIZE       :     integer := 6;  -- ALU Op Code Word Size
-    IR_SIZE            :     integer := 32;  -- Instruction Register Size    
-    CW_SIZE            :     integer := 15);  -- Control Word Size
+component DataPath_BASIC is
+	generic(N : integer := N;
+		IR_SIZE : integer := IR_SIZE;
+		RF_SIZE : integer := RF_SIZE;
+		DRAM_SIZE : integer := DRAM_SIZE);
+	port  ( CLK            : IN std_logic;
+		RST            : IN std_logic;  -- Low Reset
+		IR_IN          : IN std_logic_vector(IR_SIZE-1 downto 0); -- Instruction word out from DP
+		      
+		      -- IF Control Signal
+		      IR_LATCH_EN    : IN std_logic;  -- Instruction Register Latch Enable
+		      NPC_LATCH_EN   : IN std_logic;  -- NextProgramCounter Register Latch Enable
+		      
+		      -- ID Control Signals
+		      RegA_LATCH_EN  : IN std_logic;  -- Register A Latch Enable
+		      RegB_LATCH_EN  : IN std_logic;  -- Register B Latch Enable
+		      RegIMM_LATCH_EN: IN std_logic;  -- Immediate Register Latch Enable
+		      SIGNED_IMM     : IN std_logic;  -- Extender sel, signed or unsigned immediate
+
+		      -- EX Control Signals
+		      MUXA_SEL       : IN std_logic;  -- MUX-A Sel
+		      MUXB_SEL       : IN std_logic;  -- MUX-B Sel
+		      ALU_OUTREG_EN  : IN std_logic;  -- ALU output Register Enable
+		      EQ_COND        : IN std_logic;  -- Branch if (not) Equal to Zero
+          IS_JUMP        : IN std_logic;  -- Take branch unconditionally
+		      -- ALU Operation Code
+		      ALU_OPCODE     : IN aluOpType; -- choose between implicit or exlicit coding, like std_logic_vector(ALU_OPC_SIZE -1 downto 0);
+		      
+		      -- MEM Control Signals
+		      --DRAM_WE        : IN std_logic;  -- Data RAM Write Enable
+		      --LMD_LATCH_EN   : IN std_logic;  -- LMD Register Latch Enable
+		      JUMP_EN        : IN std_logic;  -- JUMP Enable Signal for PC input MUX
+		      PC_LATCH_EN    : IN std_logic;  -- Program Counte Latch Enable
+
+		      -- WB Control signals
+		      IS_JAL         : IN std_logic;
+		      WB_MUX_SEL     : IN std_logic;  -- Write Back MUX Sel
+		      RF_WE          : IN std_logic;
+		      
+		-- DRAM SIGNALS
+		D_ADDR: OUT std_logic_vector(Log2(DRAM_SIZE)-1 downto 0);
+		D_DATA_IN: OUT std_logic_vector(N-1 downto 0);
+		D_DATA_OUT: IN std_logic_vector(N-1 downto 0);
+		       
+		      PC_IN			     : IN std_logic_vector(N-1 downto 0);
+		      PC_BUS			   : OUT std_logic_vector(N-1 downto 0)); -- For PC out from DP, ie for Control Unit
+end component;
+
+component dlx_cu is
   port (
     Clk                : in  std_logic;  -- Clock
     Rst                : in  std_logic;  -- Reset:Active-Low
     -- Instruction Register
     IR_IN              : in  std_logic_vector(IR_SIZE - 1 downto 0);
+    
     -- IF Control Signal
     IR_LATCH_EN        : out std_logic;  -- Instruction Register Latch Enable
     NPC_LATCH_EN       : out std_logic;
+                                        -- NextProgramCounter Register Latch Enable
     -- ID Control Signals
     RegA_LATCH_EN      : out std_logic;  -- Register A Latch Enable
     RegB_LATCH_EN      : out std_logic;  -- Register B Latch Enable
     RegIMM_LATCH_EN    : out std_logic;  -- Immediate Register Latch Enable
+		SIGNED_IMM         : out std_logic;  -- Extender sel, signed or unsigned immediate
+
     -- EX Control Signals
     MUXA_SEL           : out std_logic;  -- MUX-A Sel
     MUXB_SEL           : out std_logic;  -- MUX-B Sel
     ALU_OUTREG_EN      : out std_logic;  -- ALU Output Register Enable
     EQ_COND            : out std_logic;  -- Branch if (not) Equal to Zero
+    IS_JUMP            : out std_logic;  -- Is jump or branch instruction
     -- ALU Operation Code
-    ALU_OPCODE         : out aluOp; -- choose between implicit or exlicit coding, like std_logic_vector(ALU_OPC_SIZE -1 downto 0);
+    ALU_OPCODE         : out aluOpType; -- choose between implicit or exlicit coding, like std_logic_vector(ALU_OPC_SIZE -1 downto 0);
+    
     -- MEM Control Signals
     DRAM_WE            : out std_logic;  -- Data RAM Write Enable
     LMD_LATCH_EN       : out std_logic;  -- LMD Register Latch Enable
     JUMP_EN            : out std_logic;  -- JUMP Enable Signal for PC input MUX
     PC_LATCH_EN        : out std_logic;  -- Program Counte Latch Enable
+
     -- WB Control signals
+    IS_JAL             : out std_logic;  
     WB_MUX_SEL         : out std_logic;  -- Write Back MUX Sel
     RF_WE              : out std_logic);  -- Register File Write Enable
 
-  end component;
+end component;
 
+signal PC_BUS: std_logic_vector(N-1 downto 0);
+signal current_PC : std_logic_vector(N-1 downto 0);
+signal next_IW : std_logic_vector(IR_SIZE-1 downto 0);
+signal current_IW : std_logic_vector(IR_SIZE-1 downto 0);
 
-  ----------------------------------------------------------------
-  -- Signals Declaration
-  ----------------------------------------------------------------
-  
-  -- Instruction Register (IR) and Program Counter (PC) declaration
-  signal IR : std_logic_vector(IR_SIZE - 1 downto 0);
-  signal PC : std_logic_vector(PC_SIZE - 1 downto 0);
+-- intermediate signals
+signal IR_LATCH_EN        : std_logic;
+signal NPC_LATCH_EN       : std_logic;
+signal RegA_LATCH_EN      : std_logic;
+signal RegB_LATCH_EN      : std_logic;
+signal RegIMM_LATCH_EN    : std_logic;
+signal SIGNED_IMM         : std_logic;
+signal MUXA_SEL           : std_logic;
+signal MUXB_SEL           : std_logic;
+signal ALU_OUTREG_EN      : std_logic;
+signal EQ_COND            : std_logic;
+signal IS_JUMP            : std_logic;
+signal ALU_OPCODE         : aluOpType;
+signal DRAM_WE            : std_logic;
+signal LMD_LATCH_EN       : std_logic;
+signal JUMP_EN            : std_logic;
+signal PC_LATCH_EN        : std_logic;
+signal IS_JAL             : std_logic;
+signal WB_MUX_SEL         : std_logic;
+signal RF_WE              : std_logic;
 
-  -- Instruction Ram Bus signals
-  signal IRam_DOut : std_logic_vector(IR_SIZE - 1 downto 0);
+begin
 
-  -- Datapath Bus signals
-  signal PC_BUS : std_logic_vector(PC_SIZE -1 downto 0);
+-- registers:
+PC_REG : REG_GENERIC
+	generic map(N)
+	port map(CLK => CLK, RST => RST, EN => PC_LATCH_EN, DATA_IN => PC_BUS, DATA_OUT => current_PC);
 
-  -- Control Unit Bus signals
-  signal IR_LATCH_EN_i : std_logic;
-  signal NPC_LATCH_EN_i : std_logic;
-  signal RegA_LATCH_EN_i : std_logic;
-  signal RegB_LATCH_EN_i : std_logic;
-  signal RegIMM_LATCH_EN_i : std_logic;
-  signal EQ_COND_i : std_logic;
-  signal JUMP_EN_i : std_logic;
-  signal ALU_OPCODE_i : aluOp;
-  signal MUXA_SEL_i : std_logic;
-  signal MUXB_SEL_i : std_logic;
-  signal ALU_OUTREG_EN_i : std_logic;
-  signal DRAM_WE_i : std_logic;
-  signal LMD_LATCH_EN_i : std_logic;
-  signal PC_LATCH_EN_i : std_logic;
-  signal WB_MUX_SEL_i : std_logic;
-  signal RF_WE_i : std_logic;
+--instruction register
+-- VALUE RESET => address 80000000, not 0 which would be an ADD
+current_IW <= next_IW;
 
+I_ADDR <= current_PC;
+next_IW <= I_DATA;
 
-  -- Data Ram Bus signals
+-- datapath:
+DP : DataPath_BASIC
+	port map(CLK => CLK, RST => RST, IR_IN => current_IW, IR_LATCH_EN => IR_LATCH_EN, NPC_LATCH_EN => NPC_LATCH_EN, RegA_LATCH_EN => RegA_LATCH_EN, RegB_LATCH_EN => RegB_LATCH_EN, RegIMM_LATCH_EN => RegIMM_LATCH_EN, SIGNED_IMM => SIGNED_IMM, MUXA_SEL => MUXA_SEL, MUXB_SEL => MUXB_SEL, ALU_OUTREG_EN => ALU_OUTREG_EN, EQ_COND => EQ_COND, IS_JUMP => IS_JUMP, ALU_OPCODE => ALU_OPCODE, JUMP_EN => JUMP_EN, PC_LATCH_EN => PC_LATCH_EN, IS_JAL => IS_JAL, WB_MUX_SEL => WB_MUX_SEL, RF_WE => RF_WE, D_ADDR => D_ADDR, D_DATA_IN => D_DATA_IN, D_DATA_OUT => D_DATA_OUT, PC_IN => current_PC, PC_BUS => PC_BUS);
 
+-- control unit:
+CU : dlx_cu
+	port map(Clk => CLK, Rst => RST, IR_IN => current_IW, IR_LATCH_EN => IR_LATCH_EN, NPC_LATCH_EN => NPC_LATCH_EN, RegA_LATCH_EN => RegA_LATCH_EN, RegB_LATCH_EN => RegB_LATCH_EN, RegIMM_LATCH_EN => RegIMM_LATCH_EN, SIGNED_IMM => SIGNED_IMM, MUXA_SEL => MUXA_SEL, MUXB_SEL => MUXB_SEL, ALU_OUTREG_EN => ALU_OUTREG_EN, EQ_COND => EQ_COND, IS_JUMP => IS_JUMP, ALU_OPCODE => ALU_OPCODE, DRAM_WE => D_WR, LMD_LATCH_EN => LMD_LATCH_EN, JUMP_EN => JUMP_EN, PC_LATCH_EN => PC_LATCH_EN, IS_JAL => IS_JAL, WB_MUX_SEL => WB_MUX_SEL, RF_WE => RF_WE);
 
-  begin  -- DLX
-
-    -- This is the input to program counter: currently zero 
-    -- so no uptade of PC happens
-    -- TO BE REMOVED AS SOON AS THE DATAPATH IS INSERTED!!!!!
-    -- a proper connection must be made here if more than one
-    -- instruction must be executed
-    PC_BUS <= (others => '0'); 
-
-
-    -- purpose: Instruction Register Process
-    -- type   : sequential
-    -- inputs : Clk, Rst, IRam_DOut, IR_LATCH_EN_i
-    -- outputs: IR_IN_i
-    IR_P: process (Clk, Rst)
-    begin  -- process IR_P
-      if Rst = '0' then                 -- asynchronous reset (active low)
-        IR <= (others => '0');
-      elsif Clk'event and Clk = '1' then  -- rising clock edge
-        if (IR_LATCH_EN_i = '1') then
-          IR <= IRam_DOut;
-        end if;
-      end if;
-    end process IR_P;
-    
-    -- COMPLETE WITH CACHE TO CONNECT IRAM and DRAM in the testbench...
-
-
-    -- purpose: Program Counter Process
-    -- type   : sequential
-    -- inputs : Clk, Rst, PC_BUS
-    -- outputs: IRam_Addr
-    PC_P: process (Clk, Rst)
-    begin  -- process PC_P
-      if Rst = '0' then                 -- asynchronous reset (active low)
-        PC <= (others => '0');
-      elsif Clk'event and Clk = '1' then  -- rising clock edge
-        if (PC_LATCH_EN_i = '1') then
-          PC <= PC_BUS;
-        end if;
-      end if;
-    end process PC_P;
-
-    -- Control Unit Instantiation
-    CU_I: dlx_cu
-      port map (
-          Clk             => Clk,
-          Rst             => Rst,
-          IR_IN           => IR,
-          IR_LATCH_EN     => IR_LATCH_EN_i,
-          NPC_LATCH_EN    => NPC_LATCH_EN_i,
-          RegA_LATCH_EN   => RegA_LATCH_EN_i,
-          RegB_LATCH_EN   => RegB_LATCH_EN_i,
-          RegIMM_LATCH_EN => RegIMM_LATCH_EN_i,
-          MUXA_SEL        => MUXA_SEL_i,
-          MUXB_SEL        => MUXB_SEL_i,
-          ALU_OUTREG_EN   => ALU_OUTREG_EN_i,
-          EQ_COND         => EQ_COND_i,
-          ALU_OPCODE      => ALU_OPCODE_i,
-          DRAM_WE         => DRAM_WE_i,
-          LMD_LATCH_EN    => LMD_LATCH_EN_i,
-          JUMP_EN         => JUMP_EN_i,
-          PC_LATCH_EN     => PC_LATCH_EN_i,
-          WB_MUX_SEL      => WB_MUX_SEL_i,
-          RF_WE           => RF_WE_i);
-          
-          -- IMPLEMENTS DATAPATH
-
-
-    
-    
-end dlx_rtl;
+end DLX_RTL;

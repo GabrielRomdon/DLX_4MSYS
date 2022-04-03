@@ -1,0 +1,37 @@
+##############################################################
+#SCRIPT FOR SPEEDING UP and RECORDING the REGISTER FILE SYNTHESIS#
+# analyzing and checking vhdl netlist#
+# here the analyze command is used for each file from bottom to top #
+##############################################################
+analyze -library WORK -format vhdl {constants.vhd}
+analyze -library WORK -format vhdl {registerfile.vhd}
+##############################################################
+# elaborating the top entity
+elaborate register_file -architecture BEHAVIORAL -parameters "NBIT_ADDR=>5,NROWS_REG=>32,NBIT_DATA=>64"
+##########################################
+# first compilation, without constraints #
+compile 
+# reporting riming and power after the first synthesis without constraints #
+report_timing > report/regf_noconstraint_1t.rpt
+report_area > report/regf_noconstraint_1a.rpt
+
+# second compilation, with clock constraints #
+# define clock period #
+create_clock -name "CLK" -period 2 CLK
+# compile
+compile
+# save report
+report_timing > report/regf_clockconstraint_1t.rpt
+report_area   > report/regf_clockconstraint_1a.rpt
+
+# third compilation, with clock and I/O constraints # 
+set_max_delay 2 -from [all_inputs] -to [all_outputs]
+# compile
+compile -map_effort high
+# save report
+report_timing > report/regf_fullconstraint_opt_1t.rpt
+report_area   > report/regf_fullconstraint_opt_1a.rpt
+# saving files
+write -hierarchy -format ddc -output register_file_topt.ddc
+write -hierarchy -format vhdl -output register_file_topt.vhdl
+write -hierarchy -format verilog -output register_file_topt.v

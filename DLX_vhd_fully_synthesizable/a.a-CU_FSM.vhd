@@ -35,7 +35,7 @@ entity dlx_cu is
     ALU_OUTREG_EN      : out std_logic;  -- ALU Output Register Enable
     EQ_COND            : out std_logic;  -- Branch if (not) Equal to Zero
     -- ALU Operation Code
-    ALU_OPCODE         : out aluOp; -- choose between implicit or exlicit coding, like std_logic_vector(ALU_OPC_SIZE -1 downto 0);
+    ALU_OPCODE         : out aluOpType; -- choose between implicit or exlicit coding, like std_logic_vector(ALU_OPC_SIZE -1 downto 0);
     
     -- MEM Control Signals
     DRAM_WE            : out std_logic;  -- Data RAM Write Enable
@@ -68,10 +68,10 @@ architecture dlx_cu_fsm of dlx_cu is
   signal cw   : std_logic_vector(CW_SIZE - 1 downto 0); -- full control word read from cw_mem
 
 
-  signal aluOpcode_i: aluOp := NOP; -- ALUOP defined in package
-  signal aluOpcode1: aluOp := NOP;
-  signal aluOpcode2: aluOp := NOP;
-  signal aluOpcode3: aluOp := NOP;
+  signal aluOpcode_i: aluOpType := NOP; -- ALUOP defined in package
+  signal aluOpcode1: aluOpType := NOP;
+  signal aluOpcode2: aluOpType := NOP;
+  signal aluOpcode3: aluOpType := NOP;
 
   -- declarations for FSM implementation (to be completed whith alla states!)
 	type TYPE_STATE is (
