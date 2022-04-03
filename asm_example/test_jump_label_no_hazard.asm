@@ -32,7 +32,7 @@ next:
 	nop
 	nop
 	nop
-	j try
+	jal try
 	nop
 	nop
 	nop
