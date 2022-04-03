@@ -2,3 +2,8 @@
 transcript
 work/
 vsim.wlf
+
+### SYNTHESIS ###
+command.log
+default.svf
+filenames.log
