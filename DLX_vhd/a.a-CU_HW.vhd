@@ -57,7 +57,7 @@ architecture dlx_cu_hw of dlx_cu is
   signal cw_mem : mem_array := ("111101001000001011", -- R type
                                 "000000000000000000",
                                 "111011111110011000", -- J (0X02) instruction encoding corresponds to the address to this ROM
-                                "111011111110011100", -- JAL to be filled
+                                "111011111110011101", -- JAL to be filled
                                 "111011111100011000", -- BEQZ 
                                 "111011111000011000", -- BNEZ 
                                 "000000000000000000",
