@@ -150,8 +150,9 @@ begin  -- dlx_cu_rtl
   PC_LATCH_EN  <= cw4(CW4_SIZE - 4);
   
   -- stage five control signals
-  WB_MUX_SEL <= cw5(CW5_SIZE - 1);
-  RF_WE      <= cw5(CW5_SIZE - 2);
+  IS_JAL     <= cw5(CW5_SIZE - 1);
+  WB_MUX_SEL <= cw5(CW5_SIZE - 2);
+  RF_WE      <= cw5(CW5_SIZE - 3);
 
   -- Register for CW1 is separated to avoid the propagation of a wrong control word
   CW_PIPE_CW1: process (Clk, Rst)
