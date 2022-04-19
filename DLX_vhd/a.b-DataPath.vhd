@@ -275,6 +275,6 @@ ALU_i : ALU
 	
 --data memory:
 RAM : MEMORY
-    port map(CLK => CLK, RST => RST, EN => '1', RD => '1', WR => DRAM_WE, ADDR => current_ALU_OUT(Log2(DRAM_SIZE)-1 downto 0), DATA_IN => B_OUT2, DATA_OUT => current_RAM_OUT);
+    port map(CLK => CLK, RST => RST, EN => '1', RD => LMD_LATCH_EN, WR => DRAM_WE, ADDR => current_ALU_OUT(Log2(DRAM_SIZE)-1 downto 0), DATA_IN => B_OUT2, DATA_OUT => current_RAM_OUT);
 
 end STRUCTURE;
