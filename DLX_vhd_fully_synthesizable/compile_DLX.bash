@@ -16,3 +16,4 @@ vcom a.b-DataPath.core/a.b.c-registerfile.vhd
 vcom a.b-DataPath.core/a.b.c-branching_unit.vhd
 vcom a.b-DataPath.vhd
 vcom a-DLX.vhd
+vcom test_bench/TB_DLX.vhd
