@@ -15,7 +15,8 @@ entity DLX is
 		I_DATA: IN std_logic_vector(IR_SIZE-1 downto 0);
 
 		-- DRAM SIGNALS
-		D_WR: OUT std_logic;
+		D_RR: OUT std_logic;	-- Read enable
+		D_WR: OUT std_logic;	-- Write enable
 		D_ADDR: OUT std_logic_vector(Log2(DRAM_SIZE)-1 downto 0);
 		D_DATA_IN: OUT std_logic_vector(N-1 downto 0);
 		D_DATA_OUT: IN std_logic_vector(N-1 downto 0));
@@ -138,7 +139,6 @@ signal EQ_COND            : std_logic;
 signal IS_JUMP            : std_logic;
 signal ALU_OPCODE         : aluOpType;
 signal DRAM_WE            : std_logic;
-signal LMD_LATCH_EN       : std_logic;
 signal JUMP_EN            : std_logic;
 signal PC_LATCH_EN        : std_logic;
 signal IS_JAL             : std_logic;
@@ -165,6 +165,6 @@ DP : DataPath_BASIC
 
 -- control unit:
 CU : dlx_cu
-	port map(Clk => CLK, Rst => RST, IR_IN => current_IW, IR_LATCH_EN => IR_LATCH_EN, NPC_LATCH_EN => NPC_LATCH_EN, RegA_LATCH_EN => RegA_LATCH_EN, RegB_LATCH_EN => RegB_LATCH_EN, RegIMM_LATCH_EN => RegIMM_LATCH_EN, SIGNED_IMM => SIGNED_IMM, MUXA_SEL => MUXA_SEL, MUXB_SEL => MUXB_SEL, ALU_OUTREG_EN => ALU_OUTREG_EN, EQ_COND => EQ_COND, IS_JUMP => IS_JUMP, ALU_OPCODE => ALU_OPCODE, DRAM_WE => D_WR, LMD_LATCH_EN => LMD_LATCH_EN, JUMP_EN => JUMP_EN, PC_LATCH_EN => PC_LATCH_EN, IS_JAL => IS_JAL, WB_MUX_SEL => WB_MUX_SEL, RF_WE => RF_WE);
+	port map(Clk => CLK, Rst => RST, IR_IN => current_IW, IR_LATCH_EN => IR_LATCH_EN, NPC_LATCH_EN => NPC_LATCH_EN, RegA_LATCH_EN => RegA_LATCH_EN, RegB_LATCH_EN => RegB_LATCH_EN, RegIMM_LATCH_EN => RegIMM_LATCH_EN, SIGNED_IMM => SIGNED_IMM, MUXA_SEL => MUXA_SEL, MUXB_SEL => MUXB_SEL, ALU_OUTREG_EN => ALU_OUTREG_EN, EQ_COND => EQ_COND, IS_JUMP => IS_JUMP, ALU_OPCODE => ALU_OPCODE, DRAM_WE => D_WR, LMD_LATCH_EN => D_RR, JUMP_EN => JUMP_EN, PC_LATCH_EN => PC_LATCH_EN, IS_JAL => IS_JAL, WB_MUX_SEL => WB_MUX_SEL, RF_WE => RF_WE);
 
 end DLX_RTL;

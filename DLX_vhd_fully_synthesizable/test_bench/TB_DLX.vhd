@@ -11,6 +11,7 @@ architecture TEST of tb_dlx is
     signal Reset: std_logic := '1';
     signal i_addr: std_logic_vector(IR_SIZE-1 downto 0);
     signal i_data: std_logic_vector(IR_SIZE-1 downto 0);
+    signal d_rr: std_logic;
     signal d_wr: std_logic;
     signal d_addr: std_logic_vector(Log2(DRAM_SIZE)-1 downto 0);
     signal d_data_in: std_logic_vector(WORD-1 downto 0);
@@ -52,6 +53,7 @@ architecture TEST of tb_dlx is
 		I_DATA: IN std_logic_vector(IR_SIZE-1 downto 0);
 
 		-- DRAM SIGNALS
+		D_RR: OUT std_logic;
 		D_WR: OUT std_logic;
 		D_ADDR: OUT std_logic_vector(Log2(DRAM_SIZE)-1 downto 0);
 		D_DATA_IN: OUT std_logic_vector(N-1 downto 0);
@@ -63,11 +65,11 @@ begin
 	Port Map (Reset, i_addr, i_data);
 
 	DMEM: MEMORY
-	Port Map (Clock, Reset, '1', '1', d_wr, d_addr, d_data_in, d_data_out);
+	Port Map (Clock, Reset, '1', d_rr, d_wr, d_addr, d_data_in, d_data_out);
 
         -- instance of DLX
 	U1: DLX
-	Port Map (Clock, Reset, i_addr, i_data, d_wr, d_addr, d_data_in, d_data_out);
+	Port Map (Clock, Reset, i_addr, i_data, d_rr, d_wr, d_addr, d_data_in, d_data_out);
 	
 
         PCLOCK : process(Clock)
