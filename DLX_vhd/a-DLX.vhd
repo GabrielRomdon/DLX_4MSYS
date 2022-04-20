@@ -68,6 +68,7 @@ component DataPath_BASIC is
 			PC_LATCH_EN        : IN std_logic;  -- Program Counte Latch Enable
 
 			-- WB Control signals
+			IS_JAL             : IN std_logic;  
 			WB_MUX_SEL         : IN std_logic;  -- Write Back MUX Sel
 			RF_WE              : IN std_logic;
 			
@@ -108,6 +109,7 @@ component dlx_cu is
     PC_LATCH_EN        : out std_logic;  -- Program Counte Latch Enable
 
     -- WB Control signals
+    IS_JAL             : out std_logic;  
     WB_MUX_SEL         : out std_logic;  -- Write Back MUX Sel
     RF_WE              : out std_logic);  -- Register File Write Enable
 
@@ -135,6 +137,7 @@ signal DRAM_WE            : std_logic;
 signal LMD_LATCH_EN       : std_logic;
 signal JUMP_EN            : std_logic;
 signal PC_LATCH_EN        : std_logic;
+signal IS_JAL             : std_logic;
 signal WB_MUX_SEL         : std_logic;
 signal RF_WE              : std_logic;
 
@@ -155,10 +158,10 @@ IRAM_i : IRAM
 
 -- datapath:
 DP : DataPath_BASIC
-	port map(CLK => CLK, RST => RST, IR_IN => current_IW, IR_LATCH_EN => IR_LATCH_EN, NPC_LATCH_EN => NPC_LATCH_EN, RegA_LATCH_EN => RegA_LATCH_EN, RegB_LATCH_EN => RegB_LATCH_EN, RegIMM_LATCH_EN => RegIMM_LATCH_EN, SIGNED_IMM => SIGNED_IMM, MUXA_SEL => MUXA_SEL, MUXB_SEL => MUXB_SEL, ALU_OUTREG_EN => ALU_OUTREG_EN, EQ_COND => EQ_COND, IS_JUMP => IS_JUMP, ALU_OPCODE => ALU_OPCODE, DRAM_WE => DRAM_WE, LMD_LATCH_EN => LMD_LATCH_EN, JUMP_EN => JUMP_EN, PC_LATCH_EN => PC_LATCH_EN, WB_MUX_SEL => WB_MUX_SEL, RF_WE => RF_WE, PC_IN => current_PC, PC_BUS => PC_BUS);
+	port map(CLK => CLK, RST => RST, IR_IN => current_IW, IR_LATCH_EN => IR_LATCH_EN, NPC_LATCH_EN => NPC_LATCH_EN, RegA_LATCH_EN => RegA_LATCH_EN, RegB_LATCH_EN => RegB_LATCH_EN, RegIMM_LATCH_EN => RegIMM_LATCH_EN, SIGNED_IMM => SIGNED_IMM, MUXA_SEL => MUXA_SEL, MUXB_SEL => MUXB_SEL, ALU_OUTREG_EN => ALU_OUTREG_EN, EQ_COND => EQ_COND, IS_JUMP => IS_JUMP, ALU_OPCODE => ALU_OPCODE, DRAM_WE => DRAM_WE, LMD_LATCH_EN => LMD_LATCH_EN, JUMP_EN => JUMP_EN, PC_LATCH_EN => PC_LATCH_EN, IS_JAL => IS_JAL, WB_MUX_SEL => WB_MUX_SEL, RF_WE => RF_WE, PC_IN => current_PC, PC_BUS => PC_BUS);
 
 -- control unit:
 CU : dlx_cu
-	port map(Clk => CLK, Rst => RST, IR_IN => current_IW, IR_LATCH_EN => IR_LATCH_EN, NPC_LATCH_EN => NPC_LATCH_EN, RegA_LATCH_EN => RegA_LATCH_EN, RegB_LATCH_EN => RegB_LATCH_EN, RegIMM_LATCH_EN => RegIMM_LATCH_EN, SIGNED_IMM => SIGNED_IMM, MUXA_SEL => MUXA_SEL, MUXB_SEL => MUXB_SEL, ALU_OUTREG_EN => ALU_OUTREG_EN, EQ_COND => EQ_COND, IS_JUMP => IS_JUMP, ALU_OPCODE => ALU_OPCODE, DRAM_WE => DRAM_WE, LMD_LATCH_EN => LMD_LATCH_EN, JUMP_EN => JUMP_EN, PC_LATCH_EN => PC_LATCH_EN, WB_MUX_SEL => WB_MUX_SEL, RF_WE => RF_WE);
+	port map(Clk => CLK, Rst => RST, IR_IN => current_IW, IR_LATCH_EN => IR_LATCH_EN, NPC_LATCH_EN => NPC_LATCH_EN, RegA_LATCH_EN => RegA_LATCH_EN, RegB_LATCH_EN => RegB_LATCH_EN, RegIMM_LATCH_EN => RegIMM_LATCH_EN, SIGNED_IMM => SIGNED_IMM, MUXA_SEL => MUXA_SEL, MUXB_SEL => MUXB_SEL, ALU_OUTREG_EN => ALU_OUTREG_EN, EQ_COND => EQ_COND, IS_JUMP => IS_JUMP, ALU_OPCODE => ALU_OPCODE, DRAM_WE => DRAM_WE, LMD_LATCH_EN => LMD_LATCH_EN, JUMP_EN => JUMP_EN, PC_LATCH_EN => PC_LATCH_EN, IS_JAL => IS_JAL, WB_MUX_SEL => WB_MUX_SEL, RF_WE => RF_WE);
 
 end DLX_RTL;

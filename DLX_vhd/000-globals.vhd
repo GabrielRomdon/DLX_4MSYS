@@ -1,5 +1,6 @@
 library ieee;
 use ieee.std_logic_1164.all;
+use work.Log2.all;
 
 package myTypes is
 
@@ -13,7 +14,7 @@ package myTypes is
     constant IR_SIZE            : integer :=  32;  	-- Instruction Word/Register size
 
     -- Control word sizes -> Hardwired
-    constant CW_SIZE      : integer :=  17;		-- Control Word size
+    constant CW_SIZE      : integer :=  18;		-- Control Word size
     constant NB_SIG_S1    : integer :=  2;	-- Control Word size
     constant NB_SIG_S2    : integer :=  4;	-- Control Word size
     constant NB_SIG_S3    : integer :=  5;	-- Control Word size
@@ -36,6 +37,7 @@ package myTypes is
     constant LSB_ADD_RD2        : integer :=  16;  	-- Least significant bit for RD2 address in IR
     constant MSB_ADD_RD3        : integer :=  15;  	-- Most significant bit for RD3 address in IR
     constant LSB_ADD_RD3        : integer :=  11;  	-- Least significant bit for RD3 address in IR
+    constant REG31 		: std_logic_vector(Log2(RF_SIZE)-1 downto 0) := "11111";
 
     -- R-TYPE INSTRUCTION -- -> FUNC field
     constant RTYPE_ADD  : std_logic_vector(FUNC_SIZE - 1 downto 0) :=  "00000100000";    -- ADD RA,RB,RC

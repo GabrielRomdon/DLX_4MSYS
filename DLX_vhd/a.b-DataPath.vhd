@@ -38,6 +38,7 @@ entity DataPath_BASIC is
 		      PC_LATCH_EN    : IN std_logic;  -- Program Counte Latch Enable
 
 		      -- WB Control signals
+		      IS_JAL         : IN std_logic;
 		      WB_MUX_SEL     : IN std_logic;  -- Write Back MUX Sel
 		      RF_WE          : IN std_logic;
 		      
@@ -134,6 +135,8 @@ end component;
 
 signal current_PC       : std_logic_vector(N-1 downto 0);
 signal current_PC1      : std_logic_vector(N-1 downto 0);
+signal current_PC2      : std_logic_vector(N-1 downto 0);
+signal current_PC3      : std_logic_vector(N-1 downto 0);
 signal next_PC          : std_logic_vector(N-1 downto 0);
 signal current_NPC      : std_logic_vector(N-1 downto 0);
 signal next_NPC         : std_logic_vector(N-1 downto 0);
@@ -142,6 +145,7 @@ signal WB1_IN           : std_logic_vector(Log2(RF_SIZE)-1 downto 0);
 signal WB2_IN           : std_logic_vector(Log2(RF_SIZE)-1 downto 0);
 signal WB2_OUT          : std_logic_vector(Log2(RF_SIZE)-1 downto 0);
 signal WB3_OUT          : std_logic_vector(Log2(RF_SIZE)-1 downto 0);
+signal WB_ADDR          : std_logic_vector(Log2(RF_SIZE)-1 downto 0);
 signal A_IN             : std_logic_vector(N-1 downto 0);
 signal B_IN             : std_logic_vector(N-1 downto 0);
 signal IMM_IN           : std_logic_vector(N/2-1 downto 0);
@@ -149,6 +153,7 @@ signal A_OUT            : std_logic_vector(N-1 downto 0);
 signal B_OUT            : std_logic_vector(N-1 downto 0);
 signal B_OUT2           : std_logic_vector(N-1 downto 0);
 signal IMM_OUT          : std_logic_vector(N-1 downto 0);
+signal OUT_MUX_DATA     : std_logic_vector(N-1 downto 0);
 signal WB_DATA          : std_logic_vector(N-1 downto 0);
 signal ALU_OP1          : std_logic_vector(N-1 downto 0);
 signal ALU_OP2          : std_logic_vector(N-1 downto 0);
@@ -169,6 +174,12 @@ current_PC <= next_PC when PC_LATCH_EN='1' else (others => '0');
 PC_REG : REG_GENERIC
 	generic map(N)
 	port map(CLK => CLK, RST => RST, EN => PC_LATCH_EN, DATA_IN => PC_IN, DATA_OUT => current_PC1);
+PC2_REG : REG_GENERIC
+	generic map(N)
+	port map(CLK => CLK, RST => RST, EN => PC_LATCH_EN, DATA_IN => current_PC1, DATA_OUT => current_PC2);
+PC3_REG : REG_GENERIC
+	generic map(N)
+	port map(CLK => CLK, RST => RST, EN => PC_LATCH_EN, DATA_IN => current_PC2, DATA_OUT => current_PC3);
 
 NPC_REG : REG_GENERIC
 	generic map(N)
@@ -233,8 +244,15 @@ OP2_MUX : MUX21_GENERIC
 	
 OUT_MUX : MUX21_GENERIC
 	generic map(N)
-	port map(A => current_RAM_OUT, B => current_ALU_OUT2, SEL => WB_MUX_SEL, Y => WB_DATA);
+	port map(A => current_RAM_OUT, B => current_ALU_OUT2, SEL => WB_MUX_SEL, Y => OUT_MUX_DATA);
 
+JAL_DATA_MUX : MUX21_GENERIC
+	generic map(N)
+	port map(A => OUT_MUX_DATA, B => current_PC3, SEL => IS_JAL, Y => WB_DATA);
+
+JAL_ADDR_MUX : MUX21_GENERIC
+	generic map(Log2(RF_SIZE))
+	port map(A => WB3_OUT, B => REG31, SEL => IS_JAL, Y => WB_ADDR);
 -- adder for next PC computation:
 PC_ADDER : ADDER
 	generic map (N)
@@ -245,7 +263,7 @@ PC_ADDER : ADDER
 -- current_IW(21-1 downto 16) -> addr2
 -- current_IW(16-1 downto 11) -> addr3
 RF : REGISTER_FILE
-    port map(CLK => CLK, RST => RST, EN => '1', RD1 => RegA_LATCH_EN, RD2 => RegB_LATCH_EN, WR => RF_WE, ADD_WR => WB3_OUT, ADD_RD1 => current_IW(MSB_ADD_RD1 downto LSB_ADD_RD1), ADD_RD2 => current_IW(MSB_ADD_RD2 downto LSB_ADD_RD2), DATAIN => WB_DATA, OUT1 => A_OUT, OUT2 => B_OUT);
+    port map(CLK => CLK, RST => RST, EN => '1', RD1 => RegA_LATCH_EN, RD2 => RegB_LATCH_EN, WR => RF_WE, ADD_WR => WB_ADDR, ADD_RD1 => current_IW(MSB_ADD_RD1 downto LSB_ADD_RD1), ADD_RD2 => current_IW(MSB_ADD_RD2 downto LSB_ADD_RD2), DATAIN => WB_DATA, OUT1 => A_OUT, OUT2 => B_OUT);
 	
 -- immediate sign extension
 EXT : EXTENDER
@@ -257,6 +275,6 @@ ALU_i : ALU
 	
 --data memory:
 RAM : MEMORY
-    port map(CLK => CLK, RST => RST, EN => '1', RD => '1', WR => DRAM_WE, ADDR => current_ALU_OUT(Log2(DRAM_SIZE)-1 downto 0), DATA_IN => B_OUT2, DATA_OUT => current_RAM_OUT);
+    port map(CLK => CLK, RST => RST, EN => '1', RD => LMD_LATCH_EN, WR => DRAM_WE, ADDR => current_ALU_OUT(Log2(DRAM_SIZE)-1 downto 0), DATA_IN => B_OUT2, DATA_OUT => current_RAM_OUT);
 
 end STRUCTURE;
