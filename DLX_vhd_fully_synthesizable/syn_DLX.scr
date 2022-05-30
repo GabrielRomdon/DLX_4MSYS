@@ -1,0 +1,67 @@
+##############################################################
+# DLX SYNTHESIS #
+# analyzing and checking vhdl netlist #
+##############################################################
+
+analyze -library WORK -format VHDL {002-Log2.vhd}
+analyze -library WORK -format VHDL {000-globals.vhd}
+analyze -library WORK -format VHDL {001-generic_shifter.vhd}
+analyze -library WORK -format VHDL {a.a-CU_HW.vhd}
+analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.a-ALU.vhd}
+analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.a-NAND3.vhd}
+analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.a-NAND4.vhd}
+analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.b-Shifter.vhd}
+analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.c-adder.vhd}
+analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.c-extender.vhd}
+analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.c-mux21.vhd}
+analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.c-register.vhd}
+analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.c-registerfile.vhd}
+analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.c-branching_unit.vhd}
+analyze -library WORK -format VHDL {a.b-DataPath.vhd}
+analyze -library WORK -format VHDL {a-DLX.vhd}
+
+##############################################################
+# elaborating the top entity
+elaborate DLX -architecture DLX_RTL 
+
+# Min clock period that will be the "unachievable constraint"
+set min_clk_period 0.01 
+
+####### First compilation using the "unachievable constraint"
+set clk_period $min_clk_period
+create_clock -name MY_CLK -period $clk_period CLK
+set_max_delay $clk_period -from [all_inputs]
+set_max_delay $clk_period -to [all_outputs]
+set_max_delay $clk_period -from [all_inputs] -to [all_outputs]
+set_dont_touch_network MY_CLK
+#set_clock_uncertainty 0.07 [get_clocks MY_CLK]
+#set OLOAD [load_of NangateOpenCellLibrary/BUF_X4/A]
+#set_load $OLOAD [all_outputs]
+
+compile -map_effort high
+
+####### Calculating new clk period based on the results of the first compilation
+set worst_path [get_timing_path]
+set slack [get_attribute $worst_path slack]
+set sorted_sl [lsort -real -increasing $slack]
+set worst_slack [lindex $sorted_sl 0]
+####### Set new clk period based on the previous calculation
+set clk_period_new [expr $clk_period-$worst_slack]
+create_clock -name MY_CLK -period $clk_period_new CLK
+set_max_delay $clk_period_new -from [all_inputs]
+set_max_delay $clk_period_new -to [all_outputs]
+set_max_delay $clk_period_new -from [all_inputs] -to [all_outputs]
+set_dont_touch_network MY_CLK
+#set_clock_uncertainty 0.07 [get_clocks MY_CLK]
+#set OLOAD [load_of NangateOpenCellLibrary/BUF_X4/A]
+#set_load $OLOAD [all_outputs]
+
+####### Second compilation, for a constraint that is achievable
+compile -incremental_mapping
+
+####### Saving outputs
+report_timing > timing.txt
+report_area > area.txt
+report_resources > resources.txt
+
+#exit

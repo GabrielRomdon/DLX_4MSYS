@@ -1,0 +1,15 @@
+ 
+****************************************
+Report : resources
+Design : DLX
+Version: F-2011.09-SP3
+Date   : Mon May 30 18:00:51 2022
+****************************************
+
+
+No resource sharing information to report.
+
+No implementations to report
+
+No multiplexors to report
+1

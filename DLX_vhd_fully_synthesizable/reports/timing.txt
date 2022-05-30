@@ -1,0 +1,105 @@
+Information: Updating design information... (UID-85)
+Warning: Design 'DLX' contains 1 high-fanout nets. A fanout number of 1000 will be used for delay calculations involving these nets. (TIM-134)
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : DLX
+Version: F-2011.09-SP3
+Date   : Mon May 30 18:00:51 2022
+****************************************
+
+ # A fanout number of 1000 was used for high fanout net computations.
+
+Operating Conditions: typical   Library: NangateOpenCellLibrary
+Wire Load Model Mode: top
+
+  Startpoint: DP/RF/OUT2_reg[4]
+              (rising edge-triggered flip-flop clocked by MY_CLK)
+  Endpoint: DP/ALU_OUT_REG/DATA_OUT_reg[21]
+            (rising edge-triggered flip-flop clocked by MY_CLK)
+  Path Group: MY_CLK
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DLX                5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock MY_CLK (rise edge)                                0.00       0.00
+  clock network delay (ideal)                             0.00       0.00
+  DP/RF/OUT2_reg[4]/CK (SDFF_X1)                          0.00 #     0.00 r
+  DP/RF/OUT2_reg[4]/Q (SDFF_X1)                           0.07       0.07 f
+  DP/RF/OUT2[4] (REGISTER_FILE_NBIT32_NREG32)             0.00       0.07 f
+  DP/OP2_MUX/A[4] (MUX21_GENERIC_NBIT32_3)                0.00       0.07 f
+  DP/OP2_MUX/U23/Z (MUX2_X2)                              0.09       0.16 f
+  DP/OP2_MUX/Y[4] (MUX21_GENERIC_NBIT32_3)                0.00       0.16 f
+  DP/ALU_i/DATA2[4] (ALU_N32)                             0.00       0.16 f
+  DP/ALU_i/SHIFTER/DATA2[4] (BARREL_SHIFTER_N32)          0.00       0.16 f
+  DP/ALU_i/SHIFTER/U245/ZN (INV_X1)                       0.04       0.19 r
+  DP/ALU_i/SHIFTER/U187/ZN (AND2_X2)                      0.05       0.25 r
+  DP/ALU_i/SHIFTER/U359/ZN (NAND2_X1)                     0.04       0.28 f
+  DP/ALU_i/SHIFTER/U122/Z (BUF_X1)                        0.05       0.33 f
+  DP/ALU_i/SHIFTER/U135/ZN (OR2_X1)                       0.06       0.39 f
+  DP/ALU_i/SHIFTER/U19/ZN (NAND3_X1)                      0.03       0.42 r
+  DP/ALU_i/SHIFTER/U218/Z (MUX2_X1)                       0.05       0.47 r
+  DP/ALU_i/SHIFTER/U464/ZN (INV_X1)                       0.02       0.50 f
+  DP/ALU_i/SHIFTER/U3/Z (MUX2_X1)                         0.07       0.56 f
+  DP/ALU_i/SHIFTER/U201/Z (MUX2_X1)                       0.07       0.63 f
+  DP/ALU_i/SHIFTER/U479/ZN (OAI22_X1)                     0.05       0.68 r
+  DP/ALU_i/SHIFTER/OUTPUT[21] (BARREL_SHIFTER_N32)        0.00       0.68 r
+  DP/ALU_i/U312/ZN (NAND2_X1)                             0.03       0.71 f
+  DP/ALU_i/U314/ZN (NAND2_X1)                             0.03       0.74 r
+  DP/ALU_i/OUTALU[21] (ALU_N32)                           0.00       0.74 r
+  DP/ALU_OUT_REG/DATA_IN[21] (REG_GENERIC_NBIT32_3)       0.00       0.74 r
+  DP/ALU_OUT_REG/U82/ZN (AOI22_X1)                        0.03       0.77 f
+  DP/ALU_OUT_REG/U100/ZN (INV_X1)                         0.03       0.80 r
+  DP/ALU_OUT_REG/DATA_OUT_reg[21]/D (DFF_X1)              0.01       0.81 r
+  data arrival time                                                  0.81
+
+  clock MY_CLK (rise edge)                                0.84       0.84
+  clock network delay (ideal)                             0.00       0.84
+  DP/ALU_OUT_REG/DATA_OUT_reg[21]/CK (DFF_X1)             0.00       0.84 r
+  library setup time                                     -0.03       0.81
+  data required time                                                 0.81
+  --------------------------------------------------------------------------
+  data required time                                                 0.81
+  data arrival time                                                 -0.81
+  --------------------------------------------------------------------------
+  slack (MET)                                                        0.00
+
+
+  Startpoint: DP/ALU_OUT_REG/DATA_OUT_reg[0]
+              (rising edge-triggered flip-flop clocked by MY_CLK)
+  Endpoint: D_ADDR[0] (output port)
+  Path Group: default
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DLX                5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  DP/ALU_OUT_REG/DATA_OUT_reg[0]/CK (DFF_X1)              0.00 #     0.00 r
+  DP/ALU_OUT_REG/DATA_OUT_reg[0]/Q (DFF_X1)               0.09       0.09 r
+  DP/ALU_OUT_REG/DATA_OUT[0] (REG_GENERIC_NBIT32_3)       0.00       0.09 r
+  DP/D_ADDR[0] (DataPath_BASIC_N32_IR_SIZE32_RF_SIZE32_DRAM_SIZE64)
+                                                          0.00       0.09 r
+  D_ADDR[0] (out)                                         0.00       0.09 r
+  data arrival time                                                  0.09
+
+  max_delay                                               0.84       0.84
+  output external delay                                   0.00       0.84
+  data required time                                                 0.84
+  --------------------------------------------------------------------------
+  data required time                                                 0.84
+  data arrival time                                                 -0.09
+  --------------------------------------------------------------------------
+  slack (MET)                                                        0.75
+
+
+1
