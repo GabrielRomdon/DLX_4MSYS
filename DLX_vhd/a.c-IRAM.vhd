@@ -45,7 +45,8 @@ begin  -- IRam_Bhe
     variable tmp_data_u : std_logic_vector(I_SIZE-1 downto 0);
   begin  -- process FILL_MEM_P
     if (Rst = '0') then
-      file_open(mem_fp,"../asm_example/simple_test.mem",READ_MODE);
+      -- IMPORTANT! Do not modify the name of the file read here, but name "UVM_test" the asm file to be simulated
+      file_open(mem_fp,"../asm_example/UVM_test.mem",READ_MODE);
       while (not endfile(mem_fp)) loop
         readline(mem_fp,file_line);
         hread(file_line,tmp_data_u);
