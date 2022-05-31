@@ -64,4 +64,6 @@ report_timing > timing.txt
 report_area > area.txt
 report_resources > resources.txt
 
+write -hierarchy -format vhdl -output DLX_postsynth.vhdl
+
 #exit
