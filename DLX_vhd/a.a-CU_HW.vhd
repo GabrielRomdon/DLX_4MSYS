@@ -28,9 +28,9 @@ entity dlx_cu is
     RegA_LATCH_EN      : out std_logic;  -- Register A Latch Enable
     RegB_LATCH_EN      : out std_logic;  -- Register B Latch Enable
     RegIMM_LATCH_EN    : out std_logic;  -- Immediate Register Latch Enable
-		SIGNED_IMM         : out std_logic;  -- Extender sel, signed or unsigned immediate
 
     -- EX Control Signals
+    SIGNED_IMM         : out std_logic;  -- Extender sel, signed or unsigned immediate
     MUXA_SEL           : out std_logic;  -- MUX-A Sel
     MUXB_SEL           : out std_logic;  -- MUX-B Sel
     ALU_OUTREG_EN      : out std_logic;  -- ALU Output Register Enable
@@ -218,8 +218,8 @@ begin  -- dlx_cu_rtl
     when conv_integer(unsigned(ITYPE_XORI)) => aluOpcode_i <= XORS; -- XORi
 		when conv_integer(unsigned(ITYPE_BEQZ)) => aluOpcode_i <= ADDS; -- BEQZ
 		when conv_integer(unsigned(ITYPE_BNEZ)) => aluOpcode_i <= ADDS; -- BNEZ
-		when conv_integer(unsigned(ITYPE_J))    => aluOpcode_i <= ADDS; -- j
-		when conv_integer(unsigned(ITYPE_JAL))  => aluOpcode_i <= ADDS; -- jal
+		when conv_integer(unsigned(JTYPE_J))    => aluOpcode_i <= ADDS; -- j
+		when conv_integer(unsigned(JTYPE_JAL))  => aluOpcode_i <= ADDS; -- jal
     when conv_integer(unsigned(ITYPE_LW))   => aluOpcode_i <= ADDS;
     when conv_integer(unsigned(ITYPE_SW))   => aluOpcode_i <= ADDS;
     when conv_integer(unsigned(ITYPE_SLEI)) => aluOpcode_i <= SLE;
