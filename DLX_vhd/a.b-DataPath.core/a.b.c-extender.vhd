@@ -35,9 +35,9 @@ EXTENSION: process (NOT_EXT_IMM)
 	  end if;
   else
 	  if SIGNED_IMM='1' then
-		  EXT_IMM <= std_logic_vector(resize(signed(NOT_EXT_IMM(IMM_MIN downto 0)), NBIT));
+		  EXT_IMM <= std_logic_vector(resize(signed(NOT_EXT_IMM(IMM_MIN-1 downto 0)), NBIT));
 	  else
-		  EXT_IMM <= std_logic_vector(resize(unsigned(NOT_EXT_IMM(IMM_MIN downto 0)), NBIT));
+		  EXT_IMM <= std_logic_vector(resize(unsigned(NOT_EXT_IMM(IMM_MIN-1 downto 0)), NBIT));
 	  end if;
   end if;
   end process EXTENSION;
