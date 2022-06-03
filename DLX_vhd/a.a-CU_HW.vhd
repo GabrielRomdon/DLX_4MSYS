@@ -134,14 +134,14 @@ begin  -- dlx_cu_rtl
   RegA_LATCH_EN   <= cw2(CW2_SIZE - 1);
   RegB_LATCH_EN   <= cw2(CW2_SIZE - 2);
   RegIMM_LATCH_EN <= cw2(CW2_SIZE - 3);
-  SIGNED_IMM      <= cw2(CW2_SIZE - 4);
   
   -- stage three control signals
-  MUXA_SEL      <= cw3(CW3_SIZE - 1);
-  MUXB_SEL      <= cw3(CW3_SIZE - 2);
-  ALU_OUTREG_EN <= cw3(CW3_SIZE - 3);
-  EQ_COND       <= cw3(CW3_SIZE - 4);
-  IS_JUMP       <= cw3(CW3_SIZE - 5);
+  SIGNED_IMM    <= cw3(CW3_SIZE - 1);
+  MUXA_SEL      <= cw3(CW3_SIZE - 2);
+  MUXB_SEL      <= cw3(CW3_SIZE - 3);
+  ALU_OUTREG_EN <= cw3(CW3_SIZE - 4);
+  EQ_COND       <= cw3(CW3_SIZE - 5);
+  IS_JUMP       <= cw3(CW3_SIZE - 6);
   
   -- stage four control signals
   DRAM_WE      <= cw4(CW4_SIZE - 1);
