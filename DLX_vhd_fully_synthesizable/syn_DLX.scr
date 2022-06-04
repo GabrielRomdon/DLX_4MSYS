@@ -3,20 +3,21 @@
 # analyzing and checking vhdl netlist #
 ##############################################################
 
-analyze -library WORK -format VHDL {002-Log2.vhd}
-analyze -library WORK -format VHDL {000-globals.vhd}
-analyze -library WORK -format VHDL {001-generic_shifter.vhd}
+analyze -library WORK -format VHDL {000-Log2.vhd}
+analyze -library WORK -format VHDL {001-globals.vhd}
 analyze -library WORK -format VHDL {a.a-CU_HW.vhd}
-analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.a-ALU.vhd}
-analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.a-NAND3.vhd}
-analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.a-NAND4.vhd}
-analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.b-Shifter.vhd}
-analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.c-adder.vhd}
-analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.c-extender.vhd}
-analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.c-mux21.vhd}
+analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.a-mux21.vhd}
+analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.b-adder.vhd}
 analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.c-register.vhd}
-analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.c-registerfile.vhd}
-analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.c-branching_unit.vhd}
+analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.d-ALU.vhd}
+analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.d.a-NAND3.vhd}
+analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.d.b-NAND4.vhd}
+analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.d.c-Shifter.vhd}
+analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.e-branching_unit.vhd}
+analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.f-extender.vhd}
+analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.g-mem.vhd}
+analyse -library WORK -format VHDL {a.b-DataPath.core/a.b.c-branching_unit.vhd}
+analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.h-registerfile.vhd}
 analyze -library WORK -format VHDL {a.b-DataPath.vhd}
 analyze -library WORK -format VHDL {a-DLX.vhd}
 

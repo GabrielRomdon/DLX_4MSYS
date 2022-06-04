@@ -3,7 +3,7 @@
 Report : area
 Design : DLX
 Version: F-2011.09-SP3
-Date   : Mon May 30 18:00:51 2022
+Date   : Sat Jun  4 12:42:04 2022
 ****************************************
 
 Library(s) Used:
@@ -19,10 +19,10 @@ Number of macros:                           0
 Number of buf/inv:                         32
 Number of references:                       4
 
-Combinational area:       8033.998002
-Noncombinational area:    6418.579772
+Combinational area:       8046.500001
+Noncombinational area:    6460.607769
 Net Interconnect area:      undefined  (Wire load has zero net area)
 
-Total cell area:          14452.577773
+Total cell area:          14507.107771
 Total area:                 undefined
 1
