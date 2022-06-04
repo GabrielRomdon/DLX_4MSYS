@@ -105,7 +105,7 @@ class scoreboard extends uvm_subscriber #(output_transaction);
           end
         endcase
       end
-      itype_j: begin
+      jtype_j: begin
         predicted.data_o = signed'(cloned_PC) + j_immediate - 12;
         cloned_PC = predicted.data_o;
       end
@@ -240,7 +240,7 @@ class scoreboard extends uvm_subscriber #(output_transaction);
 	end
 
 	case (opcode)
-      	itype_j: begin
+      	jtype_j: begin
 			if(waiting==0) waiting = 1; //thanks to this if the first jump will be considered only
 			j_immediate = instruction[ir_size-op_code_size-1:0];
 			future_PC = signed'(predicted_PC) + signed'(j_immediate)/4;
