@@ -54,7 +54,7 @@ end dlx_cu;
 
 architecture dlx_cu_hw of dlx_cu is
   type mem_array is array (integer range 0 to MICROCODE_MEM_SIZE-1) of std_logic_vector(CW_SIZE - 1 downto 0);
-  signal cw_mem : mem_array := ("111101001000001011", -- R type
+  constant cw_mem : mem_array := ("111101001000001011", -- R type
                                 "000000000000000000",
                                 "111011111110011000", -- J (0X02) instruction encoding corresponds to the address to this ROM
                                 "111011111110011101", -- JAL to be filled
