@@ -25,7 +25,7 @@ architecture BEHAVIOR of EXTENDER is
 begin
 
 -- process that extends the sign of every input data
-EXTENSION: process (NOT_EXT_IMM)
+EXTENSION: process (IS_JUMP, SIGNED_IMM, NOT_EXT_IMM)
   begin
   if IS_JUMP='1' then
 	  if SIGNED_IMM='1' then
