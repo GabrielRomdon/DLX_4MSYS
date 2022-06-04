@@ -15,8 +15,6 @@ analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.d.b-NAND4.vhd}
 analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.d.c-Shifter.vhd}
 analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.e-branching_unit.vhd}
 analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.f-extender.vhd}
-analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.g-mem.vhd}
-analyse -library WORK -format VHDL {a.b-DataPath.core/a.b.c-branching_unit.vhd}
 analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.h-registerfile.vhd}
 analyze -library WORK -format VHDL {a.b-DataPath.vhd}
 analyze -library WORK -format VHDL {a-DLX.vhd}
@@ -61,9 +59,9 @@ set_dont_touch_network MY_CLK
 compile -incremental_mapping
 
 ####### Saving outputs
-report_timing > timing.txt
-report_area > area.txt
-report_resources > resources.txt
+report_timing > reports/timing.txt
+report_area > reports/area.txt
+report_resources > reports/resources.txt
 
 write -hierarchy -format vhdl -output DLX_postsynth.vhdl
 
