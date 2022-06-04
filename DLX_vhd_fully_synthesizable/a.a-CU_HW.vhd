@@ -28,9 +28,9 @@ entity dlx_cu is
     RegA_LATCH_EN      : out std_logic;  -- Register A Latch Enable
     RegB_LATCH_EN      : out std_logic;  -- Register B Latch Enable
     RegIMM_LATCH_EN    : out std_logic;  -- Immediate Register Latch Enable
-		SIGNED_IMM         : out std_logic;  -- Extender sel, signed or unsigned immediate
 
     -- EX Control Signals
+    SIGNED_IMM         : out std_logic;  -- Extender sel, signed or unsigned immediate
     MUXA_SEL           : out std_logic;  -- MUX-A Sel
     MUXB_SEL           : out std_logic;  -- MUX-B Sel
     ALU_OUTREG_EN      : out std_logic;  -- ALU Output Register Enable
@@ -97,7 +97,7 @@ architecture dlx_cu_hw of dlx_cu is
                                 "000000000000000000",
                                 "000000000000000000",
                                 "000000000000000000",
-                                "111111011001101000", -- SW
+                                "111111011001001000", -- SW
                                 "000000000000000000");
                                 
                                 
@@ -134,14 +134,14 @@ begin  -- dlx_cu_rtl
   RegA_LATCH_EN   <= cw2(CW2_SIZE - 1);
   RegB_LATCH_EN   <= cw2(CW2_SIZE - 2);
   RegIMM_LATCH_EN <= cw2(CW2_SIZE - 3);
-  SIGNED_IMM      <= cw2(CW2_SIZE - 4);
   
   -- stage three control signals
-  MUXA_SEL      <= cw3(CW3_SIZE - 1);
-  MUXB_SEL      <= cw3(CW3_SIZE - 2);
-  ALU_OUTREG_EN <= cw3(CW3_SIZE - 3);
-  EQ_COND       <= cw3(CW3_SIZE - 4);
-  IS_JUMP       <= cw3(CW3_SIZE - 5);
+  SIGNED_IMM    <= cw3(CW3_SIZE - 1);
+  MUXA_SEL      <= cw3(CW3_SIZE - 2);
+  MUXB_SEL      <= cw3(CW3_SIZE - 3);
+  ALU_OUTREG_EN <= cw3(CW3_SIZE - 4);
+  EQ_COND       <= cw3(CW3_SIZE - 5);
+  IS_JUMP       <= cw3(CW3_SIZE - 6);
   
   -- stage four control signals
   DRAM_WE      <= cw4(CW4_SIZE - 1);
@@ -218,8 +218,8 @@ begin  -- dlx_cu_rtl
     when conv_integer(unsigned(ITYPE_XORI)) => aluOpcode_i <= XORS; -- XORi
 		when conv_integer(unsigned(ITYPE_BEQZ)) => aluOpcode_i <= ADDS; -- BEQZ
 		when conv_integer(unsigned(ITYPE_BNEZ)) => aluOpcode_i <= ADDS; -- BNEZ
-		when conv_integer(unsigned(ITYPE_J))    => aluOpcode_i <= ADDS; -- j
-		when conv_integer(unsigned(ITYPE_JAL))  => aluOpcode_i <= ADDS; -- jal
+		when conv_integer(unsigned(JTYPE_J))    => aluOpcode_i <= ADDS; -- j
+		when conv_integer(unsigned(JTYPE_JAL))  => aluOpcode_i <= ADDS; -- jal
     when conv_integer(unsigned(ITYPE_LW))   => aluOpcode_i <= ADDS;
     when conv_integer(unsigned(ITYPE_SW))   => aluOpcode_i <= ADDS;
     when conv_integer(unsigned(ITYPE_SLEI)) => aluOpcode_i <= SLE;

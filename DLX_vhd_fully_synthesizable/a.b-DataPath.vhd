@@ -5,6 +5,7 @@ use work.myTypes.all;
 
 entity DataPath_BASIC is
 	generic(N : integer := WORD;
+		IMM_MAX : integer := MAX_IMM_SIZE;
 		IR_SIZE : integer := IR_SIZE;
 		RF_SIZE : integer := RF_SIZE;
 		DRAM_SIZE : integer := DRAM_SIZE);
@@ -20,9 +21,9 @@ entity DataPath_BASIC is
 		      RegA_LATCH_EN  : IN std_logic;  -- Register A Latch Enable
 		      RegB_LATCH_EN  : IN std_logic;  -- Register B Latch Enable
 		      RegIMM_LATCH_EN: IN std_logic;  -- Immediate Register Latch Enable
-		      SIGNED_IMM     : IN std_logic;  -- Extender sel, signed or unsigned immediate
 
 		      -- EX Control Signals
+		      SIGNED_IMM     : IN std_logic;  -- Extender sel, signed or unsigned immediate
 		      MUXA_SEL       : IN std_logic;  -- MUX-A Sel
 		      MUXB_SEL       : IN std_logic;  -- MUX-B Sel
 		      ALU_OUTREG_EN  : IN std_logic;  -- ALU output Register Enable
@@ -32,8 +33,6 @@ entity DataPath_BASIC is
 		      ALU_OPCODE     : IN aluOpType; -- choose between implicit or exlicit coding, like std_logic_vector(ALU_OPC_SIZE -1 downto 0);
 		      
 		      -- MEM Control Signals
-		      --DRAM_WE        : IN std_logic;  -- Data RAM Write Enable
-		      --LMD_LATCH_EN   : IN std_logic;  -- LMD Register Latch Enable
 		      JUMP_EN        : IN std_logic;  -- JUMP Enable Signal for PC input MUX
 		      PC_LATCH_EN    : IN std_logic;  -- Program Counte Latch Enable
 
@@ -118,10 +117,12 @@ component ADDER is -- specific adder to add 4 to the input
 end component;
 
 component EXTENDER is
-	generic(NBIT: integer:= N;
-		IMM_field_lenght: integer:= N/2);
-  port   ( NOT_EXT_IMM:     IN std_logic_vector(IMM_field_lenght-1 downto 0); -- input data
+  generic (NBIT : integer := WORD;
+	   IMM_MIN: integer := HALF_WORD;
+	   IMM_MAX : integer := MAX_IMM_SIZE);
+  port   ( NOT_EXT_IMM:     IN std_logic_vector(IMM_MAX-1 downto 0); -- input data
            SIGNED_IMM:      IN std_logic;
+           IS_JUMP:         IN std_logic;
            EXT_IMM:         OUT std_logic_vector(NBIT-1 downto 0)); -- output data(i.e. input data with sign extension)
 end component;
 
@@ -140,7 +141,7 @@ signal WB3_OUT          : std_logic_vector(Log2(RF_SIZE)-1 downto 0);
 signal WB_ADDR          : std_logic_vector(Log2(RF_SIZE)-1 downto 0);
 signal A_IN             : std_logic_vector(N-1 downto 0);
 signal B_IN             : std_logic_vector(N-1 downto 0);
-signal IMM_IN           : std_logic_vector(N/2-1 downto 0);
+signal IMM_IN           : std_logic_vector(IMM_MAX-1 downto 0);
 signal A_OUT            : std_logic_vector(N-1 downto 0);
 signal B_OUT            : std_logic_vector(N-1 downto 0);
 signal B_OUT2           : std_logic_vector(N-1 downto 0);
@@ -182,8 +183,8 @@ IR_REG : REG_GENERIC
 	port map(CLK => CLK, RST => RST, EN => IR_LATCH_EN, DATA_IN => IR_IN, DATA_OUT => current_IW);
 
 IMM_REG : REG_GENERIC
-	generic map(N/2)
-	port map(CLK => CLK, RST => RST, EN => RegIMM_LATCH_EN, DATA_IN => current_IW(N/2-1 downto 0), DATA_OUT => IMM_IN);
+	generic map(IMM_MAX)
+	port map(CLK => CLK, RST => RST, EN => RegIMM_LATCH_EN, DATA_IN => current_IW(IMM_MAX-1 downto 0), DATA_OUT => IMM_IN);
 
 WB1_REG : REG_GENERIC
 	generic map(Log2(RF_SIZE))
@@ -259,7 +260,7 @@ RF : REGISTER_FILE
 	
 -- immediate sign extension
 EXT : EXTENDER
-	port map(NOT_EXT_IMM => IMM_IN, SIGNED_IMM => SIGNED_IMM, EXT_IMM => IMM_OUT);
+	port map(NOT_EXT_IMM => IMM_IN, SIGNED_IMM => SIGNED_IMM, IS_JUMP => IS_JUMP, EXT_IMM => IMM_OUT);
 
 -- ALU:
 ALU_i : ALU 

@@ -21,9 +21,9 @@ entity DataPath_BASIC is
 		      RegA_LATCH_EN  : IN std_logic;  -- Register A Latch Enable
 		      RegB_LATCH_EN  : IN std_logic;  -- Register B Latch Enable
 		      RegIMM_LATCH_EN: IN std_logic;  -- Immediate Register Latch Enable
-		      SIGNED_IMM     : IN std_logic;  -- Extender sel, signed or unsigned immediate
 
 		      -- EX Control Signals
+		      SIGNED_IMM     : IN std_logic;  -- Extender sel, signed or unsigned immediate
 		      MUXA_SEL       : IN std_logic;  -- MUX-A Sel
 		      MUXB_SEL       : IN std_logic;  -- MUX-B Sel
 		      ALU_OUTREG_EN  : IN std_logic;  -- ALU output Register Enable

@@ -6,6 +6,7 @@ package myTypes is
 
     constant WORD		: integer :=  32;
     constant HALF_WORD		: integer :=  16;
+    constant MAX_IMM_SIZE	: integer :=  26;
 
     -- CONTROL UNIT --
     constant MICROCODE_MEM_SIZE : integer :=  45;
@@ -16,8 +17,8 @@ package myTypes is
     -- Control word sizes -> Hardwired
     constant CW_SIZE      : integer :=  18;		-- Control Word size
     constant NB_SIG_S1    : integer :=  2;	-- Control Word size
-    constant NB_SIG_S2    : integer :=  4;	-- Control Word size
-    constant NB_SIG_S3    : integer :=  5;	-- Control Word size
+    constant NB_SIG_S2    : integer :=  3;	-- Control Word size
+    constant NB_SIG_S3    : integer :=  6;	-- Control Word size
     constant NB_SIG_S4    : integer :=  4;	-- Control Word size
     constant CW1_SIZE     : integer :=  CW_SIZE;		-- Control Word size
     constant CW2_SIZE     : integer :=  CW1_SIZE - NB_SIG_S1;		-- Control Word size
@@ -62,8 +63,6 @@ package myTypes is
     constant ITYPE_XORI   : std_logic_vector(OP_CODE_SIZE - 1 downto 0) :=  "001110";    -- XORI   RA,RB,INP1
     constant ITYPE_BEQZ   : std_logic_vector(OP_CODE_SIZE - 1 downto 0) :=  "000100";    -- BEQZ   RA,INP1
     constant ITYPE_BNEZ   : std_logic_vector(OP_CODE_SIZE - 1 downto 0) :=  "000101";    -- BNEZ   RA,INP1
-    constant ITYPE_J      : std_logic_vector(OP_CODE_SIZE - 1 downto 0) :=  "000010";    -- J      INP1
-    constant ITYPE_JAL    : std_logic_vector(OP_CODE_SIZE - 1 downto 0) :=  "000011";    -- JAL    INP1
     constant ITYPE_LW     : std_logic_vector(OP_CODE_SIZE - 1 downto 0) :=  "100011";    -- LW     RA,RB,INP1
     constant ITYPE_SW     : std_logic_vector(OP_CODE_SIZE - 1 downto 0) :=  "101011";    -- SW     RA,RB,INP1
     constant ITYPE_SLEI   : std_logic_vector(OP_CODE_SIZE - 1 downto 0) :=  "011100";    -- SLEI   RA,RB,INP1
@@ -72,6 +71,11 @@ package myTypes is
     constant ITYPE_SNEI   : std_logic_vector(OP_CODE_SIZE - 1 downto 0) :=  "011001";    -- SNEI   RA,RB,INP1
     constant ITYPE_SRLI   : std_logic_vector(OP_CODE_SIZE - 1 downto 0) :=  "010110";    -- SRLI   RA,RB,INP1
     constant ITYPE_NOP    : std_logic_vector(OP_CODE_SIZE - 1 downto 0) :=  "010101";    -- NOP
+
+    -- J-TYPE INSTRUCTION -- -> OPCODE field
+    constant JTYPE_J      : std_logic_vector(OP_CODE_SIZE - 1 downto 0) :=  "000010";    -- J      INP1
+    constant JTYPE_JAL    : std_logic_vector(OP_CODE_SIZE - 1 downto 0) :=  "000011";    -- JAL    INP1
+
 
     type aluOpType is (
         NOP, 

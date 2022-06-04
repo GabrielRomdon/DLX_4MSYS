@@ -9,7 +9,7 @@ use work.myTypes.all;
 
 -- Instruction memory for DLX
 -- Memory filled by a process which reads from a file
--- file name is "test_jump_label_no_hazard.mem"
+-- file name is "UVM_test.mem"
 entity IRAM is
   generic (
     RAM_DEPTH : integer := IRAM_SIZE;
