@@ -11,6 +11,10 @@ xori r4,r3,#45000
 addi r16,r0,#4500
 add r1,r3,r1
 j label
+nop
+nop
+nop
+nop
 sub r3,r0,r31
 slli r31,r31,#2
 lw r20, 10(r0)
