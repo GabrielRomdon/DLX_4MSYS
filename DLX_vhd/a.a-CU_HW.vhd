@@ -158,11 +158,13 @@ begin  -- dlx_cu_rtl
   CW_PIPE_CW1: process (Clk, Rst)
   begin
     if Rst = '0' then                   -- asynchronous reset (active low)
-      cw1 <= (others => '0');
-      cw2 <= (others => '0');
+      --cw1 <= (others => '0');
+      cw1 <= "110000000000001000";
+      --cw2 <= (others => '0');
+      cw2 <= "0000000000001000";
     elsif Clk'event and Clk = '1' then  -- rising clock edge
       cw1 <= cw;
-      cw2 <= cw(CW2_SIZE-1 downto 0);
+      cw2 <= cw1(CW2_SIZE-1 downto 0);
     end if;
   end process CW_PIPE_CW1;
   --- End Of: Modification for post-reset sequence
@@ -171,8 +173,10 @@ begin  -- dlx_cu_rtl
   CW_PIPE: process (Clk, Rst)
   begin  -- process Clk
     if Rst = '0' then                   -- asynchronous reset (active low)
-      cw3 <= (others => '0');
-      cw4 <= (others => '0');
+      --cw3 <= (others => '0');
+      cw3 <= "0000000001000";
+      --cw4 <= (others => '0');
+      cw4 <= "0001000";
       cw5 <= (others => '0');
       aluOpcode1 <= NOP;
       aluOpcode2 <= NOP;
@@ -184,10 +188,11 @@ begin  -- dlx_cu_rtl
 
       aluOpcode1 <= aluOpcode_i;
       aluOpcode2 <= aluOpcode1;
+      aluOpcode3 <= aluOpcode2;
     end if;
   end process CW_PIPE;
 
-  ALU_OPCODE <= aluOpcode2;
+  ALU_OPCODE <= aluOpcode3;
 
   -- purpose: Generation of ALU OpCode
   -- type   : combinational
