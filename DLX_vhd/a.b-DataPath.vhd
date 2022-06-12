@@ -171,7 +171,8 @@ signal branch_taken     : std_logic;
 begin
 
 PC_BUS <= next_PC;
-current_PC <= next_PC when PC_LATCH_EN='1' else (others => '0');
+--current_PC <= next_PC when PC_LATCH_EN='1' else (others => '0');
+current_PC <= next_PC;
 
 -- registers:
 PC_REG : REG_GENERIC
