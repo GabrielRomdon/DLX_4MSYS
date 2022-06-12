@@ -140,6 +140,7 @@ signal current_PC       : std_logic_vector(N-1 downto 0);
 signal current_PC1      : std_logic_vector(N-1 downto 0);
 signal current_PC2      : std_logic_vector(N-1 downto 0);
 signal current_PC3      : std_logic_vector(N-1 downto 0);
+signal current_PC4      : std_logic_vector(N-1 downto 0);
 signal next_PC          : std_logic_vector(N-1 downto 0);
 signal current_NPC      : std_logic_vector(N-1 downto 0);
 signal next_NPC         : std_logic_vector(N-1 downto 0);
@@ -184,6 +185,9 @@ PC2_REG : REG_GENERIC
 PC3_REG : REG_GENERIC
 	generic map(N)
 	port map(CLK => CLK, RST => RST, EN => PC_LATCH_EN, DATA_IN => current_PC2, DATA_OUT => current_PC3);
+PC4_REG : REG_GENERIC
+	generic map(N)
+	port map(CLK => CLK, RST => RST, EN => PC_LATCH_EN, DATA_IN => current_PC3, DATA_OUT => current_PC4);
 
 NPC_REG : REG_GENERIC
 	generic map(N)
@@ -252,7 +256,7 @@ OUT_MUX : MUX21_GENERIC
 
 JAL_DATA_MUX : MUX21_GENERIC
 	generic map(N)
-	port map(A => OUT_MUX_DATA, B => current_PC3, SEL => IS_JAL, Y => WB_DATA);
+	port map(A => OUT_MUX_DATA, B => current_PC4, SEL => IS_JAL, Y => WB_DATA);
 
 JAL_ADDR_MUX : MUX21_GENERIC
 	generic map(Log2(RF_SIZE))
