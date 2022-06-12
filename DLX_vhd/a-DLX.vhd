@@ -144,9 +144,10 @@ signal RF_WE              : std_logic;
 begin
 
 -- registers:
-PC_REG : REG_GENERIC
-	generic map(N)
-	port map(CLK => CLK, RST => RST, EN => PC_LATCH_EN, DATA_IN => PC_BUS, DATA_OUT => current_PC);
+--PC_REG : REG_GENERIC
+--	generic map(N)
+--	port map(CLK => CLK, RST => RST, EN => PC_LATCH_EN, DATA_IN => PC_BUS, DATA_OUT => current_PC);
+current_PC <= PC_BUS;
 
 --instruction register
 -- VALUE RESET => address 80000000, not 0 which would be an ADD
