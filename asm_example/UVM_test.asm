@@ -11,7 +11,7 @@ srli r2,r2,#1
 xori r4,r3,#45000
 addi r16,r0,#4500
 add r1,r3,r1
-bnez r2, label
+beqz r2, label
 nop
 nop
 nop
@@ -19,12 +19,12 @@ jal end
 nop
 nop
 nop
-not done:
+not_done:
 sub r6,r4,r31
 sw 16(r0), r16
 end:
 and r6, r4, r16
-slli r31,r31,#2
+slli r31,r31,#10
 lw r20, 10(r0)
 j init
 nop

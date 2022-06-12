@@ -4,7 +4,7 @@ interface dlx_if;
 
   bit               clk;
   bit               rst;
-  bit [ir_size-1:0] instr_reg [4:0];
+  bit [ir_size-1:0] instr_reg [5:0];
   bit [ir_size-1:0] current_instr_reg;
   bit [5:0]         instrOpcode;
   instr_type_enum   instrType;
@@ -16,7 +16,7 @@ interface dlx_if;
   int               sw_addr;
   bit [word-1:0]  data_out;
   bit [word-1:0]  pc_bus;
-  bit [3:0]       start_work_counter; // Counter that when arrives to 3 tells that the processor is working
+  bit [3:0]       start_work_counter; // Counter that when arrives to 6 tells that the processor is working
 
   // Task for synchronizing the driver with the test
   task wait_one_cycle ();
@@ -28,13 +28,13 @@ interface dlx_if;
 
   // Procedure for sampling (and delaying) the instruction by using an internal signal of the processor
   always @(posedge clk) begin : sampling_procedure
-    instr_reg[4:1]  <= instr_reg[3:0];
+    instr_reg[5:1]  <= instr_reg[4:0];
     instr_reg[0]    <= top.DUT.DLX_DUT.next_IW;
   end : sampling_procedure
 
   // Procedure for sending the fetched instruction through the command monitor
   always @(posedge clk) begin : command_monitor_thd
-    current_instr_reg = instr_reg[4];
+    current_instr_reg = instr_reg[5];
     //$display("PC from if: %x", top.DUT.DLX_DUT.current_PC);
     
     // Obtaining the instruction type and extracting the relevant values
@@ -61,7 +61,7 @@ interface dlx_if;
       $fatal(1, "Unexpected instruction type. Does not correspond to any of the known instructions.");
     end
 
-    if ( start_work_counter == 8)
+    if ( start_work_counter == 6)
       command_monitor_h.write_to_monitor(instrType, current_instr_reg, instrOpcode, rs1, rs2, imm);
   end : command_monitor_thd
 
@@ -89,7 +89,7 @@ interface dlx_if;
       data_out = top.DUT.DLX_DUT.current_PC;
     end
 
-    if ( start_work_counter == 8)
+    if ( start_work_counter == 6)
       output_monitor_h.write_to_monitor(data_out);
   end : output_monitor_thread
 
@@ -97,7 +97,7 @@ interface dlx_if;
   always @(posedge clk) begin : counter
     if ( !rst )
       start_work_counter <= 0;
-    else if (start_work_counter < 8)
+    else if (start_work_counter < 6)
       start_work_counter <= start_work_counter + 1;
     else
       start_work_counter <= start_work_counter;

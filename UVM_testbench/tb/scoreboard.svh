@@ -5,7 +5,7 @@ class scoreboard extends uvm_subscriber #(output_transaction);
   // Create a matrix that holds a copy of the information stored in the register file and another for the data memory
   bit [rf_size-1:0][word-1:0]   cloned_regFile;
   bit [dram_size-1:0][word-1:0] cloned_datamem;
-  bit [word-1:0]                cloned_PC = 20; 
+  bit [word-1:0]                cloned_PC = 24; 
   bit [word-1:0] 				predicted_PC = 0;
   bit [word-1:0] 				future_PC;
   bit [iram_size-1:0][ir_size-1:0] cloned_IRAM;
@@ -107,6 +107,11 @@ class scoreboard extends uvm_subscriber #(output_transaction);
       end
       jtype_j: begin
         predicted.data_o = signed'(cloned_PC) + j_immediate - 12;
+        cloned_PC = predicted.data_o;
+      end
+      jtype_jal: begin
+        predicted.data_o = signed'(cloned_PC) + j_immediate - 12;
+        cloned_regFile[31] = signed'(cloned_PC) - 20;
         cloned_PC = predicted.data_o;
       end
       itype_beqz: begin
@@ -241,6 +246,11 @@ class scoreboard extends uvm_subscriber #(output_transaction);
 
 	case (opcode)
       	jtype_j: begin
+			if(waiting==0) waiting = 1; //thanks to this if the first jump will be considered only
+			j_immediate = instruction[ir_size-op_code_size-1:0];
+			future_PC = signed'(predicted_PC) + signed'(j_immediate)/4;
+		end
+      	jtype_jal: begin
 			if(waiting==0) waiting = 1; //thanks to this if the first jump will be considered only
 			j_immediate = instruction[ir_size-op_code_size-1:0];
 			future_PC = signed'(predicted_PC) + signed'(j_immediate)/4;
