@@ -75,7 +75,7 @@ begin
 	end process;
 	
 	--Reset <= '0', '1' after 6 ns, '0' after 11 ns, '1' after 15 ns;
-	Reset <= '1', '0' after 2 ns, '1' after 6 ns;
+	Reset <= '0', '1' after 6 ns;
        
 
 end TEST;
