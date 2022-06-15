@@ -148,13 +148,17 @@ signal RF_WE              : std_logic;
 begin
 
 -- registers:
-PC_REG : REG_GENERIC
-	generic map(N)
-	port map(CLK => CLK, RST => RST, EN => PC_LATCH_EN, DATA_IN => PC_BUS, DATA_OUT => current_PC);
+--PC_REG : REG_GENERIC
+--	generic map(N)
+--	port map(CLK => CLK, RST => RST, EN => PC_LATCH_EN, DATA_IN => PC_BUS, DATA_OUT => current_PC);
+current_PC <= PC_BUS;
 
 --instruction register
 -- VALUE RESET => address 80000000, not 0 which would be an ADD
-current_IW <= next_IW;
+--current_IW <= next_IW;
+IR_REG : REG_GENERIC
+	generic map(N)
+	port map(CLK => CLK, RST => RST, EN => IR_LATCH_EN, DATA_IN => next_IW, DATA_OUT => current_IW);
 
 I_ADDR <= current_PC;
 next_IW <= I_DATA;
@@ -165,6 +169,6 @@ DP : DataPath_BASIC
 
 -- control unit:
 CU : dlx_cu
-	port map(Clk => CLK, Rst => RST, IR_IN => current_IW, IR_LATCH_EN => IR_LATCH_EN, NPC_LATCH_EN => NPC_LATCH_EN, RegA_LATCH_EN => RegA_LATCH_EN, RegB_LATCH_EN => RegB_LATCH_EN, RegIMM_LATCH_EN => RegIMM_LATCH_EN, SIGNED_IMM => SIGNED_IMM, MUXA_SEL => MUXA_SEL, MUXB_SEL => MUXB_SEL, ALU_OUTREG_EN => ALU_OUTREG_EN, EQ_COND => EQ_COND, IS_JUMP => IS_JUMP, ALU_OPCODE => ALU_OPCODE, DRAM_WE => D_WR, LMD_LATCH_EN => D_RR, JUMP_EN => JUMP_EN, PC_LATCH_EN => PC_LATCH_EN, IS_JAL => IS_JAL, WB_MUX_SEL => WB_MUX_SEL, RF_WE => RF_WE);
+	port map(Clk => CLK, Rst => RST, IR_IN => next_IW, IR_LATCH_EN => IR_LATCH_EN, NPC_LATCH_EN => NPC_LATCH_EN, RegA_LATCH_EN => RegA_LATCH_EN, RegB_LATCH_EN => RegB_LATCH_EN, RegIMM_LATCH_EN => RegIMM_LATCH_EN, SIGNED_IMM => SIGNED_IMM, MUXA_SEL => MUXA_SEL, MUXB_SEL => MUXB_SEL, ALU_OUTREG_EN => ALU_OUTREG_EN, EQ_COND => EQ_COND, IS_JUMP => IS_JUMP, ALU_OPCODE => ALU_OPCODE, DRAM_WE => D_WR, LMD_LATCH_EN => D_RR, JUMP_EN => JUMP_EN, PC_LATCH_EN => PC_LATCH_EN, IS_JAL => IS_JAL, WB_MUX_SEL => WB_MUX_SEL, RF_WE => RF_WE);
 
 end DLX_RTL;
