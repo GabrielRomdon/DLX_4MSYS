@@ -14,7 +14,7 @@ end REG_GENERIC;
 architecture BEHAVIOR of REG_GENERIC is
 begin
 
-synch_latch: process(CLK, RST, EN) -- used to latch the input into the memory when clk rises and en is high(and rst low)
+synch_latch: process(CLK) -- used to latch the input into the memory when clk rises and en is high(and rst low)
 begin
 	if rising_edge(CLK) then -- positive edge triggered latch
 	    if RST = '0' then -- synchronus active low reset 
