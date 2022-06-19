@@ -10,6 +10,7 @@ analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.a-mux21.vhd}
 analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.b-adder.vhd}
 analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.c-register.vhd}
 analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.d-ALU.vhd}
+#analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.d-ALU_naive.vhd}
 analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.d.a-NAND3.vhd}
 analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.d.b-NAND4.vhd}
 analyze -library WORK -format VHDL {a.b-DataPath.core/a.b.d.c-Shifter.vhd}
