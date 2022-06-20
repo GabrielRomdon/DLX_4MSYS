@@ -1,0 +1,79 @@
+[06/08 17:39:24      0s] 
+[06/08 17:39:24      0s] Cadence Innovus(TM) Implementation System.
+[06/08 17:39:24      0s] Copyright 2017 Cadence Design Systems, Inc. All rights reserved worldwide.
+[06/08 17:39:24      0s] 
+[06/08 17:39:24      0s] Version:	v17.11-s080_1, built Fri Aug 4 11:13:11 PDT 2017
+[06/08 17:39:24      0s] Options:	
+[06/08 17:39:24      0s] Date:		Wed Jun  8 17:39:24 2022
+[06/08 17:39:24      0s] Host:		localhost.localdomain (x86_64 w/Linux 3.10.0-1062.12.1.el7.x86_64) (1core*12cpus*Westmere E56xx/L56xx/X56xx (Nehalem-C) 4096KB)
+[06/08 17:39:24      0s] OS:		CentOS Linux release 7.7.1908 (Core)
+[06/08 17:39:24      0s] 
+[06/08 17:39:24      0s] License:
+[06/08 17:39:24      0s] 		invs	Innovus Implementation System	17.1	checkout succeeded
+[06/08 17:39:24      0s] 		8 CPU jobs allowed with the current license(s). Use setMultiCpuUsage to set your required CPU count.
+[06/08 17:40:11     24s] @(#)CDS: Innovus v17.11-s080_1 (64bit) 08/04/2017 11:13 (Linux 2.6.18-194.el5)
+[06/08 17:40:11     24s] @(#)CDS: NanoRoute 17.11-s080_1 NR170721-2155/17_11-UB (database version 2.30, 390.7.1) {superthreading v1.44}
+[06/08 17:40:11     24s] @(#)CDS: AAE 17.11-s034 (64bit) 08/04/2017 (Linux 2.6.18-194.el5)
+[06/08 17:40:11     24s] @(#)CDS: CTE 17.11-s053_1 () Aug  1 2017 23:31:41 ( )
+[06/08 17:40:11     24s] @(#)CDS: SYNTECH 17.11-s012_1 () Jul 21 2017 02:29:12 ( )
+[06/08 17:40:11     24s] @(#)CDS: CPE v17.11-s095
+[06/08 17:40:11     24s] @(#)CDS: IQRC/TQRC 16.1.1-s215 (64bit) Thu Jul  6 20:18:10 PDT 2017 (Linux 2.6.18-194.el5)
+[06/08 17:40:11     24s] @(#)CDS: OA 22.50-p063 Fri Feb  3 19:45:13 2017
+[06/08 17:40:11     24s] @(#)CDS: SGN 10.10-p124 (19-Aug-2014) (64 bit executable)
+[06/08 17:40:11     24s] @(#)CDS: RCDB 11.10
+[06/08 17:40:11     24s] --- Running on localhost.localdomain (x86_64 w/Linux 3.10.0-1062.12.1.el7.x86_64) (1core*12cpus*Westmere E56xx/L56xx/X56xx (Nehalem-C) 4096KB) ---
+[06/08 17:40:11     24s] Create and set the environment variable TMPDIR to /tmp/innovus_temp_11265_localhost.localdomain_ms22.25_s8mlt6.
+
+[06/08 17:40:11     24s] Change the soft stacksize limit to 0.2%RAM (128 mbytes). Set global soft_stack_size_limit to change the value.
+[06/08 17:40:13     25s] 
+[06/08 17:40:13     25s] **INFO:  MMMC transition support version v31-84 
+[06/08 17:40:13     25s] 
+[06/08 17:40:13     25s] <CMD> set_global _enable_mmmc_by_default_flow      $CTE::mmmc_default
+[06/08 17:40:13     25s] <CMD> suppressMessage ENCEXT-2799
+[06/08 17:40:13     26s] <CMD> getDrawView
+[06/08 17:40:13     26s] <CMD> loadWorkspace -name Physical
+[06/08 17:40:15     26s] <CMD> win
+[06/08 17:42:18     36s] <CMD> encMessage warning 0
+[06/08 17:42:18     36s] Suppress "**WARN ..." messages.
+[06/08 17:42:18     36s] <CMD> encMessage debug 0
+[06/08 17:42:18     36s] <CMD> encMessage info 0
+[06/08 17:42:18     37s] **WARN: (GLOBAL-100):	Global 'timing_enable_default_delay_arc' has become obsolete. It will be removed in the next release.
+[06/08 17:42:19     37s] Loading view definition file from /home/ms22.25/Documents/gabriel/DLX_4MSYS/DLX_vhd_fully_synthesizable/innovus/DLX_Inn_Design.dat/viewDefinition.tcl
+[06/08 17:42:19     37s] **WARN: (TECHLIB-436):	Attribute 'max_fanout' on 'output/inout' pin 'ZN' of cell 'AND2_X1' is not defined in the library. (File /software/dk/nangate45/liberty/NangateOpenCellLibrary_typical_ecsm_nowlm.lib)
+[06/08 17:42:19     37s] **WARN: (TECHLIB-436):	Attribute 'max_fanout' on 'output/inout' pin 'ZN' of cell 'AND2_X2' is not defined in the library. (File /software/dk/nangate45/liberty/NangateOpenCellLibrary_typical_ecsm_nowlm.lib)
+[06/08 17:42:19     37s] **WARN: (TECHLIB-436):	Attribute 'max_fanout' on 'output/inout' pin 'ZN' of cell 'AND2_X4' is not defined in the library. (File /software/dk/nangate45/liberty/NangateOpenCellLibrary_typical_ecsm_nowlm.lib)
+[06/08 17:42:19     37s] **WARN: (TECHLIB-436):	Attribute 'max_fanout' on 'output/inout' pin 'ZN' of cell 'AND3_X1' is not defined in the library. (File /software/dk/nangate45/liberty/NangateOpenCellLibrary_typical_ecsm_nowlm.lib)
+[06/08 17:42:19     37s] **WARN: (TECHLIB-436):	Attribute 'max_fanout' on 'output/inout' pin 'ZN' of cell 'AND3_X2' is not defined in the library. (File /software/dk/nangate45/liberty/NangateOpenCellLibrary_typical_ecsm_nowlm.lib)
+[06/08 17:42:19     37s] **WARN: (TECHLIB-436):	Attribute 'max_fanout' on 'output/inout' pin 'ZN' of cell 'AND3_X4' is not defined in the library. (File /software/dk/nangate45/liberty/NangateOpenCellLibrary_typical_ecsm_nowlm.lib)
+[06/08 17:42:19     37s] **WARN: (TECHLIB-436):	Attribute 'max_fanout' on 'output/inout' pin 'ZN' of cell 'AND4_X1' is not defined in the library. (File /software/dk/nangate45/liberty/NangateOpenCellLibrary_typical_ecsm_nowlm.lib)
+[06/08 17:42:19     37s] **WARN: (TECHLIB-436):	Attribute 'max_fanout' on 'output/inout' pin 'ZN' of cell 'AND4_X2' is not defined in the library. (File /software/dk/nangate45/liberty/NangateOpenCellLibrary_typical_ecsm_nowlm.lib)
+[06/08 17:42:19     37s] **WARN: (TECHLIB-436):	Attribute 'max_fanout' on 'output/inout' pin 'ZN' of cell 'AND4_X4' is not defined in the library. (File /software/dk/nangate45/liberty/NangateOpenCellLibrary_typical_ecsm_nowlm.lib)
+[06/08 17:42:19     37s] **WARN: (TECHLIB-436):	Attribute 'max_fanout' on 'output/inout' pin 'ZN' of cell 'AOI21_X1' is not defined in the library. (File /software/dk/nangate45/liberty/NangateOpenCellLibrary_typical_ecsm_nowlm.lib)
+[06/08 17:42:19     37s] **WARN: (TECHLIB-436):	Attribute 'max_fanout' on 'output/inout' pin 'ZN' of cell 'AOI21_X2' is not defined in the library. (File /software/dk/nangate45/liberty/NangateOpenCellLibrary_typical_ecsm_nowlm.lib)
+[06/08 17:42:19     37s] **WARN: (TECHLIB-436):	Attribute 'max_fanout' on 'output/inout' pin 'ZN' of cell 'AOI21_X4' is not defined in the library. (File /software/dk/nangate45/liberty/NangateOpenCellLibrary_typical_ecsm_nowlm.lib)
+[06/08 17:42:19     37s] **WARN: (TECHLIB-436):	Attribute 'max_fanout' on 'output/inout' pin 'ZN' of cell 'AOI22_X1' is not defined in the library. (File /software/dk/nangate45/liberty/NangateOpenCellLibrary_typical_ecsm_nowlm.lib)
+[06/08 17:42:19     37s] **WARN: (TECHLIB-436):	Attribute 'max_fanout' on 'output/inout' pin 'ZN' of cell 'AOI22_X2' is not defined in the library. (File /software/dk/nangate45/liberty/NangateOpenCellLibrary_typical_ecsm_nowlm.lib)
+[06/08 17:42:19     37s] **WARN: (TECHLIB-436):	Attribute 'max_fanout' on 'output/inout' pin 'ZN' of cell 'AOI22_X4' is not defined in the library. (File /software/dk/nangate45/liberty/NangateOpenCellLibrary_typical_ecsm_nowlm.lib)
+[06/08 17:42:19     37s] **WARN: (TECHLIB-436):	Attribute 'max_fanout' on 'output/inout' pin 'ZN' of cell 'AOI211_X1' is not defined in the library. (File /software/dk/nangate45/liberty/NangateOpenCellLibrary_typical_ecsm_nowlm.lib)
+[06/08 17:42:19     37s] **WARN: (TECHLIB-436):	Attribute 'max_fanout' on 'output/inout' pin 'ZN' of cell 'AOI211_X2' is not defined in the library. (File /software/dk/nangate45/liberty/NangateOpenCellLibrary_typical_ecsm_nowlm.lib)
+[06/08 17:42:19     37s] **WARN: (TECHLIB-436):	Attribute 'max_fanout' on 'output/inout' pin 'ZN' of cell 'AOI211_X4' is not defined in the library. (File /software/dk/nangate45/liberty/NangateOpenCellLibrary_typical_ecsm_nowlm.lib)
+[06/08 17:42:19     37s] **WARN: (TECHLIB-436):	Attribute 'max_fanout' on 'output/inout' pin 'ZN' of cell 'AOI221_X1' is not defined in the library. (File /software/dk/nangate45/liberty/NangateOpenCellLibrary_typical_ecsm_nowlm.lib)
+[06/08 17:42:19     37s] **WARN: (TECHLIB-436):	Attribute 'max_fanout' on 'output/inout' pin 'ZN' of cell 'AOI221_X2' is not defined in the library. (File /software/dk/nangate45/liberty/NangateOpenCellLibrary_typical_ecsm_nowlm.lib)
+[06/08 17:42:21     40s] *** End library_loading (cpu=0.05min, real=0.03min, mem=21.9M, fe_cpu=0.67min, fe_real=2.95min, fe_mem=532.1M) ***
+[06/08 17:42:23     40s] *** Netlist is unique.
+[06/08 17:42:23     40s] Loading preference file /home/ms22.25/Documents/gabriel/DLX_4MSYS/DLX_vhd_fully_synthesizable/innovus/DLX_Inn_Design.dat/gui.pref.tcl ...
+[06/08 17:42:23     41s] **WARN: (IMPTCM-77):	Option "-drouteStartIteration" for command setNanoRouteMode is obsolete and will be removed in a future release. The obsolete option still works in this release but to avoid this warning and to ensure compatibility with future releases, remove the obsolete option from your script.
+[06/08 17:42:25     43s] **WARN: (GLOBAL-100):	Global 'timing_enable_default_delay_arc' has become obsolete. It will be removed in the next release.
+[06/08 17:52:01    111s] <CMD> getFillerMode -quiet
+[06/08 17:53:50    122s] **WARN: (IMPTCM-77):	Option "-drouteStartIteration" for command getNanoRouteMode is obsolete and will be removed in a future release. The obsolete option still works in this release but to avoid this warning and to ensure compatibility with future releases, remove the obsolete option from your script.
+[06/08 18:13:27    271s] 
+[06/08 18:13:27    271s] *** Memory Usage v#1 (Current mem = 948.871M, initial mem = 179.684M) ***
+[06/08 18:13:27    271s] 
+[06/08 18:13:27    271s] *** Summary of all messages that are not suppressed in this session:
+[06/08 18:13:27    271s] Severity  ID               Count  Summary                                  
+[06/08 18:13:27    271s] WARNING   IMPTCM-77            2  Option "%s" for command %s is obsolete a...
+[06/08 18:13:27    271s] WARNING   GLOBAL-100           2  Global '%s' has become obsolete. It will...
+[06/08 18:13:27    271s] WARNING   TECHLIB-436         20  Attribute '%s' on '%s' pin '%s' of cell ...
+[06/08 18:13:27    271s] *** Message Summary: 24 warning(s), 0 error(s)
+[06/08 18:13:27    271s] 
+[06/08 18:13:27    271s] --- Ending "Innovus" (totcpu=0:04:32, real=0:34:03, mem=948.9M) ---

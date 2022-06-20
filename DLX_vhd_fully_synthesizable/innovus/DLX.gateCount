@@ -1,0 +1,22 @@
+Gate area 0.7980 um^2
+Level 0 Module DLX                                      Gates=     18197 Cells=    7765 Area=   14521.7 um^2
+Level 1 Module PC_REG                                   Gates=260        Cells=100      Area=     208.0 um^2
+Level 1 Module DP                                       Gates=17322      Cells=7474     Area=   13823.5 um^2
+Level 2 Module DP/PC_REG                                Gates=260        Cells=100      Area=     208.0 um^2
+Level 2 Module DP/PC2_REG                               Gates=260        Cells=100      Area=     208.0 um^2
+Level 2 Module DP/PC3_REG                               Gates=260        Cells=100      Area=     208.0 um^2
+Level 2 Module DP/PC4_REG                               Gates=260        Cells=100      Area=     208.0 um^2
+Level 2 Module DP/NPC_REG                               Gates=262        Cells=100      Area=     209.6 um^2
+Level 2 Module DP/IR_REG                                Gates=260        Cells=100      Area=     208.0 um^2
+Level 2 Module DP/IMM_REG                               Gates=212        Cells=82       Area=     169.7 um^2
+Level 2 Module DP/ALU_OUT_REG                           Gates=272        Cells=108      Area=     217.6 um^2
+Level 2 Module DP/B_OUT_REG                             Gates=260        Cells=100      Area=     208.0 um^2
+Level 2 Module DP/ALU_OUT_REG2                          Gates=261        Cells=101      Area=     208.5 um^2
+Level 2 Module DP/PC_ADDER                              Gates=128        Cells=90       Area=     102.7 um^2
+Level 2 Module DP/RF                                    Gates=11481      Cells=4167     Area=    9162.4 um^2
+Level 2 Module DP/ALU_i                                 Gates=2526       Cells=1920     Area=    2016.0 um^2
+Level 3 Module DP/ALU_i/SHIFTER                         Gates=763        Cells=451      Area=     609.4 um^2
+Level 3 Module DP/ALU_i/sub_66                          Gates=383        Cells=325      Area=     305.9 um^2
+Level 3 Module DP/ALU_i/add_65                          Gates=408        Cells=346      Area=     326.1 um^2
+Level 3 Module DP/ALU_i/r59                             Gates=396        Cells=361      Area=     316.3 um^2
+Level 1 Module CU                                       Gates=605        Cells=181      Area=     482.8 um^2

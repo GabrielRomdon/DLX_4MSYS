@@ -1,0 +1,230 @@
+#######################################################
+#                                                     
+#  Innovus Command Logging File                     
+#  Created on Wed Jun  1 12:15:46 2022                
+#                                                     
+#######################################################
+
+#@(#)CDS: Innovus v17.11-s080_1 (64bit) 08/04/2017 11:13 (Linux 2.6.18-194.el5)
+#@(#)CDS: NanoRoute 17.11-s080_1 NR170721-2155/17_11-UB (database version 2.30, 390.7.1) {superthreading v1.44}
+#@(#)CDS: AAE 17.11-s034 (64bit) 08/04/2017 (Linux 2.6.18-194.el5)
+#@(#)CDS: CTE 17.11-s053_1 () Aug  1 2017 23:31:41 ( )
+#@(#)CDS: SYNTECH 17.11-s012_1 () Jul 21 2017 02:29:12 ( )
+#@(#)CDS: CPE v17.11-s095
+#@(#)CDS: IQRC/TQRC 16.1.1-s215 (64bit) Thu Jul  6 20:18:10 PDT 2017 (Linux 2.6.18-194.el5)
+
+set_global _enable_mmmc_by_default_flow      $CTE::mmmc_default
+suppressMessage ENCEXT-2799
+getDrawView
+loadWorkspace -name Physical
+win
+set defHierChar /
+set delaycal_input_transition_delay 0.1ps
+set fpIsMaxIoHeight 0
+set init_gnd_net gnd
+set init_mmmc_file Default.view
+set init_oa_search_lib {}
+set init_pwr_net vdd
+set init_verilog dlx_synth.v
+set init_lef_file /software/dk/nangate45/lef/NangateOpenCellLibrary.lef
+init_design
+getIoFlowFlag
+setIoFlowFlag 0
+floorPlan -coreMarginsBy die -site FreePDK45_38x28_10R_NP_162NW_34O -r 1.0 0.6 5.0 5.0 5.0 5.0
+uiSetTool select
+getIoFlowFlag
+fit
+set sprCreateIeRingOffset 1.0
+set sprCreateIeRingThreshold 1.0
+set sprCreateIeRingJogDistance 1.0
+set sprCreateIeRingLayers {}
+set sprCreateIeRingOffset 1.0
+set sprCreateIeRingThreshold 1.0
+set sprCreateIeRingJogDistance 1.0
+set sprCreateIeRingLayers {}
+set sprCreateIeStripeWidth 10.0
+set sprCreateIeStripeThreshold 1.0
+set sprCreateIeStripeWidth 10.0
+set sprCreateIeStripeThreshold 1.0
+set sprCreateIeRingOffset 1.0
+set sprCreateIeRingThreshold 1.0
+set sprCreateIeRingJogDistance 1.0
+set sprCreateIeRingLayers {}
+set sprCreateIeStripeWidth 10.0
+set sprCreateIeStripeThreshold 1.0
+setAddRingMode -ring_target default -extend_over_row 0 -ignore_rows 0 -avoid_short 0 -skip_crossing_trunks none -stacked_via_top_layer metal10 -stacked_via_bottom_layer metal1 -via_using_exact_crossover_size 1 -orthogonal_only true -skip_via_on_pin {  standardcell } -skip_via_on_wire_shape {  noshape }
+addRing -nets {vdd gnd} -type core_rings -follow core -layer {top metal9 bottom metal9 left metal10 right metal10} -width {top 0.8 bottom 0.8 left 0.8 right 0.8} -spacing {top 0.8 bottom 0.8 left 0.8 right 0.8} -offset {top 1.8 bottom 1.8 left 1.8 right 1.8} -center 1 -extend_corner {} -threshold 0 -jog_distance 0 -snap_wire_center_to_grid None
+selectWire 1.3650 1.3200 2.1650 162.7600 10 gnd
+deselectAll
+selectWire 2.9650 2.9200 3.7650 161.1600 10 vdd
+set sprCreateIeRingOffset 1.0
+set sprCreateIeRingThreshold 1.0
+set sprCreateIeRingJogDistance 1.0
+set sprCreateIeRingLayers {}
+set sprCreateIeRingOffset 1.0
+set sprCreateIeRingThreshold 1.0
+set sprCreateIeRingJogDistance 1.0
+set sprCreateIeRingLayers {}
+set sprCreateIeStripeWidth 10.0
+set sprCreateIeStripeThreshold 1.0
+set sprCreateIeStripeWidth 10.0
+set sprCreateIeStripeThreshold 1.0
+set sprCreateIeRingOffset 1.0
+set sprCreateIeRingThreshold 1.0
+set sprCreateIeRingJogDistance 1.0
+set sprCreateIeRingLayers {}
+set sprCreateIeStripeWidth 10.0
+set sprCreateIeStripeThreshold 1.0
+setAddStripeMode -ignore_block_check false -break_at none -route_over_rows_only false -rows_without_stripes_only false -extend_to_closest_target none -stop_at_last_wire_for_area false -partial_set_thru_domain false -ignore_nondefault_domains false -trim_antenna_back_to_shape none -spacing_type edge_to_edge -spacing_from_block 0 -stripe_min_length 0 -stacked_via_top_layer metal10 -stacked_via_bottom_layer metal1 -via_using_exact_crossover_size false -split_vias false -orthogonal_only true -allow_jog { padcore_ring  block_ring }
+addStripe -nets {vdd gnd} -layer metal10 -direction vertical -width 0.8 -spacing 0.8 -set_to_set_distance 20 -start_from left -start_offset 15 -switch_layer_over_obs false -max_same_layer_jog_length 2 -padcore_ring_top_layer_limit metal10 -padcore_ring_bottom_layer_limit metal1 -block_ring_top_layer_limit metal10 -block_ring_bottom_layer_limit metal1 -use_wire_group 0 -snap_wire_center_to_grid None -skip_via_on_pin {  standardcell } -skip_via_on_wire_shape {  noshape }
+pan 7.838 -48.810
+pan -6.663 97.519
+pan -24.986 -0.646
+pan -11.901 0.366
+pan -29.221 0.037
+pan -24.642 -2.111
+pan -24.987 -1.216
+pan -27.977 -0.102
+pan 65.472 -40.920
+pan 36.042 -52.776
+pan -3.862 11.842
+setSrouteMode -viaConnectToShape { noshape }
+sroute -connect { blockPin padPin padRing corePin floatingStripe } -layerChangeRange { metal1(1) metal10(10) } -blockPinTarget { nearestTarget } -padPinPortConnect { allPort oneGeom } -padPinTarget { nearestTarget } -corePinTarget { firstAfterRowEnd } -floatingStripeTarget { blockring padring ring stripe ringpin blockpin followpin } -allowJogging 1 -crossoverViaLayerRange { metal1(1) metal10(10) } -nets { gnd vdd } -allowLayerChange 1 -blockPin useLef -targetViaLayerRange { metal1(1) metal10(10) }
+deselectAll
+selectWire 2.9650 158.9550 5.1300 159.1250 1 vdd
+uiSetTool select
+setEdit -layer_horizontal metal1
+setEdit -layer_vertical metal1
+deselectAll
+pan -2.231 3.447
+pan -26.358 -0.406
+pan -75.627 2.057
+pan -1.421 2.111
+get_visible_nets
+setPlaceMode -prerouteAsObs {1 2 3 4 5 6 7 8}
+setPlaceMode -fp false
+placeDesign
+loadWorkspace -name {Design Browser + Physical}
+pan 30.645 40.276
+pan 2.097 5.032
+pan 0.909 -17.268
+setDrawView ameba
+fit
+getPinAssignMode -pinEditInBatch -quiet
+setPinAssignMode -pinEditInBatch true
+editPin -fixOverlap 1 -unit MICRON -spreadDirection clockwise -side Top -layer 3 -spreadType center -spacing 0.14 -pin {CLK RST}
+setPinAssignMode -pinEditInBatch true
+editPin -fixOverlap 1 -spreadDirection clockwise -side Left -layer 1 -spreadType side -pin {{D_DATA_OUT[0]} {D_DATA_OUT[1]} {D_DATA_OUT[2]} {D_DATA_OUT[3]} {D_DATA_OUT[4]} {D_DATA_OUT[5]} {D_DATA_OUT[6]} {D_DATA_OUT[7]} {D_DATA_OUT[8]} {D_DATA_OUT[9]} {D_DATA_OUT[10]} {D_DATA_OUT[11]} {D_DATA_OUT[12]} {D_DATA_OUT[13]} {D_DATA_OUT[14]} {D_DATA_OUT[15]} {D_DATA_OUT[16]} {D_DATA_OUT[17]} {D_DATA_OUT[18]} {D_DATA_OUT[19]} {D_DATA_OUT[20]} {D_DATA_OUT[21]} {D_DATA_OUT[22]} {D_DATA_OUT[23]} {D_DATA_OUT[24]} {D_DATA_OUT[25]} {D_DATA_OUT[26]} {D_DATA_OUT[27]} {D_DATA_OUT[28]} {D_DATA_OUT[29]} {D_DATA_OUT[30]} {D_DATA_OUT[31]} {D_ADDR[0]} {D_ADDR[1]} {D_ADDR[2]} {D_ADDR[3]} {D_ADDR[4]} {D_ADDR[5]} {D_DATA_IN[0]} {D_DATA_IN[1]} {D_DATA_IN[2]} {D_DATA_IN[3]} {D_DATA_IN[4]} {D_DATA_IN[5]} {D_DATA_IN[6]} {D_DATA_IN[7]} {D_DATA_IN[8]} {D_DATA_IN[9]} {D_DATA_IN[10]} {D_DATA_IN[11]} {D_DATA_IN[12]} {D_DATA_IN[13]} {D_DATA_IN[14]} {D_DATA_IN[15]} {D_DATA_IN[16]} {D_DATA_IN[17]} {D_DATA_IN[18]} {D_DATA_IN[19]} {D_DATA_IN[20]} {D_DATA_IN[21]} {D_DATA_IN[22]} {D_DATA_IN[23]} {D_DATA_IN[24]} {D_DATA_IN[25]} {D_DATA_IN[26]} {D_DATA_IN[27]} {D_DATA_IN[28]} {D_DATA_IN[29]} {D_DATA_IN[30]} {D_DATA_IN[31]}}
+setPinAssignMode -pinEditInBatch true
+editPin -use TIELOW -fixOverlap 1 -unit MICRON -spreadDirection clockwise -side Left -layer 3 -spreadType center -spacing 0.14 -pin {D_RR D_WR}
+setPinAssignMode -pinEditInBatch true
+editPin -pinWidth 0.07 -pinDepth 0.07 -fixOverlap 1 -unit MICRON -spreadDirection clockwise -side Left -layer 3 -spreadType center -spacing 0.14 -pin {{D_DATA_OUT[0]} {D_DATA_OUT[1]} {D_DATA_OUT[2]} {D_DATA_OUT[3]} {D_DATA_OUT[4]} {D_DATA_OUT[5]} {D_DATA_OUT[6]} {D_DATA_OUT[7]} {D_DATA_OUT[8]} {D_DATA_OUT[9]} {D_DATA_OUT[10]} {D_DATA_OUT[11]} {D_DATA_OUT[12]} {D_DATA_OUT[13]} {D_DATA_OUT[14]} {D_DATA_OUT[15]} {D_DATA_OUT[16]} {D_DATA_OUT[17]} {D_DATA_OUT[18]} {D_DATA_OUT[19]} {D_DATA_OUT[20]} {D_DATA_OUT[21]} {D_DATA_OUT[22]} {D_DATA_OUT[23]} {D_DATA_OUT[24]} {D_DATA_OUT[25]} {D_DATA_OUT[26]} {D_DATA_OUT[27]} {D_DATA_OUT[28]} {D_DATA_OUT[29]} {D_DATA_OUT[30]} {D_DATA_OUT[31]} {D_ADDR[0]} {D_ADDR[1]} {D_ADDR[2]} {D_ADDR[3]} {D_ADDR[4]} {D_ADDR[5]} {D_DATA_IN[0]} {D_DATA_IN[1]} {D_DATA_IN[2]} {D_DATA_IN[3]} {D_DATA_IN[4]} {D_DATA_IN[5]} {D_DATA_IN[6]} {D_DATA_IN[7]} {D_DATA_IN[8]} {D_DATA_IN[9]} {D_DATA_IN[10]} {D_DATA_IN[11]} {D_DATA_IN[12]} {D_DATA_IN[13]} {D_DATA_IN[14]} {D_DATA_IN[15]} {D_DATA_IN[16]} {D_DATA_IN[17]} {D_DATA_IN[18]} {D_DATA_IN[19]} {D_DATA_IN[20]} {D_DATA_IN[21]} {D_DATA_IN[22]} {D_DATA_IN[23]} {D_DATA_IN[24]} {D_DATA_IN[25]} {D_DATA_IN[26]} {D_DATA_IN[27]} {D_DATA_IN[28]} {D_DATA_IN[29]} {D_DATA_IN[30]} {D_DATA_IN[31]}}
+setPinAssignMode -pinEditInBatch true
+editPin -fixOverlap 1 -spreadDirection clockwise -side Right -layer 3 -spreadType side -pin {{I_DATA[0]} {I_DATA[1]} {I_DATA[2]} {I_DATA[3]} {I_DATA[4]} {I_DATA[5]} {I_DATA[6]} {I_DATA[7]} {I_DATA[8]} {I_DATA[9]} {I_DATA[10]} {I_DATA[11]} {I_DATA[12]} {I_DATA[13]} {I_DATA[14]} {I_DATA[15]} {I_DATA[16]} {I_DATA[17]} {I_DATA[18]} {I_DATA[19]} {I_DATA[20]} {I_DATA[21]} {I_DATA[22]} {I_DATA[23]} {I_DATA[24]} {I_DATA[25]} {I_DATA[26]} {I_DATA[27]} {I_DATA[28]} {I_DATA[29]} {I_DATA[30]} {I_DATA[31]} {I_ADDR[0]} {I_ADDR[1]} {I_ADDR[2]} {I_ADDR[3]} {I_ADDR[4]} {I_ADDR[5]} {I_ADDR[6]} {I_ADDR[7]} {I_ADDR[8]} {I_ADDR[9]} {I_ADDR[10]} {I_ADDR[11]} {I_ADDR[12]} {I_ADDR[13]} {I_ADDR[14]} {I_ADDR[15]} {I_ADDR[16]} {I_ADDR[17]} {I_ADDR[18]} {I_ADDR[19]} {I_ADDR[20]} {I_ADDR[21]} {I_ADDR[22]} {I_ADDR[23]} {I_ADDR[24]} {I_ADDR[25]} {I_ADDR[26]} {I_ADDR[27]} {I_ADDR[28]} {I_ADDR[29]} {I_ADDR[30]} {I_ADDR[31]}}
+setPinAssignMode -pinEditInBatch false
+getPinAssignMode -pinEditInBatch -quiet
+setPinAssignMode -pinEditInBatch true
+editPin -pinWidth 0.07 -pinDepth 0.07 -fixOverlap 1 -spreadDirection clockwise -side Left -layer 3 -spreadType side -pin {{D_DATA_OUT[0]} {D_DATA_OUT[1]} {D_DATA_OUT[2]} {D_DATA_OUT[3]} {D_DATA_OUT[4]} {D_DATA_OUT[5]} {D_DATA_OUT[6]} {D_DATA_OUT[7]} {D_DATA_OUT[8]} {D_DATA_OUT[9]} {D_DATA_OUT[10]} {D_DATA_OUT[11]} {D_DATA_OUT[12]} {D_DATA_OUT[13]} {D_DATA_OUT[14]} {D_DATA_OUT[15]} {D_DATA_OUT[16]} {D_DATA_OUT[17]} {D_DATA_OUT[18]} {D_DATA_OUT[19]} {D_DATA_OUT[20]} {D_DATA_OUT[21]} {D_DATA_OUT[22]} {D_DATA_OUT[23]} {D_DATA_OUT[24]} {D_DATA_OUT[25]} {D_DATA_OUT[26]} {D_DATA_OUT[27]} {D_DATA_OUT[28]} {D_DATA_OUT[29]} {D_DATA_OUT[30]} {D_DATA_OUT[31]} {D_ADDR[0]} {D_ADDR[1]} {D_ADDR[2]} {D_ADDR[3]} {D_ADDR[4]} {D_ADDR[5]} {D_DATA_IN[0]} {D_DATA_IN[1]} {D_DATA_IN[2]} {D_DATA_IN[3]} {D_DATA_IN[4]} {D_DATA_IN[5]} {D_DATA_IN[6]} {D_DATA_IN[7]} {D_DATA_IN[8]} {D_DATA_IN[9]} {D_DATA_IN[10]} {D_DATA_IN[11]} {D_DATA_IN[12]} {D_DATA_IN[13]} {D_DATA_IN[14]} {D_DATA_IN[15]} {D_DATA_IN[16]} {D_DATA_IN[17]} {D_DATA_IN[18]} {D_DATA_IN[19]} {D_DATA_IN[20]} {D_DATA_IN[21]} {D_DATA_IN[22]} {D_DATA_IN[23]} {D_DATA_IN[24]} {D_DATA_IN[25]} {D_DATA_IN[26]} {D_DATA_IN[27]} {D_DATA_IN[28]} {D_DATA_IN[29]} {D_DATA_IN[30]} {D_DATA_IN[31]}}
+setPinAssignMode -pinEditInBatch true
+editPin -use TIELOW -pinWidth 0.07 -pinDepth 0.07 -fixOverlap 1 -unit MICRON -spreadDirection clockwise -side Left -layer 3 -spreadType center -spacing 0.14 -pin {D_RR D_WR}
+setPinAssignMode -pinEditInBatch true
+editPin -use TIELOW -pinWidth 0.07 -pinDepth 0.07 -fixOverlap 1 -unit MICRON -spreadDirection clockwise -side Left -layer 3 -spreadType center -spacing 0.14 -pin {D_RR D_WR}
+setPinAssignMode -pinEditInBatch false
+pan 6.288 23.897
+getPinAssignMode -pinEditInBatch -quiet
+setPinAssignMode -pinEditInBatch true
+editPin -pinWidth 0.07 -pinDepth 0.07 -fixOverlap 1 -unit MICRON -spreadDirection clockwise -side Bottom -layer 3 -spreadType center -spacing 0.14 -pin {{D_DATA_OUT[0]} {D_DATA_OUT[1]} {D_DATA_OUT[2]} {D_DATA_OUT[3]} {D_DATA_OUT[4]} {D_DATA_OUT[5]} {D_DATA_OUT[6]} {D_DATA_OUT[7]} {D_DATA_OUT[8]} {D_DATA_OUT[9]} {D_DATA_OUT[10]} {D_DATA_OUT[11]} {D_DATA_OUT[12]} {D_DATA_OUT[13]} {D_DATA_OUT[14]} {D_DATA_OUT[15]} {D_DATA_OUT[16]} {D_DATA_OUT[17]} {D_DATA_OUT[18]} {D_DATA_OUT[19]} {D_DATA_OUT[20]} {D_DATA_OUT[21]} {D_DATA_OUT[22]} {D_DATA_OUT[23]} {D_DATA_OUT[24]} {D_DATA_OUT[25]} {D_DATA_OUT[26]} {D_DATA_OUT[27]} {D_DATA_OUT[28]} {D_DATA_OUT[29]} {D_DATA_OUT[30]} {D_DATA_OUT[31]}}
+setPinAssignMode -pinEditInBatch true
+editPin -pinWidth 0.07 -pinDepth 0.07 -fixOverlap 1 -unit MICRON -spreadDirection clockwise -side Bottom -layer 3 -spreadType center -spacing -0.19 -pin {{D_DATA_OUT[0]} {D_DATA_OUT[1]} {D_DATA_OUT[2]} {D_DATA_OUT[3]} {D_DATA_OUT[4]} {D_DATA_OUT[5]} {D_DATA_OUT[6]} {D_DATA_OUT[7]} {D_DATA_OUT[8]} {D_DATA_OUT[9]} {D_DATA_OUT[10]} {D_DATA_OUT[11]} {D_DATA_OUT[12]} {D_DATA_OUT[13]} {D_DATA_OUT[14]} {D_DATA_OUT[15]} {D_DATA_OUT[16]} {D_DATA_OUT[17]} {D_DATA_OUT[18]} {D_DATA_OUT[19]} {D_DATA_OUT[20]} {D_DATA_OUT[21]} {D_DATA_OUT[22]} {D_DATA_OUT[23]} {D_DATA_OUT[24]} {D_DATA_OUT[25]} {D_DATA_OUT[26]} {D_DATA_OUT[27]} {D_DATA_OUT[28]} {D_DATA_OUT[29]} {D_DATA_OUT[30]} {D_DATA_OUT[31]}}
+setPinAssignMode -pinEditInBatch false
+getPinAssignMode -pinEditInBatch -quiet
+setPinAssignMode -pinEditInBatch true
+editPin -use TIELOW -pinWidth 0.07 -pinDepth 0.07 -fixOverlap 1 -unit MICRON -spreadDirection clockwise -side Left -layer 3 -spreadType center -spacing -0.19 -pin {{D_DATA_IN[0]} {D_DATA_IN[1]} {D_DATA_IN[2]} {D_DATA_IN[3]} {D_DATA_IN[4]} {D_DATA_IN[5]} {D_DATA_IN[6]} {D_DATA_IN[7]} {D_DATA_IN[8]} {D_DATA_IN[9]} {D_DATA_IN[10]} {D_DATA_IN[11]} {D_DATA_IN[12]} {D_DATA_IN[13]} {D_DATA_IN[14]} {D_DATA_IN[15]} {D_DATA_IN[16]} {D_DATA_IN[17]} {D_DATA_IN[18]} {D_DATA_IN[19]} {D_DATA_IN[20]} {D_DATA_IN[21]} {D_DATA_IN[22]} {D_DATA_IN[23]} {D_DATA_IN[24]} {D_DATA_IN[25]} {D_DATA_IN[26]} {D_DATA_IN[27]} {D_DATA_IN[28]} {D_DATA_IN[29]} {D_DATA_IN[30]} {D_DATA_IN[31]} {D_ADDR[0]} {D_ADDR[1]} {D_ADDR[2]} {D_ADDR[3]} {D_ADDR[4]} {D_ADDR[5]} D_RR D_WR}
+setPinAssignMode -pinEditInBatch true
+editPin -use TIELOW -pinWidth 0.07 -pinDepth 0.07 -fixOverlap 1 -unit MICRON -spreadDirection clockwise -side Left -layer 3 -spreadType center -spacing -0.19 -pin {{D_DATA_IN[0]} {D_DATA_IN[1]} {D_DATA_IN[2]} {D_DATA_IN[3]} {D_DATA_IN[4]} {D_DATA_IN[5]} {D_DATA_IN[6]} {D_DATA_IN[7]} {D_DATA_IN[8]} {D_DATA_IN[9]} {D_DATA_IN[10]} {D_DATA_IN[11]} {D_DATA_IN[12]} {D_DATA_IN[13]} {D_DATA_IN[14]} {D_DATA_IN[15]} {D_DATA_IN[16]} {D_DATA_IN[17]} {D_DATA_IN[18]} {D_DATA_IN[19]} {D_DATA_IN[20]} {D_DATA_IN[21]} {D_DATA_IN[22]} {D_DATA_IN[23]} {D_DATA_IN[24]} {D_DATA_IN[25]} {D_DATA_IN[26]} {D_DATA_IN[27]} {D_DATA_IN[28]} {D_DATA_IN[29]} {D_DATA_IN[30]} {D_DATA_IN[31]} {D_ADDR[0]} {D_ADDR[1]} {D_ADDR[2]} {D_ADDR[3]} {D_ADDR[4]} {D_ADDR[5]} D_RR D_WR}
+setPinAssignMode -pinEditInBatch false
+pan 87.003 -1.427
+getPinAssignMode -pinEditInBatch -quiet
+setPinAssignMode -pinEditInBatch true
+editPin -pinWidth 0.07 -pinDepth 0.07 -fixOverlap 1 -spreadDirection clockwise -side Left -layer 3 -spreadType side -pin {{D_ADDR[0]} {D_ADDR[1]} {D_ADDR[2]} {D_ADDR[3]} {D_ADDR[4]} {D_ADDR[5]} {D_DATA_IN[0]} {D_DATA_IN[1]} {D_DATA_IN[2]} {D_DATA_IN[3]} {D_DATA_IN[4]} {D_DATA_IN[5]} {D_DATA_IN[6]} {D_DATA_IN[7]} {D_DATA_IN[8]} {D_DATA_IN[9]} {D_DATA_IN[10]} {D_DATA_IN[11]} {D_DATA_IN[12]} {D_DATA_IN[13]} {D_DATA_IN[14]} {D_DATA_IN[15]} {D_DATA_IN[16]} {D_DATA_IN[17]} {D_DATA_IN[18]} {D_DATA_IN[19]} {D_DATA_IN[20]} {D_DATA_IN[21]} {D_DATA_IN[22]} {D_DATA_IN[23]} {D_DATA_IN[24]} {D_DATA_IN[25]} {D_DATA_IN[26]} {D_DATA_IN[27]} {D_DATA_IN[28]} {D_DATA_IN[29]} {D_DATA_IN[30]} {D_DATA_IN[31]} {D_DATA_OUT[0]} {D_DATA_OUT[1]} {D_DATA_OUT[2]} {D_DATA_OUT[3]} {D_DATA_OUT[4]} {D_DATA_OUT[5]} {D_DATA_OUT[6]} {D_DATA_OUT[7]} {D_DATA_OUT[8]} {D_DATA_OUT[9]} {D_DATA_OUT[10]} {D_DATA_OUT[11]} {D_DATA_OUT[12]} {D_DATA_OUT[13]} {D_DATA_OUT[14]} {D_DATA_OUT[15]} {D_DATA_OUT[16]} {D_DATA_OUT[17]} {D_DATA_OUT[18]} {D_DATA_OUT[19]} {D_DATA_OUT[20]} {D_DATA_OUT[21]} {D_DATA_OUT[22]} {D_DATA_OUT[23]} {D_DATA_OUT[24]} {D_DATA_OUT[25]} {D_DATA_OUT[26]} {D_DATA_OUT[27]} {D_DATA_OUT[28]} {D_DATA_OUT[29]} {D_DATA_OUT[30]} {D_DATA_OUT[31]}}
+setPinAssignMode -pinEditInBatch true
+editPin -pinWidth 0.07 -pinDepth 0.07 -fixOverlap 1 -spreadDirection clockwise -side Bottom -layer 3 -spreadType side -pin {{D_DATA_OUT[0]} {D_DATA_OUT[1]} {D_DATA_OUT[2]} {D_DATA_OUT[3]} {D_DATA_OUT[4]} {D_DATA_OUT[5]} {D_DATA_OUT[6]} {D_DATA_OUT[7]} {D_DATA_OUT[8]} {D_DATA_OUT[9]} {D_DATA_OUT[10]} {D_DATA_OUT[11]} {D_DATA_OUT[12]} {D_DATA_OUT[13]} {D_DATA_OUT[14]} {D_DATA_OUT[15]} {D_DATA_OUT[16]} {D_DATA_OUT[17]} {D_DATA_OUT[18]} {D_DATA_OUT[19]} {D_DATA_OUT[20]} {D_DATA_OUT[21]} {D_DATA_OUT[22]} {D_DATA_OUT[23]} {D_DATA_OUT[24]} {D_DATA_OUT[25]} {D_DATA_OUT[26]} {D_DATA_OUT[27]} {D_DATA_OUT[28]} {D_DATA_OUT[29]} {D_DATA_OUT[30]} {D_DATA_OUT[31]}}
+setPinAssignMode -pinEditInBatch true
+editPin -pinWidth 0.07 -pinDepth 0.07 -fixOverlap 1 -spreadDirection clockwise -side Bottom -layer 3 -spreadType side -pin {{D_DATA_OUT[0]} {D_DATA_OUT[1]} {D_DATA_OUT[2]} {D_DATA_OUT[3]} {D_DATA_OUT[4]} {D_DATA_OUT[5]} {D_DATA_OUT[6]} {D_DATA_OUT[7]} {D_DATA_OUT[8]} {D_DATA_OUT[9]} {D_DATA_OUT[10]} {D_DATA_OUT[11]} {D_DATA_OUT[12]} {D_DATA_OUT[13]} {D_DATA_OUT[14]} {D_DATA_OUT[15]} {D_DATA_OUT[16]} {D_DATA_OUT[17]} {D_DATA_OUT[18]} {D_DATA_OUT[19]} {D_DATA_OUT[20]} {D_DATA_OUT[21]} {D_DATA_OUT[22]} {D_DATA_OUT[23]} {D_DATA_OUT[24]} {D_DATA_OUT[25]} {D_DATA_OUT[26]} {D_DATA_OUT[27]} {D_DATA_OUT[28]} {D_DATA_OUT[29]} {D_DATA_OUT[30]} {D_DATA_OUT[31]}}
+setPinAssignMode -pinEditInBatch false
+pan 11.746 -44.886
+fit
+getPinAssignMode -pinEditInBatch -quiet
+setPinAssignMode -pinEditInBatch true
+editPin -use TIELOW -pinWidth 0.07 -pinDepth 0.07 -fixOverlap 1 -unit MICRON -spreadDirection clockwise -side Left -layer 3 -spreadType center -spacing 0.14 -pin {D_RR D_WR}
+setPinAssignMode -pinEditInBatch true
+editPin -pinWidth 0.07 -pinDepth 0.07 -fixOverlap 1 -spreadDirection clockwise -side Left -layer 3 -spreadType side -pin {{D_ADDR[0]} {D_ADDR[1]} {D_ADDR[2]} {D_ADDR[3]} {D_ADDR[4]} {D_ADDR[5]} {D_DATA_IN[0]} {D_DATA_IN[1]} {D_DATA_IN[2]} {D_DATA_IN[3]} {D_DATA_IN[4]} {D_DATA_IN[5]} {D_DATA_IN[6]} {D_DATA_IN[7]} {D_DATA_IN[8]} {D_DATA_IN[9]} {D_DATA_IN[10]} {D_DATA_IN[11]} {D_DATA_IN[12]} {D_DATA_IN[13]} {D_DATA_IN[14]} {D_DATA_IN[15]} {D_DATA_IN[16]} {D_DATA_IN[17]} {D_DATA_IN[18]} {D_DATA_IN[19]} {D_DATA_IN[20]} {D_DATA_IN[21]} {D_DATA_IN[22]} {D_DATA_IN[23]} {D_DATA_IN[24]} {D_DATA_IN[25]} {D_DATA_IN[26]} {D_DATA_IN[27]} {D_DATA_IN[28]} {D_DATA_IN[29]} {D_DATA_IN[30]} {D_DATA_IN[31]}}
+setPinAssignMode -pinEditInBatch true
+editPin -pinWidth 0.07 -pinDepth 0.07 -fixOverlap 1 -spreadDirection clockwise -side Bottom -layer 3 -spreadType side -pin {{D_DATA_OUT[0]} {D_DATA_OUT[1]} {D_DATA_OUT[2]} {D_DATA_OUT[3]} {D_DATA_OUT[4]} {D_DATA_OUT[5]} {D_DATA_OUT[6]} {D_DATA_OUT[7]} {D_DATA_OUT[8]} {D_DATA_OUT[9]} {D_DATA_OUT[10]} {D_DATA_OUT[11]} {D_DATA_OUT[12]} {D_DATA_OUT[13]} {D_DATA_OUT[14]} {D_DATA_OUT[15]} {D_DATA_OUT[16]} {D_DATA_OUT[17]} {D_DATA_OUT[18]} {D_DATA_OUT[19]} {D_DATA_OUT[20]} {D_DATA_OUT[21]} {D_DATA_OUT[22]} {D_DATA_OUT[23]} {D_DATA_OUT[24]} {D_DATA_OUT[25]} {D_DATA_OUT[26]} {D_DATA_OUT[27]} {D_DATA_OUT[28]} {D_DATA_OUT[29]} {D_DATA_OUT[30]} {D_DATA_OUT[31]}}
+setPinAssignMode -pinEditInBatch true
+editPin -pinWidth 0.07 -pinDepth 0.07 -fixOverlap 1 -spreadDirection clockwise -side Left -layer 3 -spreadType side -pin {{D_ADDR[0]} {D_ADDR[1]} {D_ADDR[2]} {D_ADDR[3]} {D_ADDR[4]} {D_ADDR[5]}}
+setPinAssignMode -pinEditInBatch false
+getPinAssignMode -pinEditInBatch -quiet
+setPinAssignMode -pinEditInBatch true
+editPin -pinWidth 0.07 -pinDepth 0.07 -fixOverlap 1 -spreadDirection clockwise -side Left -layer 3 -spreadType side -pin {D_WR D_RR {D_DATA_IN[0]} {D_DATA_IN[1]} {D_DATA_IN[2]} {D_DATA_IN[3]} {D_DATA_IN[4]} {D_DATA_IN[5]} {D_DATA_IN[6]} {D_DATA_IN[7]} {D_DATA_IN[8]} {D_DATA_IN[9]} {D_DATA_IN[10]} {D_DATA_IN[11]} {D_DATA_IN[12]} {D_DATA_IN[13]} {D_DATA_IN[14]} {D_DATA_IN[15]} {D_DATA_IN[16]} {D_DATA_IN[17]} {D_DATA_IN[18]} {D_DATA_IN[19]} {D_DATA_IN[20]} {D_DATA_IN[21]} {D_DATA_IN[22]} {D_DATA_IN[23]} {D_DATA_IN[24]} {D_DATA_IN[25]} {D_DATA_IN[26]} {D_DATA_IN[27]} {D_DATA_IN[28]} {D_DATA_IN[29]} {D_DATA_IN[30]} {D_DATA_IN[31]} {D_ADDR[0]} {D_ADDR[1]} {D_ADDR[2]} {D_ADDR[3]} {D_ADDR[4]} {D_ADDR[5]}}
+setPinAssignMode -pinEditInBatch true
+editPin -pinWidth 0.07 -pinDepth 0.07 -fixOverlap 1 -spreadDirection clockwise -side Left -layer 3 -spreadType side -pin {D_WR D_RR {D_DATA_IN[0]} {D_DATA_IN[1]} {D_DATA_IN[2]} {D_DATA_IN[3]} {D_DATA_IN[4]} {D_DATA_IN[5]} {D_DATA_IN[6]} {D_DATA_IN[7]} {D_DATA_IN[8]} {D_DATA_IN[9]} {D_DATA_IN[10]} {D_DATA_IN[11]} {D_DATA_IN[12]} {D_DATA_IN[13]} {D_DATA_IN[14]} {D_DATA_IN[15]} {D_DATA_IN[16]} {D_DATA_IN[17]} {D_DATA_IN[18]} {D_DATA_IN[19]} {D_DATA_IN[20]} {D_DATA_IN[21]} {D_DATA_IN[22]} {D_DATA_IN[23]} {D_DATA_IN[24]} {D_DATA_IN[25]} {D_DATA_IN[26]} {D_DATA_IN[27]} {D_DATA_IN[28]} {D_DATA_IN[29]} {D_DATA_IN[30]} {D_DATA_IN[31]} {D_ADDR[0]} {D_ADDR[1]} {D_ADDR[2]} {D_ADDR[3]} {D_ADDR[4]} {D_ADDR[5]}}
+setPinAssignMode -pinEditInBatch false
+pan 6.413 19.239
+setOptMode -fixCap true -fixTran true -fixFanoutLoad false
+optDesign -postCTS
+optDesign -postCTS -hold
+setDrawView place
+setDrawView fplan
+setDrawView ameba
+fit
+setDrawView place
+getFillerMode -quiet
+addFiller -cell FILLCELL_X1 FILLCELL_X8 FILLCELL_X4 FILLCELL_X32 FILLCELL_X2 FILLCELL_X16 -prefix FILLER
+pan -7.982 -46.346
+fit
+setNanoRouteMode -quiet -timingEngine {}
+setNanoRouteMode -quiet -routeWithSiPostRouteFix 0
+setNanoRouteMode -quiet -drouteStartIteration default
+setNanoRouteMode -quiet -routeTopRoutingLayer default
+setNanoRouteMode -quiet -routeBottomRoutingLayer default
+setNanoRouteMode -quiet -drouteEndIteration default
+setNanoRouteMode -quiet -routeWithTimingDriven false
+setNanoRouteMode -quiet -routeWithSiDriven false
+routeDesign -globalDetail
+setAnalysisMode -analysisType onChipVariation
+setAnalysisMode -analysisType onChipVariation
+setOptMode -fixCap true -fixTran true -fixFanoutLoad false
+optDesign -postRoute
+optDesign -postRoute -hold
+saveDesign DLX_Inn_Design
+dumpToGIF screenshots/PostRouteDesign
+win
+dumpToGIF screenshots/PostRouteGIF
+reset_parasitics
+extractRC
+rcOut -setload DLX.setload -rc_corner standard
+rcOut -setres DLX.setres -rc_corner standard
+rcOut -spf DLX.spf -rc_corner standard
+rcOut -spef DLX.spef -rc_corner standard
+redirect -quiet {set honorDomain [getAnalysisMode -honorClockDomains]} > /dev/null
+timeDesign -postRoute -pathReports -drvReports -slackReports -numPaths 50 -prefix DLX_postRoute -outDir timingReports
+redirect -quiet {set honorDomain [getAnalysisMode -honorClockDomains]} > /dev/null
+timeDesign -postRoute -hold -pathReports -slackReports -numPaths 50 -prefix DLX_postRoute -outDir timingReports
+redirect -quiet {set honorDomain [getAnalysisMode -honorClockDomains]} > /dev/null
+timeDesign -postRoute -pathReports -drvReports -slackReports -numPaths 50 -prefix DLX_postRoute -outDir timingReports
+redirect -quiet {set honorDomain [getAnalysisMode -honorClockDomains]} > /dev/null
+timeDesign -postRoute -pathReports -drvReports -slackReports -numPaths 50 -prefix DLX_postRoute -outDir timingReports
+redirect -quiet {set honorDomain [getAnalysisMode -honorClockDomains]} > /dev/null
+timeDesign -postRoute -pathReports -drvReports -slackReports -numPaths 50 -prefix DLX_postRoute -outDir timingReports
+verifyConnectivity -type all -error 1000 -warning 50
+setVerifyGeometryMode -area { 0 0 0 0 } -minWidth true -minSpacing true -minArea true -sameNet true -short true -overlap true -offRGrid false -offMGrid true -mergedMGridCheck true -minHole true -implantCheck true -minimumCut true -minStep true -viaEnclosure true -antenna false -insuffMetalOverlap true -pinInBlkg false -diffCellViol true -sameCellViol false -padFillerCellsOverlap true -routingBlkgPinOverlap true -routingCellBlkgOverlap true -regRoutingOnly false -stackedViasOnRegNet false -wireExt true -useNonDefaultSpacing false -maxWidth true -maxNonPrefLength -1 -error 1000
+verifyGeometry
+setVerifyGeometryMode -area { 0 0 0 0 }
+reportGateCount -level 5 -limit 100 -outfile DLX.gateCount
+saveNetlist DLX.v
+all_hold_analysis_views 
+all_setup_analysis_views 
+write_sdf  -ideal_clock_network DLX.sdf
+saveDesign DLX_Inn_Design
+saveDesign DLX_Inn_Design
