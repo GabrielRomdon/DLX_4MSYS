@@ -22,7 +22,7 @@ class command_monitor extends uvm_component;
 
   function void write_to_monitor (instr_type_enum instr_type, bit [ir_size-1:0] ir_in, bit [op_code_size-1:0] opcode_field, bit [$clog2(rf_size):0] rs1, bit [$clog2(rf_size):0] rs2, bit [15:0] immediate);
     sequence_item instr;
-    `uvm_info ("COMMAND MONITOR", $sformatf("MONITOR: Instr_type: %s - Instruction: %b - OpCode: %b - Rs1: %d - Rs2: %d - Imm: %d",
+    `uvm_info ("COMMAND MONITOR", $sformatf("MONITOR: Instr_type: %s - Instruction: %h - OpCode: %b - Rs1: %d - Rs2: %d - Imm: %d",
                                                          instr_type.name(), ir_in, opcode_field, rs1, rs2, immediate), UVM_HIGH);
 
     instr = new("instr");
