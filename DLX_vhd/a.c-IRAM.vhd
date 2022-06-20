@@ -3,7 +3,7 @@
 -- Editor(s)    : Coralie Allioux, Gabriel Romero, Simone Valente
 -- Last updated : 04/Jun/2022
 -- Features     : Memory filled by a process which reads from a file named "UVM_test.mem".
---				  implements the instruction memory for the DLX
+--				  Implements the instruction memory for the DLX
 
 library ieee;
 use ieee.std_logic_1164.all;

@@ -9,10 +9,10 @@ use IEEE.std_logic_1164.all;
 use work.myTypes.all;
 
 entity MUX21 is
-	port( 	A: IN std_logic;
-			B:	IN std_logic;
-			SEL:	IN std_logic;
-			Y:	OUT std_logic);
+	port( 	A: IN std_logic;      -- 0 input
+			B:	IN std_logic;     -- 1 input
+			SEL:	IN std_logic; -- selection signal
+			Y:	OUT std_logic);   -- output
 end MUX21;
 
 architecture BEHAVIOR of MUX21 is
