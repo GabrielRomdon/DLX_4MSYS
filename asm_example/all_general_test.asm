@@ -11,10 +11,20 @@ sgei r9,r20,#6
 sle r13,r2,r4
 slei r1,r3,#-4
 sll r1,r2,r3
+nop
+nop
+nop
+nop
+nop
 slli r4,r1,#5
 sne r1,r2,r3
 snei r3,r5,#4
 srl r5,r7,r8
+nop
+nop
+nop
+nop
+nop
 srli r7,r5,#2
 sub r6,r12,r15
 subi r7,r9,#-30
