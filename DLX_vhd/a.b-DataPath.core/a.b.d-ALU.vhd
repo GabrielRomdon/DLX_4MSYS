@@ -1,8 +1,8 @@
 -- ALU
 -- ----------------------------------------------------------
 -- Editor(s)    : Coralie Allioux, Gabriel Romero, Simone Valente
--- Last updated : 25/Aug/2021
--- Features     : Basic version. Using shift_left and shift_right functions from numeric_std
+-- Last updated : 04/Jun/2022
+-- Features     : deeply described version. Barrel shifter and logic gates described explicitly.
 
 library IEEE;
 use IEEE.std_logic_1164.all;

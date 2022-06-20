@@ -1,3 +1,9 @@
+-- GLOBALS
+-- ----------------------------------------------------------
+-- Editor(s)    : Coralie Allioux, Gabriel Romero, Simone Valente
+-- Last updated : 04/Jun/2022
+-- Features     : list of all the repetitively required values in the DLX
+
 library ieee;
 use ieee.std_logic_1164.all;
 use work.Log2.all;

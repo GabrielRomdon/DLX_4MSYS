@@ -1,7 +1,7 @@
--- ALU
+-- BRANCHING UNIT
 -- ----------------------------------------------------------
 -- Editor(s)    : Coralie Allioux, Gabriel Romero, Simone Valente
--- Last updated : 14/Nov/2021
+-- Last updated : 04/Jun/2022
 -- Features     : analyses the kind of branch and determines if the branch has to be taken or not.
 
 library IEEE;

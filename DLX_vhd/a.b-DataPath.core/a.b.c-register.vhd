@@ -1,3 +1,9 @@
+-- REGISTER
+-- ----------------------------------------------------------
+-- Editor(s)    : Coralie Allioux, Gabriel Romero, Simone Valente
+-- Last updated : 15/Jun/2022
+-- Features     : describes a generic N bit register with low synch reset
+
 library IEEE;
 use IEEE.std_logic_1164.all; 
 use work.myTypes.all;

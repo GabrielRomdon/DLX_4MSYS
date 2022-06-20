@@ -1,8 +1,8 @@
--- ALU
+-- ADDER
 -- ----------------------------------------------------------
 -- Editor(s)    : Coralie Allioux, Gabriel Romero, Simone Valente
--- Last updated : 27/March/2022
--- Features     : For the computation of the next PC.
+-- Last updated : 04/Jun/2022
+-- Features     : For the computation of the next PC. Asynchronously adding 4 to the input
 
 library IEEE;
 use IEEE.std_logic_1164.all;

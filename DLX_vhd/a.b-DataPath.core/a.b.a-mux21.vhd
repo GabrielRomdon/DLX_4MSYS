@@ -1,8 +1,13 @@
+-- Single bit 2 to 1 mux
+-- ----------------------------------------------------------
+-- Editor(s)    : Coralie Allioux, Gabriel Romero, Simone Valente
+-- Last updated : 04/Jun/2022
+-- Features     : behavioural 2 to 1 multiplexer
+
 library IEEE;
 use IEEE.std_logic_1164.all;
 use work.myTypes.all;
 
--- Single bit 2 to 1 mux
 entity MUX21 is
 	port( 	A: IN std_logic;
 			B:	IN std_logic;

@@ -1,7 +1,7 @@
 -- Barrel Shifter
 -- ----------------------------------------------------------
 -- Editor(s)    : Coralie Allioux, Gabriel Romero, Simone Valente
--- Last updated : 07/Sep/2021
+-- Last updated : 04/Jun/2022
 -- Features     : Based on T2 shifter. Expects only N=32
 
 library IEEE;

@@ -1,3 +1,9 @@
+-- CONTROL UNIT
+-- ----------------------------------------------------------
+-- Editor(s)    : Coralie Allioux, Gabriel Romero, Simone Valente
+-- Last updated : 10/Jun/2022
+-- Features     : hardwired description of the CU of the DLX
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.std_logic_unsigned.all;

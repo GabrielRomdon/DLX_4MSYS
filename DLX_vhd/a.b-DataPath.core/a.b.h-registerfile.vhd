@@ -1,3 +1,9 @@
+-- REGISTER FILE
+-- ----------------------------------------------------------
+-- Editor(s)    : Coralie Allioux, Gabriel Romero, Simone Valente
+-- Last updated : 04/Jun/2022
+-- Features     : behavioural generic 1 input port, 2 output port register file.
+
 library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.std_logic_unsigned.all;

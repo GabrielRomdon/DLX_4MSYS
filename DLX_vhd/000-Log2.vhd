@@ -1,3 +1,10 @@
+-- LOGARITHM FUNCTION
+-- ----------------------------------------------------------
+-- Editor(s)    : Coralie Allioux, Gabriel Romero, Simone Valente
+-- Last updated : 04/Jun/2022
+-- Features     : Function to compute the logarithm base 2 of the argument.
+--                Called at compile time to compute the length of the addresses
+
 library ieee; 
 use ieee.std_logic_1164.all; 
 use ieee.std_logic_unsigned.all;

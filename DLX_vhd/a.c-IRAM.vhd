@@ -1,3 +1,10 @@
+-- IRAM
+-- ----------------------------------------------------------
+-- Editor(s)    : Coralie Allioux, Gabriel Romero, Simone Valente
+-- Last updated : 04/Jun/2022
+-- Features     : Memory filled by a process which reads from a file named "UVM_test.mem".
+--				  implements the instruction memory for the DLX
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.std_logic_arith.all;
@@ -6,10 +13,6 @@ use std.textio.all;
 use ieee.std_logic_textio.all;
 use work.myTypes.all;
 
-
--- Instruction memory for DLX
--- Memory filled by a process which reads from a file
--- file name is "UVM_test.mem"
 entity IRAM is
   generic (
     RAM_DEPTH : integer := IRAM_SIZE;

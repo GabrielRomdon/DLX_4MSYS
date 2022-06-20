@@ -1,3 +1,9 @@
+-- DLX
+-- ----------------------------------------------------------
+-- Editor(s)    : Coralie Allioux, Gabriel Romero, Simone Valente
+-- Last updated : 12/Jun/2022
+-- Features     : Top level entity that connects hierarchical DLX components: DP, CU, IRAM, IR, PC
+
 library IEEE;
 use IEEE.std_logic_1164.all;
 use work.Log2.all;

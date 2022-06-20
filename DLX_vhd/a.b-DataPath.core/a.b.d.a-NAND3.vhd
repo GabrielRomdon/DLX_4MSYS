@@ -1,7 +1,7 @@
 -- NAND3 - 3 input NAND gate
 -- ----------------------------------------------------------
 -- Editor(s)    : Coralie Allioux, Gabriel Romero, Simone Valente
--- Last updated : 06/Sep/2021
+-- Last updated : 04/Jun/2022
 
 library IEEE;
 use IEEE.std_logic_1164.all;

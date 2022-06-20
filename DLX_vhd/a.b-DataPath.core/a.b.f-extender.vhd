@@ -1,7 +1,7 @@
--- ALU
+-- EXTENDER
 -- ----------------------------------------------------------
 -- Editor(s)    : Coralie Allioux, Gabriel Romero, Simone Valente
--- Last updated : 09/Aug/2021
+-- Last updated : 8/Jun/2022
 -- Features     : For the extension of the sign of the immediate input. Uses the numeric_std library's instruction "resize"
 
 library IEEE;

@@ -1,11 +1,15 @@
+-- DRAM
+-- ----------------------------------------------------------
+-- Editor(s)    : Coralie Allioux, Gabriel Romero, Simone Valente
+-- Last updated : 04/Jun/2022
+-- Features     : descibes a generic 1-port memory. Used to implement the DRAM
+
 library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.std_logic_unsigned.all;
 use ieee.numeric_std.all;
-use WORK.Log2.all; -- for using the log2 algo, in order to compute the number of bits needed to address the cells
+use WORK.Log2.all;
 use work.myTypes.all;
-
--- I suppose description of DRAM(data memory) can be the same as that of the RF. This code is the same written for the RF during lab3 but with one read port less.
 
 entity MEMORY is
     generic (NBIT: integer := WORD;
