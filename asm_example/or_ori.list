@@ -1,3 +1,0 @@
- line   address	contents
-    1  00000000  34010007	ori r1,r0,#7
-    2  00000004  34029c40	ori r2,r0,#40000

@@ -39,4 +39,3 @@ nop
 nop
 nop
 nop
-jalr r31

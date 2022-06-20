@@ -34,7 +34,6 @@ nop
 nop
 nop
 addi r4,r0,#184
-jr r4
 nop
 nop
 nop
@@ -54,5 +53,4 @@ nop
 nop
 nop
 nop
-jalr r31
 nop

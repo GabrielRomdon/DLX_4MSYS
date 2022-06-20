@@ -39,9 +39,7 @@ next:
 
 notdone:
 	addi r4,r0,#128
-	jr r4
 	jal #164
-	jalr r31
 
 end:
 	addi r5,r0,#5

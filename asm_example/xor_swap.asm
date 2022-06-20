@@ -1,5 +1,5 @@
-seq r1, r2, r3 ; move 1 into R1
-seq r2, r2, r3 ; move 1 into R2
+sge r1, r2, r3 ; move 1 into R1
+sge r2, r2, r3 ; move 1 into R2
 add r2, r1, r2 ; R2 = 1 + 1 
 add r2, r1, r2 ; R2 = 1 + 2
 add r2, r1, r2 ; R2 = 1 + 3

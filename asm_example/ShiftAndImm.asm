@@ -10,5 +10,3 @@ srli r7, r4, 2
 addi r2, r0, 0xF0000000
 ori r3, r0, 0xF0F0F0F0
 addi r1, r0, 5
-sra r8, r3, r1
-srai r9, r3, 5
